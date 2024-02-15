@@ -1,97 +1,58 @@
 const mongoose=require('mongoose')
-const jwt=require('jsonwebtoken')
-const bcrypt=require('bcryptjs')
 
 const AuctionSchema = new mongoose.Schema({
 
-    Music:{
+    itemName:{
         type:String,
-        required:[true,'Please Provide Your Favorite Genre of Music'],
+        required:[true,'Please Provide The Name Of Your Item'],
         maxlength:100,
         minlength:1
     },
-    Entertainment:{
+    itemImage:{
         type:String,
-        required:[false,'Please Provide Your Form of Entertainment'],
+        required:[false,'Please Provide The Image Of Your Item'],
         maxlength:100,
         minlength:1
     },
-    Sports:{
+    itemPrice:{
         type:String,
-        required:[true,'Please Provide Your Favorite Sport'],
+        required:[true,'Please Provide The Price of Your Item'],
+        maxlength:7,
+        minlength:1
+    },
+    soldBy:{
+        type:String,
+        required:[true,'Please Provide Your the Name of the store that sells the item'],
         maxlength:100,
         minlength:1
     },
-    Gaming:{
+    description:{
         type:String,
-        required:[true,'Please Provide Your Gaming Of Choice'],
-        maxlength:100,
-        minlength:1
-    },
-    FashionAndBeauty:{
-        type:String,
-        required:[true,"Please Provide Your Fashion and Beauty Preference"],
+        required:[true,"Please Provide The Description of Your Item"],
         maxlength:100,
         unique:true,
         minlength:2,
     },
-    FoodAndDrinks:{
+    checkInStoreAvailability:{
         type:String,
-        required:[true,"Please Provide Your Food and Drinks Preferences"],
-        maxlength:100,
-        unique:true,
+        required:[true,"Is the Item Available in store"],
+        maxlength:5,
         minlength:2,
     },
-    BusinessAndFinance:{
+    PercentageDiscount:{
         type:String,
-        required:[true,"Please Provide Your Business and Finance  Preferences"],
-        maxlength:100,
-        unique:true,
-        minlength:2,
+        required:[true,"Please Provide The Percentage Discount"],
+        maxlength:5,
+        minlength:1,
     },
 
-     TravelAndTourism:{
+     buyItem:{
         type:String,
-        required:[true,"Please Provide Travel and Tourism  Preferences"],
-        maxlength:100,
-        unique:true,
-        minlength:2,
-    },
-    TechnologyAndScience:{
-        type:String,
-        required:[true,"Please Provide Your Technology and Science Preferences"],
-        maxlength:100,
-        unique:true,
-        minlength:2,
-    },
-    FashionAndJewellery:{
-        type:String,
-        required:[true,"Please Provide Your Fashion and Jewellery  Preferences"],
-        maxlength:100,
-        unique:true,
-        minlength:2,
-    },
-    Outdoors:{
-        type:String,
-        required:[true,"Please Provide Your Outdoors Preferences"],
-        maxlength:100,
-        unique:true,
-        minlength:2,
-    },
-    Fitness:{
-        type:String,
-        required:[true,"Please Provide Your Fitness Preferences"],
-        maxlength:100,
-        unique:true,
-        minlength:2,
-    },
-    HomeDesign:{
-        type:String,
-        required:[true,"Please Provide Your Home Design Preferences"],
-        maxlength:100,
-        unique:true,
-        minlength:2,
-    },
+        required:[true,"Buy the available item in store"],
+        maxlength:10,
+        minlength:1,
+    }, 
+   
 })
 
 module.exports=mongoose.model('Auction',AuctionSchema)

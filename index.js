@@ -35,7 +35,6 @@ app.use(cors())
 //Routes
 app.use('/api/slaschapp/auth',authRouter)
 app.use('/api/slaschapp/business',authenticateUser,businessRouter)
-
 const options={
     definition:{
         openapi:"3.0.0",
