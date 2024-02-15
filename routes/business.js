@@ -6,5 +6,5 @@ const {createBusiness,deleteBusiness,getAllBusinesses,updateBusinessDetails,getS
 const {createAuction} = require('../controllers/auction')
 router.route('/').post(createBusiness).get(getAllBusinesses)
 router.route('/:id').get(getSingleBusiness).delete(deleteBusiness).patch(updateBusinessDetails)
-router.route('/auction').post(createAuction)
+//router.route('/auction').post(createAuction)
 module.exports=router
