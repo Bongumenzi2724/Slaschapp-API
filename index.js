@@ -55,7 +55,7 @@ const options={
 } 
 
 app.get('/',(req,res)=>{
-    res.send('<h1>ADLINC API</h1><a href="/api-docs"></a>')
+    res.send('<h1>Jobs API</h1><a href="/api-docs">Documentation</a>');
 })
 
 //const specs=swaggerJSdoc(options)
