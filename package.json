@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -24,6 +23,7 @@
     "mongoose": "^8.1.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
-    "xss": "^1.0.14"
+    "xss": "^1.0.14",
+    "yamljs": "^0.3.0"
   }
 }

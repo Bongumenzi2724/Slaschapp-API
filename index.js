@@ -20,7 +20,8 @@ const notFoundMiddleWare=require('./middleware/no-found')
 const errorHandlerMiddleWare=require('./middleware/error-handler')
 const swaggerJSdoc = require('swagger-jsdoc')
 const swaggerUI=require('swagger-ui-express')
-
+const YAML=require('yamljs')
+const swaggerDocument=YAML.load('./swagger.yml')
 
 app.set('trust proxy',1);
 app.use(rateLimiter({
@@ -53,9 +54,13 @@ const options={
     apis:["./routes/*.js"]
 } 
 
-const specs=swaggerJSdoc(options)
+app.get('/',(req,res)=>{
+    res.send('<h1>ADLINC API</h1><a href="/api-docs"></a>')
+})
 
-app.use("/api-docs",swaggerUI.serve,swaggerUI.setup(specs))
+//const specs=swaggerJSdoc(options)
+
+app.use("/api-docs",swaggerUI.serve,swaggerUI.setup(swaggerDocument)) 
 
 const port=process.env.PORT||5000
 const start=async()=>{

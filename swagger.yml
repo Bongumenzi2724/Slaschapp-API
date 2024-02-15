@@ -1,0 +1,342 @@
+openapi: 3.0.0
+info:
+  title: adlinc-API-Collection
+  contact: {}
+  version: '1.0'
+servers:
+- url: https://adlinc-api.onrender.com/api/slaschapp
+  variables: {}
+paths:
+  /auth/register:
+    post:
+      tags:
+      - Authentication
+      summary: Register New User Business Owner
+      operationId: RegisterNewUserBusinessOwner
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/RegisterNewUserBusinessOwnerRequest'
+              - example:
+                  firstname: Wandile
+                  secondname: Bernard
+                  surname: Nzama
+                  email: nzama@gmail.com
+                  password: secret3
+                  AcceptTermsAndConditions: Yes
+                  locationOrAddress: Kimberley,South Africa
+                  birthday: 1996/07/12
+                  educationStatus: Tertiary
+                  gender: male
+                  interests: Fashion And Beauty
+            example:
+              firstname: Wandile
+              secondname: Bernard
+              surname: Nzama
+              email: nzama@gmail.com
+              password: secret3
+              AcceptTermsAndConditions: Yes
+              locationOrAddress: Kimberley,South Africa
+              birthday: 1996/07/12
+              educationStatus: Tertiary
+              gender: male
+              interests: Fashion And Beauty
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /auth/login:
+    post:
+      tags:
+      - Authentication
+      summary: Login User Business Owner
+      operationId: LoginUserBusinessOwner
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/LoginUserBusinessOwnerRequest'
+              - example:
+                  email: nzimande@gmail.com
+                  password: secret1
+            example:
+              email: nzimande@gmail.com
+              password: secret1
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /business:
+    post:
+      tags:
+      - Business Routes
+      summary: Create New Business
+      operationId: CreateNewBusiness
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/CreateNewBusinessRequest'
+              - example:
+                  BusinessName: Zondi Enterprises
+                  PhoneNumber: '0718999210'
+                  BusinessEmail: ZE@gmail.com
+                  AcceptTermsAndConditions: Yes
+                  VerificationCode: '563421'
+                  BusinessCategory: Food And Drinks
+                  BusinessLocation: Greyville,Johnesburg
+                  BusinessHours: 07:00-16:00,Mon-Fri
+            example:
+              BusinessName: Zondi Enterprises
+              PhoneNumber: '0718999210'
+              BusinessEmail: ZE@gmail.com
+              AcceptTermsAndConditions: Yes
+              VerificationCode: '563421'
+              BusinessCategory: Food And Drinks
+              BusinessLocation: Greyville,Johnesburg
+              BusinessHours: 07:00-16:00,Mon-Fri
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+    get:
+      tags:
+      - Business Routes
+      summary: Get All Businesses
+      operationId: GetAllBusinesses
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /user/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The Business ID
+    get:
+      tags:
+      - Business Routes
+      summary: Get Single Business
+      operationId: GetSingleBusiness
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+    delete:
+      tags:
+      - Business Routes
+      summary: Delete Business
+      operationId: DeleteBusiness
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+    patch:
+      tags:
+      - Business Routes
+      summary: Update Single Business
+      operationId: UpdateSingleBusiness
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /auction:
+    post:
+      tags:
+      - Auction Material
+      summary: Create Auction Material
+      operationId: CreateAuctionMaterial
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          text/plain:
+            schema:
+              type: object
+              example: {}
+            example: {}
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+components:
+  schemas:
+    RegisterNewUserBusinessOwnerRequest:
+      title: RegisterNewUserBusinessOwnerRequest
+      required:
+      - firstname
+      - secondname
+      - surname
+      - email
+      - password
+      - AcceptTermsAndConditions
+      - locationOrAddress
+      - birthday
+      - educationStatus
+      - gender
+      - interests
+      type: object
+      properties:
+        firstname:
+          type: string
+        secondname:
+          type: string
+        surname:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        AcceptTermsAndConditions:
+          type: string
+        locationOrAddress:
+          type: string
+        birthday:
+          type: string
+        educationStatus:
+          type: string
+        gender:
+          type: string
+        interests:
+          type: string
+      example:
+        firstname: Wandile
+        secondname: Bernard
+        surname: Nzama
+        email: nzama@gmail.com
+        password: secret3
+        AcceptTermsAndConditions: Yes
+        locationOrAddress: Kimberley,South Africa
+        birthday: 1996/07/12
+        educationStatus: Tertiary
+        gender: male
+        interests: Fashion And Beauty
+    LoginUserBusinessOwnerRequest:
+      title: LoginUserBusinessOwnerRequest
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: nzimande@gmail.com
+        password: secret1
+    CreateNewBusinessRequest:
+      title: CreateNewBusinessRequest
+      required:
+      - BusinessName
+      - PhoneNumber
+      - BusinessEmail
+      - AcceptTermsAndConditions
+      - VerificationCode
+      - BusinessCategory
+      - BusinessLocation
+      - BusinessHours
+      type: object
+      properties:
+        BusinessName:
+          type: string
+        PhoneNumber:
+          type: string
+        BusinessEmail:
+          type: string
+        AcceptTermsAndConditions:
+          type: string
+        VerificationCode:
+          type: string
+        BusinessCategory:
+          type: string
+        BusinessLocation:
+          type: string
+        BusinessHours:
+          type: string
+      example:
+        BusinessName: Zondi Enterprises
+        PhoneNumber: '0718999210'
+        BusinessEmail: ZE@gmail.com
+        AcceptTermsAndConditions: Yes
+        VerificationCode: '563421'
+        BusinessCategory: Food And Drinks
+        BusinessLocation: Greyville,Johnesburg
+        BusinessHours: 07:00-16:00,Mon-Fri
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+security: []
+tags:
+- name: Misc
+  description: ''
+- name: Authentication
+  description: ''
+- name: Business Routes
+  description: ''
+- name: Auction Material
+  description: ''
