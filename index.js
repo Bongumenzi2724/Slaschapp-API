@@ -22,7 +22,7 @@ const swaggerJSdoc = require('swagger-jsdoc')
 const swaggerUI=require('swagger-ui-express')
 
 
-//app.use('trust proxy',1);
+app.set('trust proxy',1);
 app.use(rateLimiter({
     windowMS:15*60*1000,//15 minutes
     max:100,//Limit each IP to 100 requests per windowsMS
