@@ -18,9 +18,6 @@ const BusinessRegistrationSchema = new mongoose.Schema({
         required:[true,'Please Provide Your Business Email Address'],
         unique:true,
         minlength:2
-        /* match: [
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-            'Please provide a valid email',], */
     },
     AcceptTermsAndConditions:{
         type:String,
