@@ -25,8 +25,5 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "xss": "^1.0.14"
-  },
-"engines": {
-  "node":">=18.17.0<19.0.0"
-}
+  }
 }
