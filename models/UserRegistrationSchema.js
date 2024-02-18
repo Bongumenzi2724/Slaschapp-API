@@ -72,7 +72,6 @@ const UserSchema = new mongoose.Schema({
         enum:['male','female','other'],
         default:'male'
     },
-
     interests:{
         type:String,
         enum:['Music','Entertainment','Sports','Gaming','Fashion And Beauty','Food And Drinks','Business And Finance','Travel And Tourism','Technology And Service','Fashion And Jewellery','Outdoors','Fitness','Home Design'],
