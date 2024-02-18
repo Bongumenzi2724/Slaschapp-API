@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: adlinc-API-Collection
+  title: Slaschapp Collection With Auction
   contact: {}
   version: '1.0'
 servers:
@@ -11,7 +11,7 @@ paths:
     post:
       tags:
       - Authentication
-      summary: Register New User Business Owner
+      summary: Register New User (Business Owner)
       operationId: RegisterNewUserBusinessOwner
       parameters: []
       requestBody:
@@ -59,7 +59,7 @@ paths:
     post:
       tags:
       - Authentication
-      summary: Login User Business Owner
+      summary: Login User (Business Owner)
       operationId: LoginUserBusinessOwner
       parameters: []
       requestBody:
@@ -70,11 +70,11 @@ paths:
               allOf:
               - $ref: '#/components/schemas/LoginUserBusinessOwnerRequest'
               - example:
-                  email: nzimande@gmail.com
-                  password: secret1
+                  email: mbanjwa@gmail.com
+                  password: secret6
             example:
-              email: nzimande@gmail.com
-              password: secret1
+              email: mbanjwa@gmail.com
+              password: secret6
         required: true
       responses:
         '200':
@@ -144,14 +144,14 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /user/{id}:
+  /business/{id}:
     parameters:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
         required: true
-        description: The Business ID
+        description: The Business ID.
     get:
       tags:
       - Business Routes
@@ -187,8 +187,8 @@ paths:
     patch:
       tags:
       - Business Routes
-      summary: Update Single Business
-      operationId: UpdateSingleBusiness
+      summary: Update Business Details
+      operationId: UpdateBusinessDetails
       parameters: []
       responses:
         '200':
@@ -198,10 +198,10 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /auction:
+  /business/auction:
     post:
       tags:
-      - Auction Material
+      - Auction Route
       summary: Create Auction Material
       operationId: CreateAuctionMaterial
       parameters: []
@@ -286,8 +286,8 @@ components:
         password:
           type: string
       example:
-        email: nzimande@gmail.com
-        password: secret1
+        email: mbanjwa@gmail.com
+        password: secret6
     CreateNewBusinessRequest:
       title: CreateNewBusinessRequest
       required:
@@ -332,11 +332,10 @@ components:
       scheme: bearer
 security: []
 tags:
-- name: Misc
-  description: ''
+
 - name: Authentication
   description: ''
 - name: Business Routes
   description: ''
-- name: Auction Material
+- name: Auction Route
   description: ''
