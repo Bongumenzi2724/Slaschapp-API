@@ -65,6 +65,7 @@ app.get('/',(req,res)=>{
 //API DOCS SWAGGER-UI URL 
 app.use("/api-docs",swaggerUI.serve,swaggerUI.setup(swaggerDocument)) 
 const port=process.env.PORT||5000
+//Starting Database Connection
 const start=async()=>{
     try{
         await connectDB(process.env.MONGO_URL)
