@@ -33,7 +33,6 @@ app.use(rateLimiter({
     max:100,//Limit each IP to 100 requests per windowsMS
 })) 
 // Error middleware
-app.use(notFoundMiddleWare)
 app.use(errorHandlerMiddleWare)
 app.use(express.json())
 app.use(helmet())
@@ -41,14 +40,12 @@ app.use(cors())
 //app.use(xss())
 
 //Routes
-app.use('/',(req,res)=>{
-    res.send("app is still alive")
-})
 app.use('/api/slaschapp/auth',authRouter)
 app.use('/api/slaschapp/business',authenticateUser,businessRouter)
 app.use('/api/slaschapp/business/search',authenticateUser,businessSearchRouter)
 app.use('/api/slaschapp/user/search',authenticateUser,userSearchRouter) 
-const options={
+
+/* const options={
     definition:{
         openapi:"3.0.0",
         info:{
@@ -64,18 +61,19 @@ const options={
         ],
     },
     apis:["./routes/*.js"]
-} 
+}  */
 app.get('/',(req,res)=>{
     res.send('<h1>Business API</h1><a href="/api-docs">Documentation</a>');
 })
 //API DOCS SWAGGER-UI URL 
 app.use("/api-docs",swaggerUI.serve,swaggerUI.setup(swaggerDocument)) 
+app.use(notFoundMiddleWare)
 const port=process.env.PORT||5000
 //Starting Database Connection
 const start=async()=>{
     try{
         await connectDB(process.env.MONGO_URL)
-        app.listen(3000,()=>console.log(`Server is listening on port ${port}`))
+        app.listen(port,()=>console.log(`Server is listening on port ${port}`))
     }
     catch(error){
         console.log(error)
