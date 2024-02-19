@@ -1,20 +1,18 @@
 const { StatusCodes } = require("http-status-codes")
 const Business=require('../models/BusinessRegistrationSchema')
 const {BadRequestError,NotFoundError}=require('../errors')
+
 const createBusiness=async(req,res)=>{
 
     console.log(req.body);
     req.body.createdBy=req.user.userId
     const business = await Business.create(req.body)
     res.status(StatusCodes.CREATED).json({business})
-
-    //res.status(StatusCodes.ACCEPTED).json({business:{name:business.BusinessName,email:business.BusinessEmail}})
 }
 const getAllBusinesses =async(req,res) =>{
     
     const businesses=await Business.find({createdBy:req.user.userId}).sort('createdAt')
     res.status(StatusCodes.OK).json({businesses,count:businesses.length})
-    //res.send("Get All Businesses")
 }
 
 const getSingleBusiness=async(req,res)=>{
@@ -62,4 +60,6 @@ const deleteBusiness=async(req,res)=>{
     res.status(StatusCodes.OK).send("Business Deleted Successfully")
     //res.send("Delete Business from Database")
 }
+
+
 module.exports={createBusiness,getSingleBusiness,updateBusinessDetails,getAllBusinesses,deleteBusiness}
