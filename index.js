@@ -41,7 +41,7 @@ app.use(cors())
 app.use('/api/slaschapp/auth',authRouter)
 app.use('/api/slaschapp/business',authenticateUser,businessRouter)
 app.use('/api/slaschapp/business/search',authenticateUser,businessSearchRouter)
-app.use('/api/slaschapp/user/search',authenticateUser,userSearchRouter)
+app.use('/api/slaschapp/user/search',authenticateUser,userSearchRouter) 
 const options={
     definition:{
         openapi:"3.0.0",
