@@ -6,6 +6,7 @@ const app = express()
 //extra security packages
 const helmet=require('helmet')
 const cors=require('cors')
+
 //const xss=require('xss-clean')
 const rateLimiter=require('express-rate-limit')
 //routers
@@ -13,10 +14,12 @@ const authRouter=require('./routes/authentication')
 const userSearchRouter=require('./routes/userSearch')
 const businessSearchRouter=require('./routes/businessSearch')
 const businessRouter=require('./routes/business')
+
 //Database Connection
 const connectDB = require('./db/connect')
 //midlleware
 const authenticateUser=require('./middleware/authentication');
+
 //error-handler
 const notFoundMiddleWare=require('./middleware/no-found')
 const errorHandlerMiddleWare=require('./middleware/error-handler')
@@ -38,6 +41,9 @@ app.use(cors())
 //app.use(xss())
 
 //Routes
+app.use('/',(req,res)=>{
+    res.send("app is still alive")
+})
 app.use('/api/slaschapp/auth',authRouter)
 app.use('/api/slaschapp/business',authenticateUser,businessRouter)
 app.use('/api/slaschapp/business/search',authenticateUser,businessSearchRouter)
