@@ -9,6 +9,7 @@ const cors=require('cors')
 
 //const xss=require('xss-clean')
 const rateLimiter=require('express-rate-limit')
+
 //routers
 const authRouter=require('./routes/authentication')
 const userSearchRouter=require('./routes/userSearch')
@@ -23,6 +24,8 @@ const authenticateUser=require('./middleware/authentication');
 //error-handler
 const notFoundMiddleWare=require('./middleware/no-found')
 const errorHandlerMiddleWare=require('./middleware/error-handler')
+
+//Swagger
 const swaggerUI=require('swagger-ui-express')
 const YAML=require('yamljs')
 const swaggerDocument=YAML.load('./swagger.yml')
@@ -32,8 +35,6 @@ app.use(rateLimiter({
     windowMS:15*60*1000,//15 minutes
     max:100,//Limit each IP to 100 requests per windowsMS
 })) 
-// Error middleware
-app.use(errorHandlerMiddleWare)
 app.use(express.json())
 app.use(helmet())
 app.use(cors())
@@ -67,7 +68,9 @@ app.get('/',(req,res)=>{
 })
 //API DOCS SWAGGER-UI URL 
 app.use("/api-docs",swaggerUI.serve,swaggerUI.setup(swaggerDocument)) 
+// Error middleware
 app.use(notFoundMiddleWare)
+app.use(errorHandlerMiddleWare)
 const port=process.env.PORT||5000
 //Starting Database Connection
 const start=async()=>{
