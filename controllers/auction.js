@@ -9,21 +9,22 @@ const createAuction=async(req,res)=>{
 }
 
 const auctionSearchResults=async(req,res)=>{
-    console.log(req.params.key);
-    req.body.createdBy=req.user.userId
-    const auctionData = await Auction.find(
-        {
-            "$or":[
-                {campaignName:{$regex:req.params.key}},
-                {campaignBudget:{$regex:req.params.key}},
-                {campaignStartDate:{$regex:req.params.key}},
-            ]
-        }
-    )
+    let match={}
+    console.log(req.query.search)
+    if(req.query.search){
+        match.$or=[
+            {campaignName: new RegExp(req.query.search,"i")},
+            {campaignBudget: new RegExp(req.query.search,"i")},
+            {interests: new RegExp(req.query.search,"i")}
+        ]
+    }
+    const businessData=await Auction.aggregate([{$match:match}])
     if(!businessData){
         throw new NotFoundError("No Business Data Exist With That Format")
-    }
-    res.status(StatusCodes.OK).json(auctionData)
+    } 
+    console.log(businessData)
+    res.status(StatusCodes.OK).json(businessData)
+    //res.status(StatusCodes.OK).send("auction search route found")
 }
 
 

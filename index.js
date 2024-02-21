@@ -12,8 +12,8 @@ const rateLimiter=require('express-rate-limit')
 
 //routers
 const authRouter=require('./routes/authentication')
-const userSearchRouter=require('./routes/userSearch')
-const businessSearchRouter=require('./routes/businessSearch')
+/* const userSearchRouter=require('./routes/userSearch')
+const businessSearchRouter=require('./routes/businessSearch') */
 const businessRouter=require('./routes/business')
 
 //Database Connection
@@ -28,6 +28,7 @@ const errorHandlerMiddleWare=require('./middleware/error-handler')
 //Swagger
 const swaggerUI=require('swagger-ui-express')
 const YAML=require('yamljs')
+const { StatusCodes } = require('http-status-codes')
 const swaggerDocument=YAML.load('./swagger.yml')
 
 app.set('trust proxy',1);
@@ -39,13 +40,26 @@ app.use(express.json())
 app.use(helmet())
 app.use(cors())
 //app.use(xss())
-
+/* app.get('/api/slaschapp/business/search',async(req,res)=>{
+    let match={}
+    console.log(req.query)
+   
+    if(req.query){
+        match.$or=[
+            {BusinessName: new RegExp(req.query.BusinessName,"i")},
+            {BusinessCategory:new RegExp(req.query.BusinessCategory,"i")},
+            {BusinessLocation: new RegExp(req.query.BusinessLocation,"i")}
+        ]
+    }
+    console.log($match=match)
+    const businessData=await Business.aggregate([{$match:match}])
+    console.log(businessData)
+    res.status(StatusCodes.OK).json(businessData)
+}) 
+ */
 //Routes
 app.use('/api/slaschapp/auth',authRouter)
 app.use('/api/slaschapp/business',authenticateUser,businessRouter)
-app.use('/api/slaschapp/business/search',authenticateUser,businessSearchRouter)
-app.use('/api/slaschapp/user/search',authenticateUser,userSearchRouter) 
-
 /* const options={
     definition:{
         openapi:"3.0.0",

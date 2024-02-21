@@ -60,6 +60,23 @@ const deleteBusiness=async(req,res)=>{
     res.status(StatusCodes.OK).send("Business Deleted Successfully")
     //res.send("Delete Business from Database")
 }
+const searchForBusinessDetails=async(req,res)=>{
+    console.log(req.query)
+    let match={}
+    if(req.query){
+        match.$or=[
+            {BusinessName: new RegExp(req.query.BusinessName,"i")},
+            {BusinessCategory:new RegExp(req.query.BusinessCategory,"i")},
+            {BusinessLocation: new RegExp(req.query.BusinessLocation,"i")}
+        ]
+    }
+    console.log(match)
+    const businessData=await Business.aggregate([{$match:match}])
+    if(!businessData){
+        throw new NotFoundError("No Business Data Exist With That Format")
+    } 
+    console.log(businessData)
+    res.status(StatusCodes.OK).json(businessData)
+}
 
-
-module.exports={createBusiness,getSingleBusiness,updateBusinessDetails,getAllBusinesses,deleteBusiness}
+module.exports={createBusiness,getSingleBusiness,updateBusinessDetails,getAllBusinesses,deleteBusiness,searchForBusinessDetails}
