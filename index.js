@@ -28,7 +28,6 @@ const errorHandlerMiddleWare=require('./middleware/error-handler')
 //Swagger
 const swaggerUI=require('swagger-ui-express')
 const YAML=require('yamljs')
-const { StatusCodes } = require('http-status-codes')
 const swaggerDocument=YAML.load('./swagger.yml')
 
 app.set('trust proxy',1);

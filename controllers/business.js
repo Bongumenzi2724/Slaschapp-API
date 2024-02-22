@@ -4,21 +4,34 @@ const {BadRequestError,NotFoundError}=require('../errors')
 
 const createBusiness=async(req,res)=>{
 
-    console.log(req.body);
+    
     req.body.createdBy=req.user.userId
     const business = await Business.create(req.body)
     res.status(StatusCodes.CREATED).json({business})
 }
 const getAllBusinesses =async(req,res) =>{
+    const{user:{userId},params:{id:businessId},query:{BusinessName:BusinessName,BusinessCategory:BusinessCategory,BusinessLocation:BusinessLocation}}=req
     
+    if(BusinessName||BusinessCategory||BusinessLocation||BusinessCategory){
+        const businessData=await Business.aggregate([
+            {
+                $match:{
+                    BusinessName:new RegExp(BusinessName,"i"),
+                    BusinessCategory:new RegExp(BusinessCategory,"i"),
+                    BusinessLocation:new RegExp(BusinessLocation,"i")
+                }
+            }
+        ])
+        return res.status(StatusCodes.OK).json(businessData)
+    }
     const businesses=await Business.find({createdBy:req.user.userId}).sort('createdAt')
-    res.status(StatusCodes.OK).json({businesses,count:businesses.length})
+    return res.status(StatusCodes.OK).json({businesses,count:businesses.length})
 }
 
 const getSingleBusiness=async(req,res)=>{
 
     const{user:{userId},params:{id:businessId}}=req
-
+    
     const business= await Business.findOne({_id:businessId,createdBy:userId,})
 
     if(!business){
@@ -58,25 +71,27 @@ const deleteBusiness=async(req,res)=>{
     }
 
     res.status(StatusCodes.OK).send("Business Deleted Successfully")
-    //res.send("Delete Business from Database")
 }
 const searchForBusinessDetails=async(req,res)=>{
     console.log(req.query)
-    let match={}
+    let matchArray={}
     if(req.query){
-        match.$or=[
+        req.body.createdBy=req.user.userId
+        matchArray.$or=[
             {BusinessName: new RegExp(req.query.BusinessName,"i")},
             {BusinessCategory:new RegExp(req.query.BusinessCategory,"i")},
             {BusinessLocation: new RegExp(req.query.BusinessLocation,"i")}
         ]
-    }
+
     console.log(match)
-    const businessData=await Business.aggregate([{$match:match}])
+    const businessData=await Business.aggregate([{$group:{_id:"$req.body.createdBy"}},{$match:"$matchArray"}])
+
     if(!businessData){
         throw new NotFoundError("No Business Data Exist With That Format")
     } 
     console.log(businessData)
-    res.status(StatusCodes.OK).json(businessData)
+    return res.status(StatusCodes.OK).json(businessData)
+}
 }
 
 module.exports={createBusiness,getSingleBusiness,updateBusinessDetails,getAllBusinesses,deleteBusiness,searchForBusinessDetails}
