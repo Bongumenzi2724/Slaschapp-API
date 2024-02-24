@@ -1,7 +1,6 @@
 const mongoose=require('mongoose')
   
 const AuctionSchema = new mongoose.Schema({
-
     campaignName:{
         type:String,
         required:[true,'Please Provide The Name Of Your Campaign'],
@@ -44,13 +43,6 @@ const AuctionSchema = new mongoose.Schema({
         maxlength:100,
         minlength:1,
     },
-
-     commitmentFee:{
-        type:String,
-        required:[true,"Please Provide The Campaign Commitment Fee"],
-        maxlength:100,
-        minlength:1,
-    }, 
     interests:{
         type:String,
         enum:['Music','Entertainment','Sports','Gaming','Fashion And Beauty','Food And Drinks','Business And Finance','Travel And Tourism','Technology And Service','Fashion And Jewellery','Outdoors','Fitness','Home Design'],

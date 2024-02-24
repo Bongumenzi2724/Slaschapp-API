@@ -7,25 +7,45 @@ const createAuction=async(req,res)=>{
     const auction = await Auction.create(req.body)
     res.status(StatusCodes.CREATED).json({auction})
 }
+const updateAuctions=async(req,res)=>{
 
-const auctionSearchResults=async(req,res)=>{
-    let match={}
-    console.log(req.query.search)
-    if(req.query.search){
-        match.$or=[
-            {campaignName: new RegExp(req.query.search,"i")},
-            {campaignBudget: new RegExp(req.query.search,"i")},
-            {interests: new RegExp(req.query.search,"i")}
-        ]
+    const{body:{campaignName,campaignDescription,campaignBudget,campaignDailyBudget,campaignStartDate,checkInStoreAvailability,percentageDiscount,interests,baitPlant:{name,descriptionBaitPlant,price,photos}},user:{userId},params:{id:auctionId}}=req
+
+    const auctionData=await Auction.findOneAndUpdate({_id:auctionId,createdBy:userId},req.body,{new:true,runValidators:true})
+    
+    if(campaignName==""||campaignDescription==""||campaignBudget==""||campaignDailyBudget==""||campaignStartDate==""||checkInStoreAvailability==""||percentageDiscount==""||interests==""||name==""||descriptionBaitPlant==""||price==""||photos==""){
+
+        throw new BadRequestError("Fields cannot be empty please fill everything")
     }
-    const businessData=await Auction.aggregate([{$match:match}])
-    if(!businessData){
-        throw new NotFoundError("No Business Data Exist With That Format")
-    } 
-    console.log(businessData)
-    res.status(StatusCodes.OK).json(businessData)
-    //res.status(StatusCodes.OK).send("auction search route found")
+
+    if(!business){
+        throw new NotFoundError(`No Business with id ${auctionId}`)
+    }
+
+    res.status(StatusCodes.OK).json({auctionData})
+}
+const getAllAuctions=async(req,res)=>{
+    const auctionData=await Auction.find({createdBy:req.user.userId}).sort('createdAt')
+    return res.status(StatusCodes.OK).json({auctionData,count:auctionData.length})
+}
+const auctionSearchResults=async(req,res)=>{
+    const{user:{userId},params:{id:auctionId},query:{campaignName:campaignName,campaignBudget:campaignBudget,campaignStartDate:campaignStartDate}}=req
+    if(campaignName==""&&campaignBudget==""&&campaignStartDate==""){
+        throw new BadRequestError("Fill In At Least Two Characters")
+    }
+    if(campaignName||campaignBudget||campaignStartDate){
+        const campaignData=await Business.aggregate([
+            {
+                $match:{
+                    Name:new RegExp(campaignName,"i"),
+                    Budget:new RegExp(campaignBudget,"i"),
+                    StartDate:new RegExp(campaignStartDate,"i")
+                }
+            }
+        ])
+        return res.status(StatusCodes.OK).json(campaignData)
+    }
 }
 
 
-module.exports={createAuction,auctionSearchResults}
+module.exports={createAuction,auctionSearchResults,getAllAuctions,updateAuctions}

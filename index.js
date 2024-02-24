@@ -12,10 +12,9 @@ const rateLimiter=require('express-rate-limit')
 
 //routers
 const authRouter=require('./routes/authentication')
-/* const userSearchRouter=require('./routes/userSearch')
-const businessSearchRouter=require('./routes/businessSearch') */
+const auctionRouter=require('./routes/auction')
 const businessRouter=require('./routes/business')
-
+const businessSearchRouter=require('./routes/search')
 //Database Connection
 const connectDB = require('./db/connect')
 //midlleware
@@ -39,43 +38,13 @@ app.use(express.json())
 app.use(helmet())
 app.use(cors())
 //app.use(xss())
-/* app.get('/api/slaschapp/business/search',async(req,res)=>{
-    let match={}
-    console.log(req.query)
-   
-    if(req.query){
-        match.$or=[
-            {BusinessName: new RegExp(req.query.BusinessName,"i")},
-            {BusinessCategory:new RegExp(req.query.BusinessCategory,"i")},
-            {BusinessLocation: new RegExp(req.query.BusinessLocation,"i")}
-        ]
-    }
-    console.log($match=match)
-    const businessData=await Business.aggregate([{$match:match}])
-    console.log(businessData)
-    res.status(StatusCodes.OK).json(businessData)
-}) 
- */
-//Routes
-app.use('/api/slaschapp/auth',authRouter)
-app.use('/api/slaschapp/business',authenticateUser,businessRouter)
-/* const options={
-    definition:{
-        openapi:"3.0.0",
-        info:{
-            title:"Business Management API",
-            version:"1.0.0",
-            description:"Business API",
 
-        },
-        servers: [
-            {
-                url:"http://localhost:3000"
-            },
-        ],
-    },
-    apis:["./routes/*.js"]
-}  */
+//Routes
+
+app.use('/api/slaschapp/auth',authRouter);
+app.use('/api/slaschapp/business',authenticateUser,businessRouter);
+app.use('/api/slaschapp/auction',authenticateUser,auctionRouter);
+app.use('/api/slaschapp/search',authenticateUser,businessSearchRouter);
 app.get('/',(req,res)=>{
     res.send('<h1>Business API</h1><a href="/api-docs">Documentation</a>');
 })
