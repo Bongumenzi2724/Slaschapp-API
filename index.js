@@ -44,7 +44,6 @@ app.use(cors())
 
 app.use('/api/slaschapp/auth',authRouter);
 app.use('/api/slaschapp/business',authenticateUser,businessRouter);
-app.use('/api/slaschapp/auction',authenticateUser,auctionRouter);
 app.use('/api/slaschapp/search',authenticateUser,businessSearchRouter);
 app.get('/',(req,res)=>{
     res.send('<h1>Business API</h1><a href="/api-docs">Documentation</a>');
