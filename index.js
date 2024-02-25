@@ -12,7 +12,6 @@ const rateLimiter=require('express-rate-limit')
 
 //routers
 const authRouter=require('./routes/authentication')
-const auctionRouter=require('./routes/auction')
 const businessRouter=require('./routes/business')
 const businessSearchRouter=require('./routes/search')
 //Database Connection
@@ -21,10 +20,12 @@ const connectDB = require('./db/connect')
 const authenticateUser=require('./middleware/authentication');
 
 //error-handler
+
 const notFoundMiddleWare=require('./middleware/no-found')
 const errorHandlerMiddleWare=require('./middleware/error-handler')
 
 //Swagger
+
 const swaggerUI=require('swagger-ui-express')
 const YAML=require('yamljs')
 const swaggerDocument=YAML.load('./swagger.yml')
@@ -48,6 +49,7 @@ app.use('/api/slaschapp/search',authenticateUser,businessSearchRouter);
 app.get('/',(req,res)=>{
     res.send('<h1>Business API</h1><a href="/api-docs">Documentation</a>');
 })
+
 //API DOCS SWAGGER-UI URL 
 app.use("/api-docs",swaggerUI.serve,swaggerUI.setup(swaggerDocument)) 
 // Error middleware

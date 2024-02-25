@@ -1,12 +1,16 @@
 const Auction=require('../models/AuctionSchema')
+
 const {NotFoundError}=require('../errors')
 const {StatusCodes}=require('http-status-codes')
+
 const createAuction=async(req,res)=>{
     console.log(req.body);
-    req.body.createdBy=req.user.userId
-    const auction = await Auction.create(req.body)
-    res.status(StatusCodes.CREATED).json({auction})
+    req.body.createdBy=req.user.userId;
+    req.body.businessId=req.params.id;
+    const auction = await Auction.create(req.body);
+    return res.status(StatusCodes.CREATED).json(auction);
 }
+
 const updateAuctions=async(req,res)=>{
 
     const{body:{campaignName,campaignDescription,campaignBudget,campaignDailyBudget,campaignStartDate,checkInStoreAvailability,percentageDiscount,interests,baitPlant:{name,descriptionBaitPlant,price,photos}},user:{userId},params:{id:auctionId}}=req
@@ -24,17 +28,20 @@ const updateAuctions=async(req,res)=>{
 
     res.status(StatusCodes.OK).json({auctionData})
 }
+
 const getAllAuctions=async(req,res)=>{
     const auctionData=await Auction.find({createdBy:req.user.userId}).sort('createdAt')
     return res.status(StatusCodes.OK).json({auctionData,count:auctionData.length})
 }
+
 const auctionSearchResults=async(req,res)=>{
+    console.log(req.query)
     const{user:{userId},params:{id:auctionId},query:{campaignName:campaignName,campaignBudget:campaignBudget,campaignStartDate:campaignStartDate}}=req
     if(campaignName==""&&campaignBudget==""&&campaignStartDate==""){
         throw new BadRequestError("Fill In At Least Two Characters")
     }
     if(campaignName||campaignBudget||campaignStartDate){
-        const campaignData=await Business.aggregate([
+        const campaignData=await Auction.aggregate([
             {
                 $match:{
                     Name:new RegExp(campaignName,"i"),
@@ -46,6 +53,4 @@ const auctionSearchResults=async(req,res)=>{
         return res.status(StatusCodes.OK).json(campaignData)
     }
 }
-
-
 module.exports={createAuction,auctionSearchResults,getAllAuctions,updateAuctions}

@@ -3,10 +3,9 @@ const Business=require('../models/BusinessRegistrationSchema')
 const {BadRequestError,NotFoundError}=require('../errors')
 
 const createBusiness=async(req,res)=>{
-
     req.body.createdBy=req.user.userId
     const business = await Business.create(req.body)
-    res.status(StatusCodes.CREATED).json({business})
+    return res.status(StatusCodes.CREATED).json({business})
 }
 const getAllBusinesses =async(req,res) =>{
     
@@ -25,7 +24,6 @@ const getSingleBusiness=async(req,res)=>{
     }
     
     res.status(StatusCodes.OK).json({business})
-    //res.send("Get Single Business Details")
 }
 
 const updateBusinessDetails= async(req,res)=>{
