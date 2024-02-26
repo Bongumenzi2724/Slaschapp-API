@@ -4,9 +4,11 @@ const {NotFoundError}=require('../errors')
 const {StatusCodes}=require('http-status-codes')
 
 const createAuction=async(req,res)=>{
+    //console.log("This is what is sent: ", req.body)
     req.body.createdBy=req.user.userId;
     req.body.businessId=req.params.id;
     const auction = await Auction.create(req.body);
+    console.log("This is the issue.....",auction._id)
     res.status(StatusCodes.CREATED).json({auction});
 }
 

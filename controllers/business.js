@@ -7,12 +7,12 @@ const createBusiness=async(req,res)=>{
     const business = await Business.create(req.body)
     return res.status(StatusCodes.CREATED).json({business})
 }
+
 const getAllBusinesses =async(req,res) =>{
     
     const businesses=await Business.find({createdBy:req.user.userId}).sort('createdAt')
     return res.status(StatusCodes.OK).json({businesses,count:businesses.length})
 }
-
 const getSingleBusiness=async(req,res)=>{
 
     const{user:{userId},params:{id:businessId}}=req
@@ -25,7 +25,6 @@ const getSingleBusiness=async(req,res)=>{
     
     res.status(StatusCodes.OK).json({business})
 }
-
 const updateBusinessDetails= async(req,res)=>{
 
     const{body:{BusinessName,PhoneNumber,BusinessEmail,BusinessLocation,BusinessHours},user:{userId},params:{id:businessId}}=req
@@ -44,7 +43,6 @@ const updateBusinessDetails= async(req,res)=>{
     res.status(StatusCodes.OK).json({business})
 
 }
-
 const deleteBusiness=async(req,res)=>{
 
     const{user:{userId},params:{id:businessId}}=req
@@ -57,7 +55,6 @@ const deleteBusiness=async(req,res)=>{
 
     res.status(StatusCodes.OK).send("Business Deleted Successfully")
 }
-
 const searchBusiness=async(req,res)=>{
     const{user:{userId},params:{id:businessId},query:{BusinessCategory:BusinessCategory,BusinessLocation:BusinessLocation}}=req
     

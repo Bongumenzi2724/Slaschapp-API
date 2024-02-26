@@ -3,6 +3,7 @@ const User=require('../models/UserRegistrationSchema')
 const {StatusCodes}=require('http-status-codes')
 
 const registerUser= async(req,res)=>{
+    console.log(req.body)
     const user = await User.create({...req.body})
     const token = user.createJWT()
     res.status(StatusCodes.CREATED).json({user:{name:user.firstname,surname:user.surname,email:user.email},token})
