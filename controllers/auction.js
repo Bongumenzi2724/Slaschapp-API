@@ -4,16 +4,15 @@ const {NotFoundError}=require('../errors')
 const {StatusCodes}=require('http-status-codes')
 
 const createAuction=async(req,res)=>{
-    console.log(req.body);
     req.body.createdBy=req.user.userId;
     req.body.businessId=req.params.id;
     const auction = await Auction.create(req.body);
-    return res.status(StatusCodes.CREATED).json(auction);
+    res.status(StatusCodes.CREATED).json({auction});
 }
 
 const updateAuctions=async(req,res)=>{
 
-    const{body:{campaignName,campaignDescription,campaignBudget,campaignDailyBudget,campaignStartDate,checkInStoreAvailability,percentageDiscount,interests,baitPlant:{name,descriptionBaitPlant,price,photos}},user:{userId},params:{id:auctionId}}=req
+   const{body:{campaignName,campaignDescription,campaignBudget,campaignDailyBudget,campaignStartDate,checkInStoreAvailability,percentageDiscount,interests,baitPlant:{name,descriptionBaitPlant,price,photos}},user:{userId},params:{id:auctionId}}=req
 
     const auctionData=await Auction.findOneAndUpdate({_id:auctionId,createdBy:userId},req.body,{new:true,runValidators:true})
     
@@ -25,17 +24,16 @@ const updateAuctions=async(req,res)=>{
     if(!business){
         throw new NotFoundError(`No Business with id ${auctionId}`)
     }
-
-    res.status(StatusCodes.OK).json({auctionData})
+    res.status(StatusCodes.OK).json({auctionData}) 
 }
 
 const getAllAuctions=async(req,res)=>{
-    const auctionData=await Auction.find({createdBy:req.user.userId}).sort('createdAt')
-    return res.status(StatusCodes.OK).json({auctionData,count:auctionData.length})
+    const auctionData=await Auction.find({createdBy:req.user.userId,businessId:req.params.id}).sort('createdAt')
+    res.status(StatusCodes.OK).json({auctionData,count:auctionData.length});
 }
 
 const auctionSearchResults=async(req,res)=>{
-    console.log(req.query)
+
     const{user:{userId},params:{id:auctionId},query:{campaignName:campaignName,campaignBudget:campaignBudget,campaignStartDate:campaignStartDate}}=req
     if(campaignName==""&&campaignBudget==""&&campaignStartDate==""){
         throw new BadRequestError("Fill In At Least Two Characters")
@@ -51,6 +49,6 @@ const auctionSearchResults=async(req,res)=>{
             }
         ])
         return res.status(StatusCodes.OK).json(campaignData)
-    }
+    } 
 }
 module.exports={createAuction,auctionSearchResults,getAllAuctions,updateAuctions}

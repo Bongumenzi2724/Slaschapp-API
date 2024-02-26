@@ -1,6 +1,4 @@
 const mongoose=require('mongoose')
-const jwt=require('jsonwebtoken')
-const bcrypt=require('bcryptjs')
 
 const UserSchema = new mongoose.Schema({
 
@@ -21,6 +19,12 @@ const UserSchema = new mongoose.Schema({
         required:[true,'Please Provide Your Surname'],
         maxlength:100,
         minlength:1
+    },
+    phoneNumber:{
+        type:String,
+        required:[true,"Please Provide Your Phone Number"],
+        unique:true,
+        minlength:2,
     },
     email:{
         type:String,
