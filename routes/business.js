@@ -1,9 +1,10 @@
 const express=require('express')
 const router=express.Router()
 const {createBusiness,deleteBusiness,getAllBusinesses,updateBusinessDetails,getSingleBusiness}=require('../controllers/business')
-const { createAuction, getAllAuctions, auctionSearchResults, updateAuctions } = require('../controllers/auction')
+const { createAuction, getAllAuctions, auctionSearchResults, updateAuctions, getSingleAuction } = require('../controllers/auction')
 router.route('/').post(createBusiness).get(getAllBusinesses)
 router.route('/:id').get(getSingleBusiness).delete(deleteBusiness).patch(updateBusinessDetails)
-router.route('/:id/auction').post(createAuction).get(getAllAuctions).patch(updateAuctions)
-router.route('/:id/auction/search').get(auctionSearchResults)
+router.route('/:id/auction').post(createAuction).get(getAllAuctions)
+router.route('/:id/auction/:auctionId').patch(updateAuctions).get(getSingleAuction)
+router.route('/:id/search/auction').get(auctionSearchResults)
 module.exports=router

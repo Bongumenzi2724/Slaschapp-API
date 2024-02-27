@@ -1,6 +1,7 @@
 const mongoose=require('mongoose')
 
 const BusinessRegistrationSchema = new mongoose.Schema({
+
     BusinessName:{
         type:String,
         required:[true,'Please Provide Your Business Name'],
@@ -11,6 +12,7 @@ const BusinessRegistrationSchema = new mongoose.Schema({
         type:String,
         required:[false,'Please Provide Your Business Phone Number'],
         maxlength:100,
+        unique:true,
         minlength:1
     },
     BusinessEmail:{

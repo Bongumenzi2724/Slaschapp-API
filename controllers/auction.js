@@ -4,17 +4,15 @@ const {NotFoundError}=require('../errors')
 const {StatusCodes}=require('http-status-codes')
 
 const createAuction=async(req,res)=>{
-    //console.log("This is what is sent: ", req.body)
     req.body.createdBy=req.user.userId;
     req.body.businessId=req.params.id;
     const auction = await Auction.create(req.body);
-    console.log("This is the issue.....",auction._id)
     res.status(StatusCodes.CREATED).json({auction});
 }
 
 const updateAuctions=async(req,res)=>{
 
-   const{body:{campaignName,campaignDescription,campaignBudget,campaignDailyBudget,campaignStartDate,checkInStoreAvailability,percentageDiscount,interests,baitPlant:{name,descriptionBaitPlant,price,photos}},user:{userId},params:{id:auctionId}}=req
+   const{body:{campaignName,campaignDescription,campaignBudget,campaignDailyBudget,campaignStartDate,checkInStoreAvailability,percentageDiscount,interests,baitPlant:{name,descriptionBaitPlant,price,photos}},user:{userId},params:{auctionId:auctionId}}=req
 
     const auctionData=await Auction.findOneAndUpdate({_id:auctionId,createdBy:userId},req.body,{new:true,runValidators:true})
     
@@ -24,7 +22,7 @@ const updateAuctions=async(req,res)=>{
     }
 
     if(!business){
-        throw new NotFoundError(`No Business with id ${auctionId}`)
+        throw new NotFoundError(`No Auction with id ${auctionId}`)
     }
     res.status(StatusCodes.OK).json({auctionData}) 
 }
@@ -34,23 +32,29 @@ const getAllAuctions=async(req,res)=>{
     res.status(StatusCodes.OK).json({auctionData,count:auctionData.length});
 }
 
-const auctionSearchResults=async(req,res)=>{
+const getSingleAuction=async(req,res)=>{
 
-    const{user:{userId},params:{id:auctionId},query:{campaignName:campaignName,campaignBudget:campaignBudget,campaignStartDate:campaignStartDate}}=req
-    if(campaignName==""&&campaignBudget==""&&campaignStartDate==""){
-        throw new BadRequestError("Fill In At Least Two Characters")
+    const business= await Auction.findOne({_id:req.params.auctionId,createdBy:req.user.userId})
+
+    if(!business){
+        throw new NotFoundError(`No Business with id ${req.params.auctionId}`)
     }
-    if(campaignName||campaignBudget||campaignStartDate){
-        const campaignData=await Auction.aggregate([
+    
+    res.status(StatusCodes.OK).json({business})
+}
+
+const auctionSearchResults=async(req,res)=>{
+    const{query:{campaignName:campaignName,campaignBudget}}=req
+    if(campaignName||campaignBudget){
+        const auctionData=await Auction.aggregate([
             {
                 $match:{
-                    Name:new RegExp(campaignName,"i"),
-                    Budget:new RegExp(campaignBudget,"i"),
-                    StartDate:new RegExp(campaignStartDate,"i")
+                    campaignName:new RegExp(campaignName,"i"),
+                    campaignBudget:new RegExp(campaignBudget,"i")
                 }
             }
         ])
-        return res.status(StatusCodes.OK).json(campaignData)
+        res.status(StatusCodes.OK).json(auctionData)
     } 
 }
-module.exports={createAuction,auctionSearchResults,getAllAuctions,updateAuctions}
+module.exports={createAuction,getSingleAuction,auctionSearchResults,getAllAuctions,updateAuctions}
