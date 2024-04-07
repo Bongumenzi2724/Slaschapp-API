@@ -5,9 +5,9 @@ const { createAuction,deleteSingleAuction ,getAllAuctions, auctionSearchResults,
 //create the business
 router.route('/').post(createBusiness).get(getAllBusinesses)
 //create business owner
-router.route('/businessOwner').post(createBusinessOwner).get(getAllBusinessOwners)
+router.route('/owner').post(createBusinessOwner).get(getAllBusinessOwners)
 //delete business owner,get single business owner,update business owner
-router.route('/businessOwner/:id').patch(updateBusinessOwnerDetails).delete(deleteBusinessOwner).get(getSingleBusinessOwner)
+router.route('/owner/:id').patch(updateBusinessOwnerDetails).delete(deleteBusinessOwner).get(getSingleBusinessOwner)
 //perform operations on the business
 router.route('/:id').get(getSingleBusiness).delete(deleteBusiness).patch(updateBusinessDetails)
 //manage the auction

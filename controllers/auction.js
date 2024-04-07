@@ -41,6 +41,7 @@ const getSingleAuction=async(req,res)=>{
     
     res.status(StatusCodes.OK).json({business})
 }
+
 const deleteSingleAuction=async(req,res)=>{
 
     const auctionDelete= await Auction.findByIdAndDelete({_id:req.params.auctionId,createdBy:req.user.userId})
