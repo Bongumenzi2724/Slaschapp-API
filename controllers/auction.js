@@ -41,6 +41,17 @@ const getSingleAuction=async(req,res)=>{
     
     res.status(StatusCodes.OK).json({business})
 }
+const deleteSingleAuction=async(req,res)=>{
+
+    const auctionDelete= await Auction.findByIdAndDelete({_id:req.params.auctionId,createdBy:req.user.userId})
+
+    if(!auctionDelete){
+        throw new NotFoundError(`No Business with id ${businessId}`)
+    }
+
+    res.status(StatusCodes.OK).send("Business Deleted Successfully")
+}
+
 
 const auctionSearchResults=async(req,res)=>{
     const{query:{campaignName:campaignName,campaignBudget}}=req
@@ -57,4 +68,4 @@ const auctionSearchResults=async(req,res)=>{
     } 
 }
 
-module.exports={createAuction,getSingleAuction,auctionSearchResults,getAllAuctions,updateAuctions}
+module.exports={createAuction,getSingleAuction,deleteSingleAuction,auctionSearchResults,getAllAuctions,updateAuctions}
