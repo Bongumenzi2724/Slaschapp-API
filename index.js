@@ -13,7 +13,7 @@ const businessRouter=require('./routes/business')
 const businessSearchRouter=require('./routes/search')
 //Database Connection
 const connectDB = require('./db/connect')
-//midlleware
+//middleware
 const authenticateUser=require('./middleware/authentication');
 //error-handler
 const notFoundMiddleWare=require('./middleware/no-found')

@@ -1,5 +1,4 @@
 const Auction=require('../models/AuctionSchema')
-
 const {NotFoundError}=require('../errors')
 const {StatusCodes}=require('http-status-codes')
 
@@ -37,7 +36,7 @@ const getSingleAuction=async(req,res)=>{
     const business= await Auction.findOne({_id:req.params.auctionId,createdBy:req.user.userId})
 
     if(!business){
-        throw new NotFoundError(`No Business with id ${req.params.auctionId}`)
+        throw new NotFoundError(`No auction with id ${req.params.auctionId}`)
     }
     
     res.status(StatusCodes.OK).json({business})
@@ -57,4 +56,5 @@ const auctionSearchResults=async(req,res)=>{
         res.status(StatusCodes.OK).json(auctionData)
     } 
 }
+
 module.exports={createAuction,getSingleAuction,auctionSearchResults,getAllAuctions,updateAuctions}

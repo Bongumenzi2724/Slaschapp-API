@@ -1,5 +1,4 @@
-const mongoose=require('mongoose')
-  
+const mongoose=require('mongoose')  
 const AuctionSchema = new mongoose.Schema({
     
     campaignName:{
@@ -32,18 +31,6 @@ const AuctionSchema = new mongoose.Schema({
         maxlength:100,
         minlength:1,
     },
-    checkInStoreAvailability:{
-        type:String,
-        required:[true,'Is the auction available'],
-        maxlength:100,
-        minlength:1
-    },
-    percentageDiscount:{
-        type:String,
-        required:[true,'Please Provide Percentage Discount For Your Bait'],
-        maxlength:100,
-        minlength:1
-    },
     interests:{
         type:String,
         enum:['Music','Entertainment','Sports','Gaming','Fashion And Beauty','Food And Drinks','Business And Finance','Travel And Tourism','Technology And Service','Fashion And Jewellery','Outdoors','Fitness','Home Design'],
@@ -62,14 +49,38 @@ const AuctionSchema = new mongoose.Schema({
             maxlength:1000,
             minlength:1
         },
+        checkInStoreAvailability:{
+            type:String,
+            required:[true,'Is the Bait Plant Available'],
+            maxlength:100,
+            minlength:1
+        },
+        percentageDiscount:{
+            type:String,
+            required:[true,'Please Provide Percentage Discount For Your Bait'],
+            maxlength:100,
+            minlength:1
+        },
         price:{
             type:String,
             required:[true,'Please Provide The Price For Your Campaign'],
+            maxlength:1000,
+            minlength:1
+        },
+        color:{
+            type:String,
+            required:[false,'Please Provide The Color For Your Bait Plant If Present'],
+            maxlength:1000,
+            minlength:1
+        },
+        size:{
+            type:String,
+            required:[false,'Please Provide The Name For Your Bait Plant'],
             maxlength:100,
             minlength:1
         },
         photos:{
-            type:String,
+            type:[String],
             required:[true,'Please Provide The Photo For Your Bait Plant'],
             maxlength:100,
             minlength:1
@@ -82,9 +93,8 @@ const AuctionSchema = new mongoose.Schema({
     },
     createdBy:{
         type:mongoose.Types.ObjectId,
-        ref:'User',
-        required:[true,'Please provide the user']
+        ref:'BusinessOwner',
+        required:[true,'Please provide the business owner']
     }
 },{timestamps:true})
-
 module.exports=mongoose.model('Auction',AuctionSchema)

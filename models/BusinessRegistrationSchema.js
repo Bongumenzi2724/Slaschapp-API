@@ -1,5 +1,4 @@
 const mongoose=require('mongoose')
-
 const BusinessRegistrationSchema = new mongoose.Schema({
 
     BusinessName:{
@@ -53,8 +52,8 @@ const BusinessRegistrationSchema = new mongoose.Schema({
     },
     createdBy:{
         type:mongoose.Types.ObjectId,
-        ref:'User',
-        required:[true,'Please provide the user']
+        ref:'BusinessOwner',
+        required:[true,'Please provide the business owner']
     }
 },{timestamps:true})
 

@@ -1,7 +1,7 @@
 const mongoose=require('mongoose')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const UserSchema = new mongoose.Schema({
+const BusinessOwnerRegistrationSchema = new mongoose.Schema({
     firstname:{
         type:String,
         required:[true,'Please Provide Your First Name'],
@@ -23,6 +23,12 @@ const UserSchema = new mongoose.Schema({
     profilePicture:{
         type:String,
         required:[true,'Please Provide Your Profile Picture'],
+        maxlength:10000,
+        minlength:1
+    },
+    businessOwnerLogo:{
+        type:String,
+        required:[true,'Please Provide The Business Owner Logo'],
         maxlength:10000,
         minlength:1
     },
@@ -68,7 +74,7 @@ const UserSchema = new mongoose.Schema({
     educationStatus:{
         type:String,
         required:[true,'Please Provide Your Education Status'],
-        enum:['Primary School','High School','Tertiary','Other'],
+        enum:['High School','Tertiary','Other'],
         required:[true,'Please Provide Your Education Status'],
         default:'Other'
     },
@@ -81,26 +87,20 @@ const UserSchema = new mongoose.Schema({
         type:String,
         enum:['male','female','other'],
         default:'male'
-    },
-    interests:{
-        type:String,
-        enum:['Music','Entertainment','Sports','Gaming','Fashion And Beauty','Food And Drinks','Business And Finance','Travel And Tourism','Technology And Service','Fashion And Jewellery','Outdoors','Fitness','Home Design'],
-        default:'Entertainment'
     }
-   
 })
 
-UserSchema.pre('save',async function(){
+BusinessOwnerRegistrationSchema.pre('save',async function(){
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password,salt)
 })
 
-UserSchema.methods.createJWT=function(){
+BusinessOwnerRegistrationSchema.methods.createJWT=function(){
     return jwt.sign({userId:this._id,name:this.name},process.env.JWT_SECRET,{expiresIn:process.env.JWT_LIFETIME})
 }
 
-UserSchema.methods.comparePassword = async function(candidatePassword){
+BusinessOwnerRegistrationSchema.methods.comparePassword = async function(candidatePassword){
     const isMatch = await bcrypt.compare(candidatePassword,this.password);
     return isMatch
 } 
-module.exports=mongoose.model('User',UserSchema)
+module.exports=mongoose.model('BusinessOwner',BusinessOwnerRegistrationSchema)
