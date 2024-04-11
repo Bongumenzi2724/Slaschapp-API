@@ -1,10 +1,12 @@
 const express=require('express')
 const router=express.Router()
 
-const {registerUser,loginUser,registerBusinessOwner,loginBusinessOwner}=require('../controllers/authentication')
+const {registerUser,loginUser,registerBusinessOwner,loginBusinessOwner}=require('../controllers/authentication');
+
+const {sendOTP,verifyOTP}=require('../controllers/optController');
 
 //register app user
-router.post('/register/user',registerUser);
+router.post('/register/user',sendOTP,verifyOTP,registerUser);
 //login app user
 router.post('/login/user',loginUser);
 //register business owner

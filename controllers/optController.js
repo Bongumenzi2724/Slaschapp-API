@@ -7,13 +7,11 @@ const sendEmail=require('../utils/sendEmails');
 
 function generateOTP(){
     return randomString.generate({
-        length:6,
+        length:5,
         charset:'numeric'
     });
 }
-
 //Send OTP to the provided email
-
 exports.sendOTP= async (req,res,next)=>{
     try{
         const {email}=req.query;
@@ -28,6 +26,7 @@ exports.sendOTP= async (req,res,next)=>{
             message:`<p>Your OTP is:<strong>${otp}</strong></p>`
         });
         res.status(200).json({success:true,message:"OTP sent succcessfully"});
+        next();
     }
     catch(error){
         console.error('Error sending OTP',error);
@@ -36,16 +35,17 @@ exports.sendOTP= async (req,res,next)=>{
 }
 
 //verify OTP provided by the user
-
 exports.verifyOTP=async(req,res,next)=>{
     try {
         
         const {email,otp}=req.query;
+
         const existingOTP=await opts.findOneAndDelete({email,otp});
 
         if(existingOTP){
             //OTP is Valid
             res.status(200).json({success:true,message:"OTP Verification"});
+            next();
         }
         else{
             //OTP is invalid

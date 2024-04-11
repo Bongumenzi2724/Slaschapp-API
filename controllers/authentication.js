@@ -5,8 +5,13 @@ const BusinessOwner=require('../models/BusinessOwnerRegistration')
 
 //register app user
 const registerUser= async(req,res)=>{
+    //sendOTP to the email provided
+
+    //Verify OTP,than move on and create your user
+
     const user = await User.create({...req.body})
     const token = user.createJWT()
+
     res.status(StatusCodes.CREATED).json({user:{name:user.firstname,surname:user.surname,email:user.email},token})
 }
 //login app user
