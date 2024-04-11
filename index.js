@@ -21,7 +21,7 @@ const errorHandlerMiddleWare=require('./middleware/error-handler')
 //Swagger
 const swaggerUI=require('swagger-ui-express')
 const YAML=require('yamljs')
-const swaggerDocument=YAML.load('./swagger.yml')
+const swaggerDocument=YAML.load('./swagger.yaml')
 app.set('trust proxy',1);
 app.use(rateLimiter({
     windowMS:15*60*1000,//15 minutes
@@ -36,6 +36,7 @@ app.use(cors())
 app.use('/api/slaschapp/auth',authRouter);
 app.use('/api/slaschapp/business',authenticateUser,businessRouter);
 app.use('/api/slaschapp/search',authenticateUser,businessSearchRouter);
+
 app.get('/',(req,res)=>{
     res.send('<h1>Business API</h1><a href="/api-docs">Documentation</a>');
 })

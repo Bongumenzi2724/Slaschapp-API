@@ -1,16 +1,16 @@
 openapi: 3.0.0
 info:
-  title: adlinc-API
+  title: Slaschapp API
   contact: {}
   version: '1.0'
 servers:
 - url: https://adlinc-api.onrender.com/api/slaschapp
   variables: {}
 paths:
-  /auth/register:
+  /auth/register/user:
     post:
       tags:
-      - Authentication
+      - User Authentication
       summary: Register  User
       operationId: RegisterUser
       parameters: []
@@ -55,10 +55,10 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /auth/login:
+  /auth/login/user:
     post:
       tags:
-      - Authentication
+      - User Authentication
       summary: Login User
       operationId: LoginUser
       parameters: []
@@ -144,7 +144,14 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /business/65cbbbafe516b5a38fa0cd75:
+  /business/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+        description: The user ID
     get:
       tags:
       - Business Routes
@@ -161,14 +168,14 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /business/{businessId}:
+  /busines/{id}:
     parameters:
       - in: path
-        name: businessId
+        name: id
         schema:
-          type: integer
+          type: string
         required: true
-        description: The Business ID
+        description: The user ID
     delete:
       tags:
       - Business Routes
@@ -225,13 +232,20 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /business/65dd60d7ba1079c58bd4917d/auction:
+  /business/{businessID}/auction:
     post:
       tags:
       - Auction Routes
-      summary: Create Auction
-      operationId: CreateAuction
-      parameters: []
+      summary: Create Auction Material
+      operationId: CreateAuctionMaterial
+      parameters:
+      - name: businessID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
       requestBody:
         description: ''
         content:
@@ -278,7 +292,30 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /business/65dd60d7ba1079c58bd4917d/search/auction:
+    get:
+      tags:
+      - Auction Routes
+      summary: Get All Auction Material
+      operationId: GetAllAuctionMaterial
+      parameters:
+      - name: businessID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /business/{businessID}/search/auction:
     get:
       tags:
       - Auction Routes
@@ -303,6 +340,13 @@ paths:
         schema:
           type: string
           example: R500
+      - name: businessID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
       responses:
         '200':
           description: ''
@@ -313,13 +357,27 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /business/65d20ec7cde3eadfa7175962/auction/567688665654:
+  /business/{businessID}/auction/{auctionID}:
     patch:
       tags:
       - Auction Routes
-      summary: Update Auction
-      operationId: UpdateAuction
-      parameters: []
+      summary: Update Auction Material
+      operationId: UpdateAuctionMaterial
+      parameters:
+      - name: businessID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+      - name: auctionID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
       responses:
         '200':
           description: ''
@@ -335,7 +393,21 @@ paths:
       - Auction Routes
       summary: Get Single Auction
       operationId: GetSingleAuction
-      parameters: []
+      parameters:
+      - name: businessID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+      - name: auctionID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
       responses:
         '200':
           description: ''
@@ -349,53 +421,21 @@ paths:
       - Auction Routes
       summary: Delete An Auction
       operationId: DeleteAnAuction
-      parameters: []
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      servers:
-      - url: https://adlinc-api.onrender.com/api/slaschapp
-        variables: {}
-  /business/65cbbbafe516b5a38fa0cd75/auction:
-    get:
-      tags:
-      - Auction Routes
-      summary: Get All Auctions
-      operationId: GetAllAuctions
-      parameters: []
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      security:
-      - bearer: []
-      servers:
-      - url: https://adlinc-api.onrender.com/api/slaschapp
-        variables: {}
-  /business/owner:
-    post:
-      tags:
-      - Business Owner
-      summary: Create Business Owner
-      operationId: CreateBusinessOwner
-      parameters: []
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      servers:
-      - url: https://adlinc-api.onrender.com/api/slaschapp
-        variables: {}
-    get:
-      tags:
-      - Business Owner
-      summary: Get All Business Owners
-      operationId: GetAllBusinessOwners
-      parameters: []
+      parameters:
+      - name: businessID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+      - name: auctionID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
       responses:
         '200':
           description: ''
@@ -447,10 +487,25 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
+  /business/owner:
+    get:
+      tags:
+      - Business Owner
+      summary: Get All Business Owners
+      operationId: GetAllBusinessOwners
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
   /auth/register/owner:
     post:
       tags:
-      - Business Owner
+      - Business Owner Authentication
       summary: Register Business Owner
       operationId: RegisterBusinessOwner
       parameters: []
@@ -462,34 +517,34 @@ paths:
               allOf:
               - $ref: '#/components/schemas/RegisterBusinessOwnerRequest'
               - example:
-                  firstname: Lucas
-                  secondname: Riberio
-                  surname: Da Silva
+                  firstname: Carlos
+                  secondname: Alberto
+                  surname: ''
                   profilePicture: Lucas's photo
                   businessOwnerLogo: Business Logo Owner
-                  phoneNumber: '078234490'
-                  email: lucas@gmail.com
+                  phoneNumber: '0812344905'
+                  email: lucasR@gmail.com
                   password: lucas123
                   AcceptTermsAndConditions: Yes
-                  locatioOrAddress: Sao Paulo,Brazil
+                  locationOrAddress: Sao Paulo,Brazil
                   birthday: 27/09/1975
                   educationStatus: Tertiary
-                  employmentStatus: Employed
+                  employmentStatus: employed
                   gender: male
             example:
-              firstname: Lucas
-              secondname: Riberio
-              surname: Da Silva
+              firstname: Carlos
+              secondname: Alberto
+              surname: ''
               profilePicture: Lucas's photo
               businessOwnerLogo: Business Logo Owner
-              phoneNumber: '078234490'
-              email: lucas@gmail.com
+              phoneNumber: '0812344905'
+              email: lucasR@gmail.com
               password: lucas123
               AcceptTermsAndConditions: Yes
-              locatioOrAddress: Sao Paulo,Brazil
+              locationOrAddress: Sao Paulo,Brazil
               birthday: 27/09/1975
               educationStatus: Tertiary
-              employmentStatus: Employed
+              employmentStatus: employed
               gender: male
         required: true
       responses:
@@ -504,7 +559,7 @@ paths:
   /auth/login/owner:
     post:
       tags:
-      - Business Owner
+      - Business Owner Authentication
       summary: Login Business Owner
       operationId: LoginBusinessOwner
       parameters: []
@@ -516,10 +571,10 @@ paths:
               allOf:
               - $ref: '#/components/schemas/LoginBusinessOwnerRequest'
               - example:
-                  email: lucas@gmail.com
+                  email: lucasR@gmail.com
                   password: lucas123
             example:
-              email: lucas@gmail.com
+              email: lucasR@gmail.com
               password: lucas123
         required: true
       responses:
@@ -717,7 +772,7 @@ components:
       - email
       - password
       - AcceptTermsAndConditions
-      - locatioOrAddress
+      - locationOrAddress
       - birthday
       - educationStatus
       - employmentStatus
@@ -742,7 +797,7 @@ components:
           type: string
         AcceptTermsAndConditions:
           type: string
-        locatioOrAddress:
+        locationOrAddress:
           type: string
         birthday:
           type: string
@@ -753,19 +808,19 @@ components:
         gender:
           type: string
       example:
-        firstname: Lucas
-        secondname: Riberio
-        surname: Da Silva
+        firstname: Carlos
+        secondname: Alberto
+        surname: ''
         profilePicture: Lucas's photo
         businessOwnerLogo: Business Logo Owner
-        phoneNumber: '078234490'
-        email: lucas@gmail.com
+        phoneNumber: '0812344905'
+        email: lucasR@gmail.com
         password: lucas123
         AcceptTermsAndConditions: Yes
-        locatioOrAddress: Sao Paulo,Brazil
+        locationOrAddress: Sao Paulo,Brazil
         birthday: 27/09/1975
         educationStatus: Tertiary
-        employmentStatus: Employed
+        employmentStatus: employed
         gender: male
     LoginBusinessOwnerRequest:
       title: LoginBusinessOwnerRequest
@@ -779,7 +834,7 @@ components:
         password:
           type: string
       example:
-        email: lucas@gmail.com
+        email: lucasR@gmail.com
         password: lucas123
   securitySchemes:
     bearer:
@@ -787,11 +842,13 @@ components:
       scheme: bearer
 security: []
 tags:
-- name: Authentication
+- name: User Authentication
   description: ''
 - name: Business Routes
   description: ''
 - name: Auction Routes
   description: ''
 - name: Business Owner
+  description: ''
+- name: Business Owner Authentication
   description: ''
