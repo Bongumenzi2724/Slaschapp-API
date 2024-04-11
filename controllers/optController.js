@@ -17,6 +17,7 @@ exports.sendOTP= async (req,res,next)=>{
         const {email}=req.body;
 
         const otp=generateOTP();//Generate a 5-figure OTP
+        
         const newOTP=new otp({email,otp});
         await newOTP.save();
         // Send OTP Via Email
