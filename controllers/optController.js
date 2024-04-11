@@ -14,9 +14,9 @@ function generateOTP(){
 //Send OTP to the provided email
 exports.sendOTP= async (req,res,next)=>{
     try{
-        const {email}=req.query;
+        const {email}=req.body;
 
-        const otp=generateOTP();//Generate a 6-figure OTP
+        const otp=generateOTP();//Generate a 5-figure OTP
         const newOTP=new otp({email,otp});
         await newOTP.save();
         // Send OTP Via Email
