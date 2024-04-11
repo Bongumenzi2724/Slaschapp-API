@@ -2,6 +2,7 @@ const mongoose=require('mongoose')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const BusinessOwnerRegistrationSchema = new mongoose.Schema({
+    
     firstname:{
         type:String,
         required:[true,'Please Provide Your First Name'],
@@ -23,12 +24,6 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
     profilePicture:{
         type:String,
         required:[true,'Please Provide Your Profile Picture'],
-        maxlength:10000,
-        minlength:1
-    },
-    businessOwnerLogo:{
-        type:String,
-        required:[true,'Please Provide The Business Owner Logo'],
         maxlength:10000,
         minlength:1
     },
@@ -70,18 +65,6 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
         required:[false,'Please Provide Your Birthday in the format (YYYY/MM/DD)'],
         maxlength:12,
         minlength:1
-    },
-    educationStatus:{
-        type:String,
-        required:[true,'Please Provide Your Education Status'],
-        enum:['High School','Tertiary','Other'],
-        required:[true,'Please Provide Your Education Status'],
-        default:'Other'
-    },
-    employmentStatus:{
-        type:String,
-        enum:['unemployed','employed','interviewing'],
-        default:'unemployed'
     },
     gender:{
         type:String,

@@ -5,6 +5,7 @@ const {BadRequestError,NotFoundError}=require('../errors')
 
 //create a new business owner
 const createBusinessOwner=async(req,res)=>{
+    console.log(req.body);
     req.body.createdBy=req.user.userId
     const businessOwner = await BusinessOwner.create(req.body);
     return res.status(StatusCodes.CREATED).json({businessOwner});
@@ -63,20 +64,19 @@ const getSingleBusinessOwner=async(req,res)=>{
     
     res.status(StatusCodes.OK).json({businessOwner});
 }
+
 //Create A Single Business
 const createBusiness=async(req,res)=>{
     req.body.createdBy=req.user.userId
     const business = await Business.create(req.body)
     return res.status(StatusCodes.CREATED).json({business})
 }
-
-//Get All Businesses Specific to A Single Business Owner
+//Get All Businesses Specific for A Single Business Owner
 const getAllBusinesses =async(req,res) =>{
     const businesses=await Business.find({createdBy:req.user.userId}).sort('createdAt')
     return res.status(StatusCodes.OK).json({businesses,count:businesses.length})
 }
 //Get A Single Business For A Specific Owner
-
 const getSingleBusiness=async(req,res)=>{
 
     const{user:{userId},params:{id:businessId}}=req
@@ -90,7 +90,6 @@ const getSingleBusiness=async(req,res)=>{
     res.status(StatusCodes.OK).json({business})
 }
 //Update A Single Business
-
 const updateBusinessDetails= async(req,res)=>{
 
     const{body:{BusinessName,PhoneNumber,BusinessEmail,BusinessLocation,BusinessHours},user:{userId},params:{id:businessId}}=req
@@ -137,6 +136,5 @@ const searchBusiness=async(req,res)=>{
         res.status(StatusCodes.OK).json(businessData)
     }
 }
-
 
 module.exports={createBusiness,searchBusiness,getSingleBusiness,updateBusinessDetails,getAllBusinesses,deleteBusiness,createBusinessOwner,updateBusinessOwnerDetails,deleteBusinessOwner,getSingleBusinessOwner,getAllBusinessOwners}

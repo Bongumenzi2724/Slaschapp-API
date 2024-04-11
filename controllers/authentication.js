@@ -31,14 +31,16 @@ const loginUser=async(req,res)=>{
 
 //register business owner
 const registerBusinessOwner=async(req,res)=>{
-    const user = await BusinessOwner.create({...req.body})
-    const token = BusinessOwner.createJWT()
-    res.status(StatusCodes.CREATED).json({user:{name:user.firstname,surname:user.surname,email:user.email},token})
+    console.log(req.body);
+    const businessOwner = await BusinessOwner.create({...req.body})
+    const token = businessOwner.createJWT()
+    console.log(token);
+    res.status(StatusCodes.CREATED).json({user:{name:businessOwner.firstname,surname:businessOwner.surname,email:businessOwner.email},token})
 }
 
 //login business owner
 const loginBusinessOwner=async(req,res)=>{
-
+    console.log(req.body);
     const {email,password}=req.body
 
     if(!email||!password){

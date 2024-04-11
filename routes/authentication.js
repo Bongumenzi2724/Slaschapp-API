@@ -2,9 +2,14 @@ const express=require('express')
 const router=express.Router()
 
 const {registerUser,loginUser,registerBusinessOwner,loginBusinessOwner}=require('../controllers/authentication')
-router.post('/register',registerUser);
-router.post('/login',loginUser);
-router.post('/register/BusinessOwner',registerBusinessOwner);
-router.post('/login/BusinessOwner',loginBusinessOwner);
+
+//register app user
+router.post('/register/user',registerUser);
+//login app user
+router.post('/login/user',loginUser);
+//register business owner
+router.post('/register/owner',registerBusinessOwner);
+//login business owner
+router.post('/login/owner',loginBusinessOwner);
 
 module.exports=router
