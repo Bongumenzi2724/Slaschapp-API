@@ -1,6 +1,5 @@
 const mongoose=require('mongoose');
-
-const otpSchema=new mongoose.Schema({
+const OtpSchema=new mongoose.Schema({
     email:{
         type:String,
         required:[true,'Please Provide Email For Your Email']
@@ -10,5 +9,4 @@ const otpSchema=new mongoose.Schema({
         required:[true,'Please Provide OTP']
     }
 });
-
-module.exports=mongoose.model('Otps',otpSchema);
+module.exports=mongoose.model('Otps',OtpSchema);

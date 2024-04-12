@@ -75,13 +75,13 @@ const AuctionSchema = new mongoose.Schema({
         },
         size:{
             type:String,
-            required:[false,'Please Provide The Name For Your Bait Plant'],
+            required:[false,'Please Provide The Size For Your Bait Plant'],
             maxlength:100,
             minlength:1
         },
         photos:{
             type:[String],
-            required:[true,'Please Provide The Photo For Your Bait Plant'],
+            required:[true,'Please Provide Photos For Your Bait Plant'],
             maxlength:100,
             minlength:1
         },

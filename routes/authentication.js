@@ -6,7 +6,7 @@ const {registerUser,loginUser,registerBusinessOwner,loginBusinessOwner}=require(
 const {sendOTP,verifyOTP}=require('../controllers/optController');
 
 //register app user
-router.post('/register/user',sendOTP,verifyOTP,registerUser);
+router.post('/register/user',registerUser);
 //login app user
 router.post('/login/user',loginUser);
 //register business owner

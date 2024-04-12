@@ -19,13 +19,13 @@ const SneakersSchema = new mongoose.Schema({
     },
     itemPrice:{
         type:String,
-        required:[true,'Please Provide an Image'],
+        required:[true,'Please Provide The Price For The Bait'],
         maxlength:6,
         minlength:1,
     },
     RewardForBait:{
         type:String,
-        required:[true,'Please Provide an Image'],
+        required:[true,'Please Provide A Reward For The Bait'],
         maxlength:6,
         minlength:1,
     },
