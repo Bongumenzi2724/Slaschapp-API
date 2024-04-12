@@ -11,7 +11,10 @@ function generateOTP(){
 //Sending OTP to the provided email
 exports.sendOTP= async(req,res,next)=>{
     try {
-        const {email}=req.query;
+        console.log(req.query);
+        console.log(req.body);
+        const {email}=req.body;
+        console.log(email);
         const otp=generateOTP();
         const newOTP=new Opts({email,otp});
         await newOTP.save();
@@ -24,7 +27,7 @@ exports.sendOTP= async(req,res,next)=>{
         next();
     } catch (error) {
         console.error('Error Sending OTP:',error);
-        res.status(500).json({success:false,message:'Internal Server Erro'});
+        res.status(500).json({success:false,message:'Internal Server Error'});
     }
 }
 
