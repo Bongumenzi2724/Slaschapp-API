@@ -13,8 +13,6 @@ let transporter=nodemailer.createTransport({
         pass:process.env.SMTP_APP_PASS,
     },
 });
-
-
 //register app user
 const registerUser= async(req,res)=>{
     //sendOTP to the email provided
@@ -79,7 +77,7 @@ const loginUser=async(req,res)=>{
 
 //register business owner
 const registerBusinessOwner=async(req,res)=>{
-    console.log(req.body);
+    //console.log(req.body);
     const businessOwner = await BusinessOwner.create({...req.body})
     const token = businessOwner.createJWT()
     console.log(token);

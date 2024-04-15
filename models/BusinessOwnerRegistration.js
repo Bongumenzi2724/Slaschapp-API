@@ -70,7 +70,17 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
         type:String,
         enum:['male','female','other'],
         default:'male'
-    }
+    },
+    resetToken:{
+        type:String,
+        required:false,
+        default:''
+    },
+    resetTokenExpiration:{
+        type:String,
+        required:false,
+        default:''
+    },
 })
 
 BusinessOwnerRegistrationSchema.pre('save',async function(){
