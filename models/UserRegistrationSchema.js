@@ -68,7 +68,7 @@ const UserSchema = new mongoose.Schema({
     educationStatus:{
         type:String,
         required:[true,'Please Provide Your Education Status'],
-        enum:['Primary School','High School','Tertiary','Other'],
+        enum:['High School','Tertiary','Other'],
         required:[true,'Please Provide Your Education Status'],
         default:'Other'
     },
@@ -86,9 +86,18 @@ const UserSchema = new mongoose.Schema({
         type:String,
         enum:['Music','Entertainment','Sports','Gaming','Fashion And Beauty','Food And Drinks','Business And Finance','Travel And Tourism','Technology And Service','Fashion And Jewellery','Outdoors','Fitness','Home Design'],
         default:'Entertainment'
-    }
-   
-})
+    },
+    resetToken:{
+        type:String,
+        required:false,
+        default:''
+    },
+    resetTokenExpiration:{
+        type:String,
+        required:false,
+        default:''
+    },
+});
 
 UserSchema.pre('save',async function(){
     const salt = await bcrypt.genSalt(10);
@@ -103,4 +112,5 @@ UserSchema.methods.comparePassword = async function(candidatePassword){
     const isMatch = await bcrypt.compare(candidatePassword,this.password);
     return isMatch
 } 
+
 module.exports=mongoose.model('User',UserSchema)
