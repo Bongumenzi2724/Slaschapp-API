@@ -25,7 +25,7 @@ paths:
                   firstname: William
                   secondname: Benjamin
                   surname: Saliba
-                  profilePicture: William Saliba Arsenal Shirt
+                  profilePicture: William Saliba In An Arsenal Shirt
                   phoneNumber: '0817560154'
                   email: saliba@gmail.com
                   password: saliba
@@ -35,12 +35,12 @@ paths:
                   educationStatus: Tertiary
                   gender: male
                   interests: Fashion And Beauty
-                  resetToken: ''
+                  resetToken: peace gentleman
             example:
               firstname: William
               secondname: Benjamin
               surname: Saliba
-              profilePicture: William Saliba Arsenal Shirt
+              profilePicture: William Saliba In An Arsenal Shirt
               phoneNumber: '0817560154'
               email: saliba@gmail.com
               password: saliba
@@ -50,7 +50,7 @@ paths:
               educationStatus: Tertiary
               gender: male
               interests: Fashion And Beauty
-              resetToken: ''
+              resetToken: peace gentleman
         required: true
       responses:
         '200':
@@ -77,10 +77,10 @@ paths:
               - $ref: '#/components/schemas/LoginUserRequest'
               - example:
                   email: saliba@gmail.com
-                  password: william
+                  password: saliba
             example:
               email: saliba@gmail.com
-              password: william
+              password: saliba
         required: true
       responses:
         '200':
@@ -170,7 +170,6 @@ paths:
                   PhoneNumber: '0718999210'
                   BusinessEmail: ZondiBeauty@gmail.com
                   AcceptTermsAndConditions: Yes
-                  VerificationCode: '56342'
                   BusinessCategory: Beauty And Cosmetics
                   BusinessLocation: Port Shepstone,KwaZulu-Natal
                   BusinessHours: 07:00-16:00,Mon-Fri
@@ -179,7 +178,6 @@ paths:
               PhoneNumber: '0718999210'
               BusinessEmail: ZondiBeauty@gmail.com
               AcceptTermsAndConditions: Yes
-              VerificationCode: '56342'
               BusinessCategory: Beauty And Cosmetics
               BusinessLocation: Port Shepstone,KwaZulu-Natal
               BusinessHours: 07:00-16:00,Mon-Fri
@@ -270,6 +268,30 @@ paths:
         style: simple
         schema:
           type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateSingleBusinessRequest'
+              - example:
+                  BusinessName: Zondi Beauty
+                  PhoneNumber: '0718999210'
+                  BusinessEmail: ZondiBeauty@gmail.com
+                  AcceptTermsAndConditions: Yes
+                  BusinessCategory: Beauty And Cosmetics
+                  BusinessLocation: Port Shepstone,KwaZulu-Natal
+                  BusinessHours: 07:00-16:00,Mon-Fri
+            example:
+              BusinessName: Zondi Beauty
+              PhoneNumber: '0718999210'
+              BusinessEmail: ZondiBeauty@gmail.com
+              AcceptTermsAndConditions: Yes
+              BusinessCategory: Beauty And Cosmetics
+              BusinessLocation: Port Shepstone,KwaZulu-Natal
+              BusinessHours: 07:00-16:00,Mon-Fri
+        required: true
       responses:
         '200':
           description: ''
@@ -450,6 +472,42 @@ paths:
         style: simple
         schema:
           type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateAuctionMaterialRequest'
+              - example:
+                  campaignName: ''
+                  campaignDescription: ''
+                  campaignBudget: ''
+                  campaignDailyBudget: ''
+                  campaignStartDate: ''
+                  checkInStoreAvailability: ''
+                  percentageDiscount: ''
+                  interests: ''
+                  baitPlant:
+                    name: ''
+                    baitPlantDescription: ''
+                    price: ''
+                    photos: ''
+            example:
+              campaignName: ''
+              campaignDescription: ''
+              campaignBudget: ''
+              campaignDailyBudget: ''
+              campaignStartDate: ''
+              checkInStoreAvailability: ''
+              percentageDiscount: ''
+              interests: ''
+              baitPlant:
+                name: ''
+                baitPlantDescription: ''
+                price: ''
+                photos: ''
+        required: true
       responses:
         '200':
           description: ''
@@ -530,6 +588,42 @@ paths:
         style: simple
         schema:
           type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateBusinessOwnerDetailsRequest'
+              - example:
+                  firstname: ''
+                  secondname: ''
+                  surname: ''
+                  profilePicture: ''
+                  phoneNumber: ''
+                  email: ''
+                  password: ''
+                  AcceptTermsAndConditions: ''
+                  locationOrAddress: ''
+                  birthday: ''
+                  educationStatus: ''
+                  employmentStatus: ''
+                  gender: ''
+            example:
+              firstname: ''
+              secondname: ''
+              surname: ''
+              profilePicture: ''
+              phoneNumber: ''
+              email: ''
+              password: ''
+              AcceptTermsAndConditions: ''
+              locationOrAddress: ''
+              birthday: ''
+              educationStatus: ''
+              employmentStatus: ''
+              gender: ''
+        required: true
       responses:
         '200':
           description: ''
@@ -613,8 +707,7 @@ paths:
                   firstname: Carlos
                   secondname: Alberto
                   surname: ''
-                  profilePicture: Lucas's photo
-                  businessOwnerLogo: Business Logo Owner
+                  profilePicture: Lucas's photo string
                   phoneNumber: '0812344905'
                   email: lucasR@gmail.com
                   password: lucas123
@@ -628,8 +721,7 @@ paths:
               firstname: Carlos
               secondname: Alberto
               surname: ''
-              profilePicture: Lucas's photo
-              businessOwnerLogo: Business Logo Owner
+              profilePicture: Lucas's photo string
               phoneNumber: '0812344905'
               email: lucasR@gmail.com
               password: lucas123
@@ -718,12 +810,86 @@ paths:
       summary: Business Owner Forgot Password
       operationId: BusinessOwnerForgotPassword
       parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/BusinessOwnerForgotPasswordRequest'
+              - example:
+                  email: saliba@gmail.com
+            example:
+              email: saliba@gmail.com
+        required: true
       responses:
         '200':
           description: ''
           headers: {}
       deprecated: false
       security: []
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /data/collection/start:
+    post:
+      tags:
+      - Data Collection Endpoints
+      summary: Start Data Collection
+      operationId: StartDataCollection
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/StartDataCollectionRequest'
+              - example:
+                  pageID: page ID string
+                  key: '123455'
+                  userID: userID string
+            example:
+              pageID: page ID string
+              key: '123455'
+              userID: userID string
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /data/collection/stop:
+    post:
+      tags:
+      - Data Collection Endpoints
+      summary: Stop Data Collection
+      operationId: StopDataCollection
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/StopDataCollectionRequest'
+              - example:
+                  pageID: page ID string
+                  key: '123455'
+                  userID: userID string
+            example:
+              pageID: page ID string
+              key: '123455'
+              userID: userID string
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
@@ -780,7 +946,7 @@ components:
         firstname: William
         secondname: Benjamin
         surname: Saliba
-        profilePicture: William Saliba Arsenal Shirt
+        profilePicture: William Saliba In An Arsenal Shirt
         phoneNumber: '0817560154'
         email: saliba@gmail.com
         password: saliba
@@ -790,7 +956,7 @@ components:
         educationStatus: Tertiary
         gender: male
         interests: Fashion And Beauty
-        resetToken: ''
+        resetToken: peace gentleman
     LoginUserRequest:
       title: LoginUserRequest
       required:
@@ -804,7 +970,7 @@ components:
           type: string
       example:
         email: saliba@gmail.com
-        password: william
+        password: saliba
     CreateNewBusinessRequest:
       title: CreateNewBusinessRequest
       required:
@@ -812,7 +978,6 @@ components:
       - PhoneNumber
       - BusinessEmail
       - AcceptTermsAndConditions
-      - VerificationCode
       - BusinessCategory
       - BusinessLocation
       - BusinessHours
@@ -826,7 +991,39 @@ components:
           type: string
         AcceptTermsAndConditions:
           type: string
-        VerificationCode:
+        BusinessCategory:
+          type: string
+        BusinessLocation:
+          type: string
+        BusinessHours:
+          type: string
+      example:
+        BusinessName: Zondi Beauty
+        PhoneNumber: '0718999210'
+        BusinessEmail: ZondiBeauty@gmail.com
+        AcceptTermsAndConditions: Yes
+        BusinessCategory: Beauty And Cosmetics
+        BusinessLocation: Port Shepstone,KwaZulu-Natal
+        BusinessHours: 07:00-16:00,Mon-Fri
+    UpdateSingleBusinessRequest:
+      title: UpdateSingleBusinessRequest
+      required:
+      - BusinessName
+      - PhoneNumber
+      - BusinessEmail
+      - AcceptTermsAndConditions
+      - BusinessCategory
+      - BusinessLocation
+      - BusinessHours
+      type: object
+      properties:
+        BusinessName:
+          type: string
+        PhoneNumber:
+          type: string
+        BusinessEmail:
+          type: string
+        AcceptTermsAndConditions:
           type: string
         BusinessCategory:
           type: string
@@ -839,7 +1036,6 @@ components:
         PhoneNumber: '0718999210'
         BusinessEmail: ZondiBeauty@gmail.com
         AcceptTermsAndConditions: Yes
-        VerificationCode: '56342'
         BusinessCategory: Beauty And Cosmetics
         BusinessLocation: Port Shepstone,KwaZulu-Natal
         BusinessHours: 07:00-16:00,Mon-Fri
@@ -913,14 +1109,61 @@ components:
         baitPlantDescription: Quality Duck Dish
         price: R400
         photos: Duck photos
-    RegisterBusinessOwnerRequest:
-      title: RegisterBusinessOwnerRequest
+    UpdateAuctionMaterialRequest:
+      title: UpdateAuctionMaterialRequest
+      required:
+      - campaignName
+      - campaignDescription
+      - campaignBudget
+      - campaignDailyBudget
+      - campaignStartDate
+      - checkInStoreAvailability
+      - percentageDiscount
+      - interests
+      - baitPlant
+      type: object
+      properties:
+        campaignName:
+          type: string
+        campaignDescription:
+          type: string
+        campaignBudget:
+          type: string
+        campaignDailyBudget:
+          type: string
+        campaignStartDate:
+          type: string
+        checkInStoreAvailability:
+          type: string
+        percentageDiscount:
+          type: string
+        interests:
+          type: string
+        baitPlant:
+          allOf:
+          - $ref: '#/components/schemas/BaitPlant'
+          - {}
+      example:
+        campaignName: ''
+        campaignDescription: ''
+        campaignBudget: ''
+        campaignDailyBudget: ''
+        campaignStartDate: ''
+        checkInStoreAvailability: ''
+        percentageDiscount: ''
+        interests: ''
+        baitPlant:
+          name: ''
+          baitPlantDescription: ''
+          price: ''
+          photos: ''
+    UpdateBusinessOwnerDetailsRequest:
+      title: UpdateBusinessOwnerDetailsRequest
       required:
       - firstname
       - secondname
       - surname
       - profilePicture
-      - businessOwnerLogo
       - phoneNumber
       - email
       - password
@@ -940,7 +1183,63 @@ components:
           type: string
         profilePicture:
           type: string
-        businessOwnerLogo:
+        phoneNumber:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        AcceptTermsAndConditions:
+          type: string
+        locationOrAddress:
+          type: string
+        birthday:
+          type: string
+        educationStatus:
+          type: string
+        employmentStatus:
+          type: string
+        gender:
+          type: string
+      example:
+        firstname: ''
+        secondname: ''
+        surname: ''
+        profilePicture: ''
+        phoneNumber: ''
+        email: ''
+        password: ''
+        AcceptTermsAndConditions: ''
+        locationOrAddress: ''
+        birthday: ''
+        educationStatus: ''
+        employmentStatus: ''
+        gender: ''
+    RegisterBusinessOwnerRequest:
+      title: RegisterBusinessOwnerRequest
+      required:
+      - firstname
+      - secondname
+      - surname
+      - profilePicture
+      - phoneNumber
+      - email
+      - password
+      - AcceptTermsAndConditions
+      - locationOrAddress
+      - birthday
+      - educationStatus
+      - employmentStatus
+      - gender
+      type: object
+      properties:
+        firstname:
+          type: string
+        secondname:
+          type: string
+        surname:
+          type: string
+        profilePicture:
           type: string
         phoneNumber:
           type: string
@@ -964,8 +1263,7 @@ components:
         firstname: Carlos
         secondname: Alberto
         surname: ''
-        profilePicture: Lucas's photo
-        businessOwnerLogo: Business Logo Owner
+        profilePicture: Lucas's photo string
         phoneNumber: '0812344905'
         email: lucasR@gmail.com
         password: lucas123
@@ -1035,6 +1333,52 @@ components:
         resetToken: 536c8de904d4c35c9894c64d38a35dc7004380a2
         newPassword: william
         email: saliba@gmail.com
+    BusinessOwnerForgotPasswordRequest:
+      title: BusinessOwnerForgotPasswordRequest
+      required:
+      - email
+      type: object
+      properties:
+        email:
+          type: string
+      example:
+        email: saliba@gmail.com
+    StartDataCollectionRequest:
+      title: StartDataCollectionRequest
+      required:
+      - pageID
+      - key
+      - userID
+      type: object
+      properties:
+        pageID:
+          type: string
+        key:
+          type: string
+        userID:
+          type: string
+      example:
+        pageID: page ID string
+        key: '123455'
+        userID: userID string
+    StopDataCollectionRequest:
+      title: StopDataCollectionRequest
+      required:
+      - pageID
+      - key
+      - userID
+      type: object
+      properties:
+        pageID:
+          type: string
+        key:
+          type: string
+        userID:
+          type: string
+      example:
+        pageID: page ID string
+        key: '123455'
+        userID: userID string
   securitySchemes:
     bearer:
       type: http
@@ -1050,4 +1394,6 @@ tags:
 - name: Business Owner Endpoints
   description: ''
 - name: Business Owner Authentication Endpoints
+  description: ''
+- name: Data Collection Endpoints
   description: ''
