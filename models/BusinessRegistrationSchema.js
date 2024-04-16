@@ -26,12 +26,6 @@ const BusinessRegistrationSchema = new mongoose.Schema({
         maxlength:4,
         minlength:1
     },
-    VerificationCode:{
-        type:String,
-        required:[true,'Please Provide The Verification Code'],
-        maxlength:5,
-        minlength:1
-    },
     BusinessCategory:{
         type:String,
         required:[true,"Please Provide Your Business Category"],
