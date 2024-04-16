@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Slaschapp API
+  title: Slaschapp API Documentation
   contact: {}
   version: '1.0'
 servers:
@@ -10,7 +10,7 @@ paths:
   /auth/register/user:
     post:
       tags:
-      - User Authentication
+      - User Authentication Endpoints
       summary: Register  User
       operationId: RegisterUser
       parameters: []
@@ -22,29 +22,35 @@ paths:
               allOf:
               - $ref: '#/components/schemas/RegisterUserRequest'
               - example:
-                  firstname: Wandile
-                  secondname: Bernard
-                  surname: Nzama
-                  email: nzama@gmail.com
-                  password: secret3
+                  firstname: William
+                  secondname: Benjamin
+                  surname: Saliba
+                  profilePicture: William Saliba Arsenal Shirt
+                  phoneNumber: '0817560154'
+                  email: saliba@gmail.com
+                  password: saliba
                   AcceptTermsAndConditions: Yes
                   locationOrAddress: Kimberley,South Africa
                   birthday: 1996/07/12
                   educationStatus: Tertiary
                   gender: male
                   interests: Fashion And Beauty
+                  resetToken: ''
             example:
-              firstname: Wandile
-              secondname: Bernard
-              surname: Nzama
-              email: nzama@gmail.com
-              password: secret3
+              firstname: William
+              secondname: Benjamin
+              surname: Saliba
+              profilePicture: William Saliba Arsenal Shirt
+              phoneNumber: '0817560154'
+              email: saliba@gmail.com
+              password: saliba
               AcceptTermsAndConditions: Yes
               locationOrAddress: Kimberley,South Africa
               birthday: 1996/07/12
               educationStatus: Tertiary
               gender: male
               interests: Fashion And Beauty
+              resetToken: ''
         required: true
       responses:
         '200':
@@ -58,7 +64,7 @@ paths:
   /auth/login/user:
     post:
       tags:
-      - User Authentication
+      - User Authentication Endpoints
       summary: Login User
       operationId: LoginUser
       parameters: []
@@ -70,11 +76,71 @@ paths:
               allOf:
               - $ref: '#/components/schemas/LoginUserRequest'
               - example:
-                  email: zond0@gmail.com
-                  password: secret1
+                  email: saliba@gmail.com
+                  password: william
             example:
-              email: zond0@gmail.com
-              password: secret1
+              email: saliba@gmail.com
+              password: william
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /auth/login/user/forgot:
+    post:
+      tags:
+      - User Authentication Endpoints
+      summary: User Forgot Password
+      operationId: UserForgotPassword
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UserForgotPasswordRequest'
+              - example:
+                  email: saliba@gmail.com
+            example:
+              email: saliba@gmail.com
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /auth/login/user/reset:
+    post:
+      tags:
+      - User Authentication Endpoints
+      summary: User Reset Password
+      operationId: UserResetPassword
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UserResetPasswordRequest'
+              - example:
+                  resetToken: de7f467c2ff39e27f60bf08d8fa2aca68b277e70
+                  newPassword: william
+                  email: saliba@gmail.com
+            example:
+              resetToken: de7f467c2ff39e27f60bf08d8fa2aca68b277e70
+              newPassword: william
+              email: saliba@gmail.com
         required: true
       responses:
         '200':
@@ -88,7 +154,7 @@ paths:
   /business:
     post:
       tags:
-      - Business Routes
+      - Business Endpoints
       summary: Create New Business
       operationId: CreateNewBusiness
       parameters: []
@@ -130,7 +196,7 @@ paths:
         variables: {}
     get:
       tags:
-      - Business Routes
+      - Business Endpoints
       summary: Get All Businesses
       operationId: GetAllBusinesses
       parameters: []
@@ -144,20 +210,20 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /business/{id}:
-    parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-        description: The user ID
+  /business/{businessID}:
     get:
       tags:
-      - Business Routes
+      - Business Endpoints
       summary: Get Single Business
       operationId: GetSingleBusiness
-      parameters: []
+      parameters:
+      - name: businessID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
       responses:
         '200':
           description: ''
@@ -168,20 +234,19 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /busines/{id}:
-    parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-        required: true
-        description: The user ID
     delete:
       tags:
-      - Business Routes
+      - Business Endpoints
       summary: Delete Business
       operationId: DeleteBusiness
-      parameters: []
+      parameters:
+      - name: businessID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
       responses:
         '200':
           description: ''
@@ -194,10 +259,17 @@ paths:
         variables: {}
     patch:
       tags:
-      - Business Routes
+      - Business Endpoints
       summary: Update Single Business
       operationId: UpdateSingleBusiness
-      parameters: []
+      parameters:
+      - name: businessID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
       responses:
         '200':
           description: ''
@@ -209,7 +281,7 @@ paths:
   /search:
     get:
       tags:
-      - Business Routes
+      - Business Endpoints
       summary: Business Search
       operationId: BusinessSearch
       parameters:
@@ -235,7 +307,7 @@ paths:
   /business/{businessID}/auction:
     post:
       tags:
-      - Auction Routes
+      - Auction Endpoints
       summary: Create Auction Material
       operationId: CreateAuctionMaterial
       parameters:
@@ -294,7 +366,7 @@ paths:
         variables: {}
     get:
       tags:
-      - Auction Routes
+      - Auction Endpoints
       summary: Get All Auction Material
       operationId: GetAllAuctionMaterial
       parameters:
@@ -318,7 +390,7 @@ paths:
   /business/{businessID}/search/auction:
     get:
       tags:
-      - Auction Routes
+      - Auction Endpoints
       summary: Auction Search
       operationId: AuctionSearch
       parameters:
@@ -360,7 +432,7 @@ paths:
   /business/{businessID}/auction/{auctionID}:
     patch:
       tags:
-      - Auction Routes
+      - Auction Endpoints
       summary: Update Auction Material
       operationId: UpdateAuctionMaterial
       parameters:
@@ -390,7 +462,7 @@ paths:
         variables: {}
     get:
       tags:
-      - Auction Routes
+      - Auction Endpoints
       summary: Get Single Auction
       operationId: GetSingleAuction
       parameters:
@@ -418,7 +490,7 @@ paths:
         variables: {}
     delete:
       tags:
-      - Auction Routes
+      - Auction Endpoints
       summary: Delete An Auction
       operationId: DeleteAnAuction
       parameters:
@@ -444,13 +516,20 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /business/owner/65cbbbafe516b5a38fa0cd75:
+  /business/owner/{businessOwnerID}:
     patch:
       tags:
-      - Business Owner
+      - Business Owner Endpoints
       summary: Update Business Owner Details
       operationId: UpdateBusinessOwnerDetails
-      parameters: []
+      parameters:
+      - name: businessOwnerID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
       responses:
         '200':
           description: ''
@@ -461,10 +540,17 @@ paths:
         variables: {}
     delete:
       tags:
-      - Business Owner
+      - Business Owner Endpoints
       summary: Delete Business Owner
       operationId: DeleteBusinessOwner
-      parameters: []
+      parameters:
+      - name: businessOwnerID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
       responses:
         '200':
           description: ''
@@ -475,10 +561,17 @@ paths:
         variables: {}
     get:
       tags:
-      - Business Owner
+      - Business Owner Endpoints
       summary: Get Single Business Owner
       operationId: GetSingleBusinessOwner
-      parameters: []
+      parameters:
+      - name: businessOwnerID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
       responses:
         '200':
           description: ''
@@ -490,7 +583,7 @@ paths:
   /business/owner:
     get:
       tags:
-      - Business Owner
+      - Business Owner Endpoints
       summary: Get All Business Owners
       operationId: GetAllBusinessOwners
       parameters: []
@@ -505,7 +598,7 @@ paths:
   /auth/register/owner:
     post:
       tags:
-      - Business Owner Authentication
+      - Business Owner Authentication Endpoints
       summary: Register Business Owner
       operationId: RegisterBusinessOwner
       parameters: []
@@ -559,7 +652,7 @@ paths:
   /auth/login/owner:
     post:
       tags:
-      - Business Owner Authentication
+      - Business Owner Authentication Endpoints
       summary: Login Business Owner
       operationId: LoginBusinessOwner
       parameters: []
@@ -586,6 +679,54 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
+  /auth/login/owner/reset:
+    post:
+      tags:
+      - Business Owner Authentication Endpoints
+      summary: Business Owner Password Reset
+      operationId: BusinessOwnerPasswordReset
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/BusinessOwnerPasswordResetRequest'
+              - example:
+                  resetToken: 536c8de904d4c35c9894c64d38a35dc7004380a2
+                  newPassword: william
+                  email: saliba@gmail.com
+            example:
+              resetToken: 536c8de904d4c35c9894c64d38a35dc7004380a2
+              newPassword: william
+              email: saliba@gmail.com
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /auth/login/owner/forgot:
+    post:
+      tags:
+      - Business Owner Authentication Endpoints
+      summary: Business Owner Forgot Password
+      operationId: BusinessOwnerForgotPassword
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
 components:
   schemas:
     RegisterUserRequest:
@@ -594,6 +735,8 @@ components:
       - firstname
       - secondname
       - surname
+      - profilePicture
+      - phoneNumber
       - email
       - password
       - AcceptTermsAndConditions
@@ -602,6 +745,7 @@ components:
       - educationStatus
       - gender
       - interests
+      - resetToken
       type: object
       properties:
         firstname:
@@ -609,6 +753,10 @@ components:
         secondname:
           type: string
         surname:
+          type: string
+        profilePicture:
+          type: string
+        phoneNumber:
           type: string
         email:
           type: string
@@ -626,18 +774,23 @@ components:
           type: string
         interests:
           type: string
+        resetToken:
+          type: string
       example:
-        firstname: Wandile
-        secondname: Bernard
-        surname: Nzama
-        email: nzama@gmail.com
-        password: secret3
+        firstname: William
+        secondname: Benjamin
+        surname: Saliba
+        profilePicture: William Saliba Arsenal Shirt
+        phoneNumber: '0817560154'
+        email: saliba@gmail.com
+        password: saliba
         AcceptTermsAndConditions: Yes
         locationOrAddress: Kimberley,South Africa
         birthday: 1996/07/12
         educationStatus: Tertiary
         gender: male
         interests: Fashion And Beauty
+        resetToken: ''
     LoginUserRequest:
       title: LoginUserRequest
       required:
@@ -650,8 +803,8 @@ components:
         password:
           type: string
       example:
-        email: zond0@gmail.com
-        password: secret1
+        email: saliba@gmail.com
+        password: william
     CreateNewBusinessRequest:
       title: CreateNewBusinessRequest
       required:
@@ -836,19 +989,65 @@ components:
       example:
         email: lucasR@gmail.com
         password: lucas123
+    UserForgotPasswordRequest:
+      title: UserForgotPasswordRequest
+      required:
+      - email
+      type: object
+      properties:
+        email:
+          type: string
+      example:
+        email: saliba@gmail.com
+    UserResetPasswordRequest:
+      title: UserResetPasswordRequest
+      required:
+      - resetToken
+      - newPassword
+      - email
+      type: object
+      properties:
+        resetToken:
+          type: string
+        newPassword:
+          type: string
+        email:
+          type: string
+      example:
+        resetToken: de7f467c2ff39e27f60bf08d8fa2aca68b277e70
+        newPassword: william
+        email: saliba@gmail.com
+    BusinessOwnerPasswordResetRequest:
+      title: BusinessOwnerPasswordResetRequest
+      required:
+      - resetToken
+      - newPassword
+      - email
+      type: object
+      properties:
+        resetToken:
+          type: string
+        newPassword:
+          type: string
+        email:
+          type: string
+      example:
+        resetToken: 536c8de904d4c35c9894c64d38a35dc7004380a2
+        newPassword: william
+        email: saliba@gmail.com
   securitySchemes:
     bearer:
       type: http
       scheme: bearer
 security: []
 tags:
-- name: User Authentication
+- name: User Authentication Endpoints
   description: ''
-- name: Business Routes
+- name: Business Endpoints
   description: ''
-- name: Auction Routes
+- name: Auction Endpoints
   description: ''
-- name: Business Owner
+- name: Business Owner Endpoints
   description: ''
-- name: Business Owner Authentication
+- name: Business Owner Authentication Endpoints
   description: ''

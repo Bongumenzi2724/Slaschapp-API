@@ -69,7 +69,7 @@ const getSingleBusinessOwner=async(req,res)=>{
 const createBusiness=async(req,res)=>{
     req.body.createdBy=req.user.userId
     const business = await Business.create(req.body)
-    return res.status(StatusCodes.CREATED).json({business})
+    return res.status(StatusCodes.CREATED).json({business,businessId:business._id})
 }
 //Get All Businesses Specific for A Single Business Owner
 const getAllBusinesses =async(req,res) =>{
