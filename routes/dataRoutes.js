@@ -1,8 +1,8 @@
 const express=require('express')
 const router=express.Router()
-const {Start,Stop}=require('../controllers/dataCollection');
+const { StartCollect,StopCollect} = require('../controllers/dataCollections')
 
-router.post('/collection/start',Start)
-router.post('/collection/stop',Stop);
+router.post('/collection/start',StartCollect)
+router.post('/collection/stop',StopCollect);
 
 module.exports=router

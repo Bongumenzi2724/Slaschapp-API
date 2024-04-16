@@ -15,17 +15,17 @@ const getAllData =async(req,res) =>{
     return res.status(StatusCodes.OK).json({dataCollected,count:dataCollected.length})
 }
 
-const Start=async(req,res)=>{
+const StartCollect=async(req,res)=>{
     const {pageID,key,userID}=req.body;
     startTime=Date.now()
     const dataCollected=await DataCollection.create({pageID:pageID,createdBy:userID,key:key,startTime:startTime});
     return res.status(StatusCodes.OK).json(dataCollected);
 }
 
-const Stop=async(req,res)=>{
+const StopCollect=async(req,res)=>{
     const {entryID}=req.body;
     stopTime=Date.now()
     await DataCollection.findOneAndUpdate({createdBy:entryID},{EndTime:stopTime});
     return res.status(StatusCodes.OK).json({message:"success"});
 }
-module.exports={createData,getAllData,Start,Stop}
+module.exports={createData,getAllData,StartCollect,StopCollect}
