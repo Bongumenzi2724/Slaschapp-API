@@ -33,11 +33,12 @@ const registerUser= async(req,res)=>{
 				message: "The OTP is not valid",
 			});
 		} */
-    
     //Verify OTP,than move on and create your user
-
     const user = await User.create({...req.body})
     const token = user.createJWT()
+    console.log("Original Password")
+    console.log(user.password);
+    //console.log(user)
     res.status(StatusCodes.CREATED).json({user:{name:user.firstname,surname:user.surname,email:user.email},token})
 }
 //user verification controller
@@ -55,23 +56,30 @@ const userVerification=async({email},res)=>{
         
     }
 }
+
 //login app user
 const loginUser=async(req,res)=>{
     const {email,password}=req.body
+
     if(!email||!password){
         throw new BadRequestError("Please provide email and password")
     }
     const user= await User.findOne({email})
+    console.log("Login Password")
+    //console.log(user.password);
     if(!user){
         throw new UnauthenticatedError('Invalid Credentials')
     }
-   
+
+    console.log("========================================");
+    //console.log(user)
     const isPasswordCorrect= await user.comparePassword(password)
 
     if(!isPasswordCorrect){
         throw new UnauthenticatedError('Invalid Credentials')
     }
     const token = user.createJWT()
+    console.log(user.password);
     res.status(StatusCodes.OK).json({user:{name:user.firstname,surname:user.surname,email:user.email},token})
 }
 
