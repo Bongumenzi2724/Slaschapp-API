@@ -7,7 +7,7 @@ const {sendOTP}=require('../controllers/optController');
 const { forgotPassword, passwordReset } = require('../controllers/password_controller');
 
 //register app user
-router.post('/register/user',sendOTP,registerUser)
+router.post('/register/user',registerUser)
 //login app user
 router.post('/login/user',loginUser)
 //user forgot and reset password route
