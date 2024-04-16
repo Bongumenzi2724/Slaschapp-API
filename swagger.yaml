@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Slaschapp API Documentation
+  title: Slaschapp Collection
   contact: {}
   version: '1.0'
 servers:
@@ -173,6 +173,9 @@ paths:
                   BusinessCategory: Beauty And Cosmetics
                   BusinessLocation: Port Shepstone,KwaZulu-Natal
                   BusinessHours: 07:00-16:00,Mon-Fri
+                  verificationDoc: verificationDoc string
+                  status: pending
+                  socials: facebook
             example:
               BusinessName: Zondi Beauty
               PhoneNumber: '0718999210'
@@ -181,6 +184,9 @@ paths:
               BusinessCategory: Beauty And Cosmetics
               BusinessLocation: Port Shepstone,KwaZulu-Natal
               BusinessHours: 07:00-16:00,Mon-Fri
+              verificationDoc: verificationDoc string
+              status: pending
+              socials: facebook
         required: true
       responses:
         '200':
@@ -283,6 +289,9 @@ paths:
                   BusinessCategory: Beauty And Cosmetics
                   BusinessLocation: Port Shepstone,KwaZulu-Natal
                   BusinessHours: 07:00-16:00,Mon-Fri
+                  verificationDoc: verificationDoc string
+                  status: pending
+                  socials: facebook
             example:
               BusinessName: Zondi Beauty
               PhoneNumber: '0718999210'
@@ -291,6 +300,9 @@ paths:
               BusinessCategory: Beauty And Cosmetics
               BusinessLocation: Port Shepstone,KwaZulu-Natal
               BusinessHours: 07:00-16:00,Mon-Fri
+              verificationDoc: verificationDoc string
+              status: pending
+              socials: facebook
         required: true
       responses:
         '200':
@@ -714,9 +726,11 @@ paths:
                   AcceptTermsAndConditions: Yes
                   locationOrAddress: Sao Paulo,Brazil
                   birthday: 27/09/1975
-                  educationStatus: Tertiary
-                  employmentStatus: employed
+                  IdNumber: '8905285921090'
+                  IdDocumentLink: document link
                   gender: male
+                  resetToken: ''
+                  resetTokenExpiration: ''
             example:
               firstname: Carlos
               secondname: Alberto
@@ -728,9 +742,11 @@ paths:
               AcceptTermsAndConditions: Yes
               locationOrAddress: Sao Paulo,Brazil
               birthday: 27/09/1975
-              educationStatus: Tertiary
-              employmentStatus: employed
+              IdNumber: '8905285921090'
+              IdDocumentLink: document link
               gender: male
+              resetToken: ''
+              resetTokenExpiration: ''
         required: true
       responses:
         '200':
@@ -981,6 +997,9 @@ components:
       - BusinessCategory
       - BusinessLocation
       - BusinessHours
+      - verificationDoc
+      - status
+      - socials
       type: object
       properties:
         BusinessName:
@@ -997,6 +1016,12 @@ components:
           type: string
         BusinessHours:
           type: string
+        verificationDoc:
+          type: string
+        status:
+          type: string
+        socials:
+          type: string
       example:
         BusinessName: Zondi Beauty
         PhoneNumber: '0718999210'
@@ -1005,6 +1030,9 @@ components:
         BusinessCategory: Beauty And Cosmetics
         BusinessLocation: Port Shepstone,KwaZulu-Natal
         BusinessHours: 07:00-16:00,Mon-Fri
+        verificationDoc: verificationDoc string
+        status: pending
+        socials: facebook
     UpdateSingleBusinessRequest:
       title: UpdateSingleBusinessRequest
       required:
@@ -1015,6 +1043,9 @@ components:
       - BusinessCategory
       - BusinessLocation
       - BusinessHours
+      - verificationDoc
+      - status
+      - socials
       type: object
       properties:
         BusinessName:
@@ -1031,6 +1062,12 @@ components:
           type: string
         BusinessHours:
           type: string
+        verificationDoc:
+          type: string
+        status:
+          type: string
+        socials:
+          type: string
       example:
         BusinessName: Zondi Beauty
         PhoneNumber: '0718999210'
@@ -1039,6 +1076,9 @@ components:
         BusinessCategory: Beauty And Cosmetics
         BusinessLocation: Port Shepstone,KwaZulu-Natal
         BusinessHours: 07:00-16:00,Mon-Fri
+        verificationDoc: verificationDoc string
+        status: pending
+        socials: facebook
     CreateAuctionMaterialRequest:
       title: CreateAuctionMaterialRequest
       required:
@@ -1228,9 +1268,11 @@ components:
       - AcceptTermsAndConditions
       - locationOrAddress
       - birthday
-      - educationStatus
-      - employmentStatus
+      - IdNumber
+      - IdDocumentLink
       - gender
+      - resetToken
+      - resetTokenExpiration
       type: object
       properties:
         firstname:
@@ -1253,11 +1295,15 @@ components:
           type: string
         birthday:
           type: string
-        educationStatus:
+        IdNumber:
           type: string
-        employmentStatus:
+        IdDocumentLink:
           type: string
         gender:
+          type: string
+        resetToken:
+          type: string
+        resetTokenExpiration:
           type: string
       example:
         firstname: Carlos
@@ -1270,9 +1316,11 @@ components:
         AcceptTermsAndConditions: Yes
         locationOrAddress: Sao Paulo,Brazil
         birthday: 27/09/1975
-        educationStatus: Tertiary
-        employmentStatus: employed
+        IdNumber: '8905285921090'
+        IdDocumentLink: document link
         gender: male
+        resetToken: ''
+        resetTokenExpiration: ''
     LoginBusinessOwnerRequest:
       title: LoginBusinessOwnerRequest
       required:
