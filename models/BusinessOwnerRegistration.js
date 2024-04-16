@@ -2,7 +2,6 @@ const mongoose=require('mongoose')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const BusinessOwnerRegistrationSchema = new mongoose.Schema({
-    
     firstname:{
         type:String,
         required:[true,'Please Provide Your First Name'],
@@ -64,6 +63,18 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
         type:String,
         required:[false,'Please Provide Your Birthday in the format (YYYY/MM/DD)'],
         maxlength:12,
+        minlength:1
+    },
+    IdNumber:{
+        type:String,
+        required:[true,'Please Provide Your ID Number'],
+        maxlength:13,
+        minlength:1
+    },
+    IdDocumentLink:{
+        type:String,
+        required:[true,'Please Provide Your ID Document Link'],
+        maxlength:1000,
         minlength:1
     },
     gender:{

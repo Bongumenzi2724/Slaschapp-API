@@ -1,4 +1,4 @@
-const mongoose=require('mongoose')
+const mongoose=require('mongoose');
 const BusinessRegistrationSchema = new mongoose.Schema({
 
     BusinessName:{
@@ -42,6 +42,33 @@ const BusinessRegistrationSchema = new mongoose.Schema({
         type:String,
         required:[true,'Please Provide Your Business Working Hours'],
         maxlength:100,
+        minlength:1
+    },
+    BusinessLogo:{
+        type:String,
+        required:[false,'Please Provide Your Birthday in the format (YYYY/MM/DD)'],
+        maxlength:12,
+        minlength:1
+    },
+    verificationDoc:{
+        type:String,
+        required:[true,'Please Provide Your Verification Document'],
+        maxlength:10000,
+        minlength:1
+    },
+    status:{
+        type:String,
+        enum:['pending','declined','success'],
+        default:'pending',
+        maxlength:10000,
+        minlength:1
+    },
+    socials:{
+        type:String,
+        required:[false,'Please Provide Your Socials'],
+        enum:['facebook','twitter','instagram','Website'],
+        default:'facebook',
+        maxlength:10000,
         minlength:1
     },
     createdBy:{
