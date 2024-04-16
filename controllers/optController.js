@@ -2,7 +2,7 @@ const OTP = require('../models/userOTPVerification')
 const otpGenerator=require('otp-generator');
 const User=require('../models/UserRegistrationSchema')
 
-const sendOTP = async (req, res) => {
+const sendOTP = async (req, res,next) => {
 	try {
 		const { email } = req.body;
 
@@ -43,6 +43,8 @@ const sendOTP = async (req, res) => {
 			message: `OTP Sent Successfully`,
 			otp,
 		});
+		next();
+		return;
 	} catch (error) {
 		console.log(error.message);
 		return res.status(500).json({ success: false, error: error.message });

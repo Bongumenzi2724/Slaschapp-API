@@ -18,7 +18,7 @@ const registerUser= async(req,res)=>{
     //sendOTP to the email provided
 
      // Find the most recent OTP for the email
-		/* const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
+		const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
 		console.log(response);
 		if (response.length === 0) {
 			// OTP not found for the email
@@ -32,12 +32,12 @@ const registerUser= async(req,res)=>{
 				success: false,
 				message: "The OTP is not valid",
 			});
-		} */
+		}
     //Verify OTP,than move on and create your user
     const user = await User.create({...req.body})
     const token = user.createJWT()
-    console.log("Original Password")
-    console.log(user.password);
+    //console.log("Original Password")
+    //console.log(user.password);
     //console.log(user)
     res.status(StatusCodes.CREATED).json({user:{name:user.firstname,surname:user.surname,email:user.email},token})
 }

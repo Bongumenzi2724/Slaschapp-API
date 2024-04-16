@@ -1,6 +1,7 @@
 const { StatusCodes } = require("http-status-codes")
-const Business=require('../models/BusinessRegistrationSchema')
 const DataCollection=require('../models/DataCollectionSchema')
+const Stop=require('../models/DataCollectionStop')
+
 const {BadRequestError,NotFoundError}=require('../errors')
 
 const createData=async(req,res)=>{
@@ -8,6 +9,7 @@ const createData=async(req,res)=>{
     const dataCollected = await DataCollection.create(req.body);
     return res.status(StatusCodes.CREATED).json({dataCollected});
 }
+
 const getAllData =async(req,res) =>{
     const dataCollected=await DataCollection.find({createdBy:req.user.userId}).sort('createdAt')
     return res.status(StatusCodes.OK).json({dataCollected,count:dataCollected.length})
@@ -21,9 +23,9 @@ const Start=async(req,res)=>{
 }
 
 const Stop=async(req,res)=>{
-    const {pageID,key,userID}=req.body;
+    const {entryID}=req.body;
     stopTime=Date.now()
-    await DataCollection.create({pageID:pageID,createdBy:userID,key:key,stopTime:stopTime});
+    await DataCollection.findOneAndUpdate({createdBy:entryID},{EndTime:stopTime});
     return res.status(StatusCodes.OK).json({message:"success"});
 }
 module.exports={createData,getAllData,Start,Stop}

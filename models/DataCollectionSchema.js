@@ -7,13 +7,13 @@ const DataCollectionSchema = new mongoose.Schema({
     },
     pageID:{
         type:String,
-        required:[true,'Please Provide the pageID'],
+        required:[false,'Please Provide the pageID'],
         maxlength:100,
         minlength:1
     },
     key:{
         type:String,
-        required:[true,'Please Provide the Key'],
+        required:[false,'Please Provide the Key'],
         maxlength:100,
         minlength:1
     },
