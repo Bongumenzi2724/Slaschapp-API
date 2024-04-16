@@ -29,6 +29,7 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "twilio": "^5.0.3",
+    "unix-timestamp": "^1.0.4",
     "xss": "^1.0.14",
     "yamljs": "^0.3.0"
   }

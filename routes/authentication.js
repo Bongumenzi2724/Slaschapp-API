@@ -20,4 +20,5 @@ router.post('/login/owner',loginBusinessOwner)
 //owner forgot and reset password route
 router.post('/login/owner/forgot',forgotPassword)
 router.post('/login/owner/reset',passwordReset)
+
 module.exports=router

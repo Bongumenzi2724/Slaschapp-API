@@ -1,8 +1,9 @@
 const DataCollectionSchema = new mongoose.Schema({
     createdBy:{
-        type:mongoose.Types.ObjectId,
-        ref:'User',
-        required:[true,'Please provide the business owner']
+        type:String,
+        required:[true,'Please provide the business owner'],
+        maxlength:1000,
+        minlength:1
     },
     pageID:{
         type:String,

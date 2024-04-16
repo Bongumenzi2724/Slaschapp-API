@@ -12,4 +12,18 @@ const getAllData =async(req,res) =>{
     const dataCollected=await DataCollection.find({createdBy:req.user.userId}).sort('createdAt')
     return res.status(StatusCodes.OK).json({dataCollected,count:dataCollected.length})
 }
-module.exports={createData,getAllData}
+
+const Start=async(req,res)=>{
+    const {pageID,key,userID}=req.body;
+    startTime=Date.now()
+    const dataCollected=await DataCollection.create({pageID:pageID,createdBy:userID,key:key,startTime:startTime});
+    return res.status(StatusCodes.OK).json(dataCollected);
+}
+
+const Stop=async(req,res)=>{
+    const {pageID,key,userID}=req.body;
+    stopTime=Date.now()
+    await DataCollection.create({pageID:pageID,createdBy:userID,key:key,stopTime:stopTime});
+    return res.status(StatusCodes.OK).json({message:"success"});
+}
+module.exports={createData,getAllData,Start,Stop}

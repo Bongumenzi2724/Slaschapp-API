@@ -11,6 +11,7 @@ const rateLimiter=require('express-rate-limit')
 const authRouter=require('./routes/authentication')
 const businessRouter=require('./routes/business')
 const businessSearchRouter=require('./routes/search')
+const dataRouter=require('./routes/dataRoutes')
 //Database Connection
 const connectDB = require('./db/connect')
 //middleware
@@ -36,7 +37,7 @@ app.use(cors())
 app.use('/api/slaschapp/auth',authRouter);
 app.use('/api/slaschapp/business',authenticateUser,businessRouter);
 app.use('/api/slaschapp/search',authenticateUser,businessSearchRouter);
-
+app.use('/api/slaschapp/data',dataRouter);
 app.get('/',(req,res)=>{
     res.send('<h1>Business API</h1><a href="/api-docs">Documentation</a>');
 })
