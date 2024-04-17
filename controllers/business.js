@@ -52,12 +52,13 @@ const getAllBusinessOwners=async(req,res)=>{
 }
 //get single business owner
 const getSingleBusinessOwner=async(req,res)=>{
+
     const{user:{userId},params:{id:ownerId}}=req
-    
-    const businessOwner= await BusinessOwner.findOne({_id:ownerId,createdBy:userId})
+
+    const businessOwner=await BusinessOwner.findOne({_id:ownerId,createdBy:userId})
 
     if(!businessOwner){
-        throw new NotFoundError(`No Business with id ${ownerId}`)
+        throw new NotFoundError(`No Business Owner with id ${ownerId}`)
     }
     
     res.status(StatusCodes.OK).json({businessOwner})
