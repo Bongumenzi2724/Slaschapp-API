@@ -18,7 +18,7 @@ const registerUser= async(req,res)=>{
     //sendOTP to the email provided
 
      // Find the most recent OTP for the email
-		const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
+		/* const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
 		console.log(response);
 		if (response.length === 0) {
 			// OTP not found for the email
@@ -32,14 +32,14 @@ const registerUser= async(req,res)=>{
 				success: false,
 				message: "The OTP is not valid",
 			});
-		}
+		} */
     //Verify OTP,than move on and create your user
     const user = await User.create({...req.body})
     const token = user.createJWT()
     //console.log("Original Password")
     //console.log(user.password);
     //console.log(user)
-    res.status(StatusCodes.CREATED).json({user:{name:user.firstname,surname:user.surname,email:user.email},token})
+    res.status(StatusCodes.CREATED).json({user:{user},token:{token}})
 }
 //user verification controller
 const userVerification=async({email},res)=>{
@@ -89,15 +89,13 @@ const registerBusinessOwner=async(req,res)=>{
     const businessOwner = await BusinessOwner.create({...req.body})
     const token = businessOwner.createJWT()
     console.log(token);
-    res.status(StatusCodes.CREATED).json({user:{name:businessOwner.firstname,surname:businessOwner.surname,email:businessOwner.email},token})
+    res.status(StatusCodes.CREATED).json({user:{businessOwner},token:{token}});
 }
 //logout the user
 //deregister the user
 //login business owner
 const loginBusinessOwner=async(req,res)=>{
-    console.log(req.body);
     const {email,password}=req.body
-
     if(!email||!password){
         throw new BadRequestError("Please provide email and password")
     }
@@ -112,7 +110,7 @@ const loginBusinessOwner=async(req,res)=>{
         throw new UnauthenticatedError('Invalid Credentials')
     }
     const token = owner.createJWT()
-    res.status(StatusCodes.OK).json({owner:{name:owner.firstname,surname:owner.surname,email:owner.email},token})
+    res.status(StatusCodes.OK).json({owner:{name:owner.firstname,surname:owner.surname,email:owner.email},token:{token}})
 }
 
 module.exports={registerUser,loginUser,registerBusinessOwner,loginBusinessOwner,userVerification}

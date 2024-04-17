@@ -10,8 +10,8 @@ router.route('/').post(createBusiness).get(getAllBusinesses)
 //perform operations on the business
 router.route('/:id').get(getSingleBusiness).delete(deleteBusiness).patch(updateBusinessDetails)
 //create business owner
-//router.route('/owner').post(createBusinessOwner).get(getAllBusinessOwners)
-router.route('/owner').post(getAllBusinessOwners)
+router.route('/owner').post(createBusinessOwner).get(getAllBusinessOwners)
+//router.route('/owner').post(getAllBusinessOwners)
 //delete business owner,get single business owner,update business owner
 router.route('/owner/:id').patch(updateBusinessOwnerDetails).delete(deleteBusinessOwner).get(getSingleBusinessOwner)
 

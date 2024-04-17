@@ -5,7 +5,7 @@ const {BadRequestError,NotFoundError}=require('../errors')
 
 //create a new business owner
 const createBusinessOwner=async(req,res)=>{
-    console.log(req.body);
+    //console.log(req.body);
     req.body.createdBy=req.user.userId
     const businessOwner = await BusinessOwner.create(req.body);
     return res.status(StatusCodes.CREATED).json({businessOwner});
@@ -52,17 +52,15 @@ const getAllBusinessOwners=async(req,res)=>{
 }
 //get single business owner
 const getSingleBusinessOwner=async(req,res)=>{
-    //res.send("Get A Single Business");
-
     const{user:{userId},params:{id:ownerId}}=req
     
-    const businessOwner= await BusinessOwner.findOne({_id:ownerId,createdBy:userId,})
+    const businessOwner= await BusinessOwner.findOne({_id:ownerId,createdBy:userId})
 
     if(!businessOwner){
-        throw new NotFoundError(`No Business Owner with id ${ownerId} exist`);
+        throw new NotFoundError(`No Business with id ${ownerId}`)
     }
     
-    res.status(StatusCodes.OK).json({businessOwner});
+    res.status(StatusCodes.OK).json({businessOwner})
 }
 
 //Create A Single Business
@@ -81,7 +79,7 @@ const getSingleBusiness=async(req,res)=>{
 
     const{user:{userId},params:{id:businessId}}=req
     
-    const business= await Business.findOne({_id:businessId,createdBy:userId,})
+    const business= await Business.findOne({_id:businessId,createdBy:userId})
 
     if(!business){
         throw new NotFoundError(`No Business with id ${businessId}`)
