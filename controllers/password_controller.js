@@ -9,8 +9,8 @@ const forgotPassword=async(req,res)=>{
         const {email}=req.body;
         const user=await User.findOne({email});
         //console.log(user);
-        //console.log("Original Password");
-        console.log(user.firstname);
+        console.log("Original Password");
+        //console.log(user.firstname);
         console.log(user.password);
         if(!user){
             return res.status(400).json({error:"User not found"});
@@ -22,7 +22,7 @@ const forgotPassword=async(req,res)=>{
         console.log(user.resetToken);
         console.log(user.resetTokenExpiration);
         await user.save();
-        console.log(user);
+        //console.log(user);
         res.status(200).json({message:"Password reset token sent",resetToken:resetToken});
 
     } catch (error) {
@@ -33,7 +33,6 @@ const forgotPassword=async(req,res)=>{
 //Reset Password Functionality
 const passwordReset=async(req,res)=>{
     try {
-        //console.log(req.body);
         const {resetToken,newPassword,email}=req.body;
         //find the user with the matching reset token
         const user=await User.findOne({resetToken,
@@ -46,7 +45,7 @@ const passwordReset=async(req,res)=>{
         }
         const newUser=await user.ForgotPassword(newPassword);
         console.log("New Password")
-        console.log(newUser);
+        console.log(newUser.password);
         return res.status(200).json({message:"Password Reset Successfully",password:newPassword});
     } catch (error) {
         console.error('Error Generating Token',error);

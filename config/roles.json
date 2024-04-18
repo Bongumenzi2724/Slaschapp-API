@@ -1,0 +1,16 @@
+{
+    "roles":[
+        {
+            "name":"admin",
+            "permission":[
+                "create-business",
+                "delete-business",
+                "update-business",
+                "read-business",
+                "create-user",
+                "delete-user",
+                ""
+            ]
+        }
+    ]
+}

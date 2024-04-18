@@ -12,21 +12,16 @@ const createBusinessOwner=async(req,res)=>{
 }
 //update business owner details
 const updateBusinessOwnerDetails=async(req,res)=>{
-    //res.send('Update business owner details')
 
-    const{body:{firstname,secondname,surname,profilePicture,businessOwnerLogo,phoneNumber,email,password,locationOrAddress,birthday,educationStatus,employmentStatus},user:{userId},params:{id:ownerId}}=req
-
-    const businessOwner=await Business.findOneAndUpdate({_id:ownerId,createdBy:userId},req.body,{new:true,runValidators:true})
-    
-    if(firstname==""||secondname==""||surname==""||profilePicture==""||businessOwnerLogo==""||phoneNumber==""||email==""||password==""||locationOrAddress==""||birthday==""||educationStatus==""||employmentStatus==""){
+    const{body:{firstname,secondname,surname,profilePicture,phoneNumber,email,password,AcceptTermsAndConditions,locationOrAddress,birthday,IdNumber,IdDocumentLink,gender,resetToken,resetTokenExpiration},user:{userId},params:{id:ownerId}}=req
+    if(firstname==""||secondname==""||surname==""||profilePicture==""||phoneNumber==""||email==""||password==""||AcceptTermsAndConditions==""||locationOrAddress==""||birthday==""||IdNumber==""||IdDocumentLink==""||gender==""){
 
         throw new BadRequestError("Fields cannot be empty please fill everything")
     }
-
+    const businessOwner=await BusinessOwner.findOneAndUpdate({_id:ownerId,createdBy:userId},req.body,{new:true,runValidators:true})
     if(!businessOwner){
         throw new NotFoundError(`No Business with id ${ownerId}`)
     }
-
     res.status(StatusCodes.OK).json({businessOwner});
 }
 //delete or tag business owner
@@ -35,9 +30,9 @@ const deleteBusinessOwner=async(req,res)=>{
 
     const{user:{userId},params:{id:ownerId}}=req
 
-    const business=await BusinessOwner.findByIdAndDelete({_id:ownerId,createdBy:userId})
+    const businessOwner=await BusinessOwner.findByIdAndDelete({_id:ownerId,createdBy:userId})
 
-    if(!business){
+    if(!businessOwner){
         throw new NotFoundError(`No Business Owner With Id ${ownerId} Exist`)
     }
 
@@ -90,16 +85,12 @@ const getSingleBusiness=async(req,res)=>{
 }
 //Update A Single Business
 const updateBusinessDetails= async(req,res)=>{
-
-    const{body:{BusinessName,PhoneNumber,BusinessEmail,BusinessLocation,BusinessHours},user:{userId},params:{id:businessId}}=req
-
-    const business=await Business.findOneAndUpdate({_id:businessId,createdBy:userId},req.body,{new:true,runValidators:true})
-    
-    if(BusinessName==""||PhoneNumber==""||BusinessEmail==""||BusinessLocation==""||BusinessHours==""){
+    const{body:{BusinessName,PhoneNumber,BusinessEmail,AcceptTermsAndConditions,BusinessCategory,BusinessLocation,BusinessHours,verificationDoc,status,socials},user:{userId},params:{id:businessId}}=req
+    if(BusinessName==""||PhoneNumber==""||BusinessEmail==""||AcceptTermsAndConditions==""||BusinessCategory==""||BusinessLocation==""||BusinessHours==""||verificationDoc==""||status==""||socials==""){
 
         throw new BadRequestError("Fields cannot be empty please fill everything")
     }
-
+    const business=await Business.findOneAndUpdate({_id:businessId,createdBy:userId},req.body,{new:true,runValidators:true})
     if(!business){
         throw new NotFoundError(`No Business with id ${businessId}`)
     }

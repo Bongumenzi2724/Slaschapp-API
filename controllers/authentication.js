@@ -66,12 +66,12 @@ const loginUser=async(req,res)=>{
     }
     const user= await User.findOne({email})
     console.log("Login Password")
-    //console.log(user.password);
+    console.log(user.password);
     if(!user){
         throw new UnauthenticatedError('Invalid Credentials')
     }
 
-    console.log("========================================");
+    //console.log("========================================");
     //console.log(user)
     const isPasswordCorrect= await user.comparePassword(password)
 
