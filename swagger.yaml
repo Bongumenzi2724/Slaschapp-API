@@ -35,6 +35,8 @@ paths:
                   educationStatus: Tertiary
                   gender: male
                   interests: Fashion And Beauty
+                  resetToken: ''
+                  resetTokenExpiration: ''
             example:
               firstname: William
               secondname: Benjamin
@@ -49,6 +51,8 @@ paths:
               educationStatus: Tertiary
               gender: male
               interests: Fashion And Beauty
+              resetToken: ''
+              resetTokenExpiration: ''
         required: true
       responses:
         '200':
@@ -56,6 +60,9 @@ paths:
           headers: {}
       deprecated: false
       security: []
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
   /auth/login/user:
     post:
       tags:
@@ -72,10 +79,10 @@ paths:
               - $ref: '#/components/schemas/LoginUserRequest'
               - example:
                   email: saliba@gmail.com
-                  password: saliba
+                  password: lizwi
             example:
               email: saliba@gmail.com
-              password: saliba
+              password: lizwi
         required: true
       responses:
         '200':
@@ -87,7 +94,7 @@ paths:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
   /auth/login/user/forgot:
-    post:
+    patch:
       tags:
       - User Authentication Endpoints
       summary: User Forgot Password
@@ -114,13 +121,20 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /auth/login/user/reset:
-    post:
+  /auth/login/user/reset/{resetToken}:
+    patch:
       tags:
       - User Authentication Endpoints
       summary: User Reset Password
       operationId: UserResetPassword
-      parameters: []
+      parameters:
+      - name: resetToken
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
       requestBody:
         description: ''
         content:
@@ -129,12 +143,10 @@ paths:
               allOf:
               - $ref: '#/components/schemas/UserResetPasswordRequest'
               - example:
-                  resetToken: de7f467c2ff39e27f60bf08d8fa2aca68b277e70
-                  newPassword: william
+                  newPassword: lizwi
                   email: saliba@gmail.com
             example:
-              resetToken: de7f467c2ff39e27f60bf08d8fa2aca68b277e70
-              newPassword: william
+              newPassword: lizwi
               email: saliba@gmail.com
         required: true
       responses:
@@ -277,33 +289,35 @@ paths:
               allOf:
               - $ref: '#/components/schemas/UpdateSingleBusinessRequest'
               - example:
-                  BusinessName: Zondi Beauty
-                  PhoneNumber: '0718999210'
-                  BusinessEmail: ZondiBeauty@gmail.com
+                  BusinessName: William Beauty
+                  PhoneNumber: '0718999211'
+                  BusinessEmail: William@gmail.com
                   AcceptTermsAndConditions: Yes
                   BusinessCategory: Beauty And Cosmetics
-                  BusinessLocation: Port Shepstone,KwaZulu-Natal
+                  BusinessLocation: Durban,KwaZulu-Natal
                   BusinessHours: 07:00-16:00,Mon-Fri
                   verificationDoc: verificationDoc string
                   status: pending
-                  socials: facebook
+                  socials: twitter
             example:
-              BusinessName: Zondi Beauty
-              PhoneNumber: '0718999210'
-              BusinessEmail: ZondiBeauty@gmail.com
+              BusinessName: William Beauty
+              PhoneNumber: '0718999211'
+              BusinessEmail: William@gmail.com
               AcceptTermsAndConditions: Yes
               BusinessCategory: Beauty And Cosmetics
-              BusinessLocation: Port Shepstone,KwaZulu-Natal
+              BusinessLocation: Durban,KwaZulu-Natal
               BusinessHours: 07:00-16:00,Mon-Fri
               verificationDoc: verificationDoc string
               status: pending
-              socials: facebook
+              socials: twitter
         required: true
       responses:
         '200':
           description: ''
           headers: {}
       deprecated: false
+      security:
+      - bearer: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
@@ -333,14 +347,14 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /business/{businessID}/auction:
+  /business/{ownerID}/auction:
     post:
       tags:
       - Auction Endpoints
       summary: Create Auction Material
       operationId: CreateAuctionMaterial
       parameters:
-      - name: businessID
+      - name: ownerID
         in: path
         description: ''
         required: true
@@ -399,7 +413,7 @@ paths:
       summary: Get All Auction Material
       operationId: GetAllAuctionMaterial
       parameters:
-      - name: businessID
+      - name: ownerID
         in: path
         description: ''
         required: true
@@ -416,7 +430,7 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /business/{businessID}/search/auction:
+  /business/{ownerID}/search/auction:
     get:
       tags:
       - Auction Endpoints
@@ -441,7 +455,7 @@ paths:
         schema:
           type: string
           example: R500
-      - name: businessID
+      - name: ownerID
         in: path
         description: ''
         required: true
@@ -458,14 +472,14 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /business/{businessID}/auction/{auctionID}:
+  /business/{ownerID}/auction/{auctionID}:
     patch:
       tags:
       - Auction Endpoints
       summary: Update Auction Material
       operationId: UpdateAuctionMaterial
       parameters:
-      - name: businessID
+      - name: ownerID
         in: path
         description: ''
         required: true
@@ -531,7 +545,7 @@ paths:
       summary: Get Single Auction
       operationId: GetSingleAuction
       parameters:
-      - name: businessID
+      - name: ownerID
         in: path
         description: ''
         required: true
@@ -559,7 +573,7 @@ paths:
       summary: Delete An Auction
       operationId: DeleteAnAuction
       parameters:
-      - name: businessID
+      - name: ownerID
         in: path
         description: ''
         required: true
@@ -581,14 +595,14 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /business/owner/{businessOwnerID}:
+  /business/owner/{ownerID}:
     patch:
       tags:
       - Business Owner Endpoints
       summary: Update Business Owner Details
       operationId: UpdateBusinessOwnerDetails
       parameters:
-      - name: businessOwnerID
+      - name: ownerID
         in: path
         description: ''
         required: true
@@ -603,39 +617,45 @@ paths:
               allOf:
               - $ref: '#/components/schemas/UpdateBusinessOwnerDetailsRequest'
               - example:
-                  firstname: ''
-                  secondname: ''
-                  surname: ''
-                  profilePicture: ''
-                  phoneNumber: ''
-                  email: ''
-                  password: ''
-                  AcceptTermsAndConditions: ''
-                  locationOrAddress: ''
-                  birthday: ''
-                  educationStatus: ''
-                  employmentStatus: ''
-                  gender: ''
+                  firstname: Carlos
+                  secondname: Alberto
+                  surname: Riberio
+                  profilePicture: Lucas's photo string
+                  phoneNumber: '0812344905'
+                  email: lucasR@gmail.com
+                  password: lucas123
+                  AcceptTermsAndConditions: Yes
+                  locationOrAddress: Cairo,Egypt
+                  birthday: 27/09/1975
+                  IdNumber: '8905285921090'
+                  IdDocumentLink: document link
+                  gender: male
+                  resetToken: generated by forgot password
+                  resetTokenExpiration: generated by forgot password endpoint
             example:
-              firstname: ''
-              secondname: ''
-              surname: ''
-              profilePicture: ''
-              phoneNumber: ''
-              email: ''
-              password: ''
-              AcceptTermsAndConditions: ''
-              locationOrAddress: ''
-              birthday: ''
-              educationStatus: ''
-              employmentStatus: ''
-              gender: ''
+              firstname: Carlos
+              secondname: Alberto
+              surname: Riberio
+              profilePicture: Lucas's photo string
+              phoneNumber: '0812344905'
+              email: lucasR@gmail.com
+              password: lucas123
+              AcceptTermsAndConditions: Yes
+              locationOrAddress: Cairo,Egypt
+              birthday: 27/09/1975
+              IdNumber: '8905285921090'
+              IdDocumentLink: document link
+              gender: male
+              resetToken: generated by forgot password
+              resetTokenExpiration: generated by forgot password endpoint
         required: true
       responses:
         '200':
           description: ''
           headers: {}
       deprecated: false
+      security:
+      - bearer: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
@@ -645,7 +665,7 @@ paths:
       summary: Delete Business Owner
       operationId: DeleteBusinessOwner
       parameters:
-      - name: businessOwnerID
+      - name: ownerID
         in: path
         description: ''
         required: true
@@ -668,7 +688,7 @@ paths:
       summary: Get Single Business Owner
       operationId: GetSingleBusinessOwner
       parameters:
-      - name: businessOwnerID
+      - name: ownerID
         in: path
         description: ''
         required: true
@@ -715,32 +735,32 @@ paths:
               allOf:
               - $ref: '#/components/schemas/RegisterBusinessOwnerRequest'
               - example:
-                  firstname: Carlos
-                  secondname: Alberto
-                  surname: Riberio
-                  profilePicture: Lucas's photo string
-                  phoneNumber: '0812344905'
-                  email: lucasR@gmail.com
-                  password: lucas123
+                  firstname: teboho
+                  secondname: james
+                  surname: roberts
+                  profilePicture: teboho's photo string
+                  phoneNumber: '0812344915'
+                  email: teboho@gmail.com
+                  password: teboho123
                   AcceptTermsAndConditions: Yes
-                  locationOrAddress: Sao Paulo,Brazil
-                  birthday: 27/09/1975
+                  locationOrAddress: Johannesburg,South Africa
+                  birthday: 27/09/1985
                   IdNumber: '8905285921090'
                   IdDocumentLink: document link
                   gender: male
                   resetToken: generated by forgot password endpoint
                   resetTokenExpiration: generated by forgot password endpoint
             example:
-              firstname: Carlos
-              secondname: Alberto
-              surname: Riberio
-              profilePicture: Lucas's photo string
-              phoneNumber: '0812344905'
-              email: lucasR@gmail.com
-              password: lucas123
+              firstname: teboho
+              secondname: james
+              surname: roberts
+              profilePicture: teboho's photo string
+              phoneNumber: '0812344915'
+              email: teboho@gmail.com
+              password: teboho123
               AcceptTermsAndConditions: Yes
-              locationOrAddress: Sao Paulo,Brazil
-              birthday: 27/09/1975
+              locationOrAddress: Johannesburg,South Africa
+              birthday: 27/09/1985
               IdNumber: '8905285921090'
               IdDocumentLink: document link
               gender: male
@@ -786,13 +806,20 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /auth/login/owner/reset:
-    post:
+  /auth/login/owner/reset/{resetToken}:
+    patch:
       tags:
       - Business Owner Authentication Endpoints
       summary: Business Owner Password Reset
       operationId: BusinessOwnerPasswordReset
-      parameters: []
+      parameters:
+      - name: resetToken
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
       requestBody:
         description: ''
         content:
@@ -801,12 +828,10 @@ paths:
               allOf:
               - $ref: '#/components/schemas/BusinessOwnerPasswordResetRequest'
               - example:
-                  resetToken: 536c8de904d4c35c9894c64d38a35dc7004380a2
-                  newPassword: william
+                  newPassword: lizwi
                   email: saliba@gmail.com
             example:
-              resetToken: 536c8de904d4c35c9894c64d38a35dc7004380a2
-              newPassword: william
+              newPassword: lizwi
               email: saliba@gmail.com
         required: true
       responses:
@@ -819,7 +844,7 @@ paths:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
   /auth/login/owner/forgot:
-    post:
+    patch:
       tags:
       - Business Owner Authentication Endpoints
       summary: Business Owner Forgot Password
@@ -926,6 +951,8 @@ components:
       - educationStatus
       - gender
       - interests
+      - resetToken
+      - resetTokenExpiration
       type: object
       properties:
         firstname:
@@ -954,6 +981,10 @@ components:
           type: string
         interests:
           type: string
+        resetToken:
+          type: string
+        resetTokenExpiration:
+          type: string
       example:
         firstname: William
         secondname: Benjamin
@@ -968,6 +999,8 @@ components:
         educationStatus: Tertiary
         gender: male
         interests: Fashion And Beauty
+        resetToken: ''
+        resetTokenExpiration: ''
     LoginUserRequest:
       title: LoginUserRequest
       required:
@@ -981,7 +1014,7 @@ components:
           type: string
       example:
         email: saliba@gmail.com
-        password: saliba
+        password: lizwi
     CreateNewBusinessRequest:
       title: CreateNewBusinessRequest
       required:
@@ -1064,16 +1097,16 @@ components:
         socials:
           type: string
       example:
-        BusinessName: Zondi Beauty
-        PhoneNumber: '0718999210'
-        BusinessEmail: ZondiBeauty@gmail.com
+        BusinessName: William Beauty
+        PhoneNumber: '0718999211'
+        BusinessEmail: William@gmail.com
         AcceptTermsAndConditions: Yes
         BusinessCategory: Beauty And Cosmetics
-        BusinessLocation: Port Shepstone,KwaZulu-Natal
+        BusinessLocation: Durban,KwaZulu-Natal
         BusinessHours: 07:00-16:00,Mon-Fri
         verificationDoc: verificationDoc string
         status: pending
-        socials: facebook
+        socials: twitter
     CreateAuctionMaterialRequest:
       title: CreateAuctionMaterialRequest
       required:
@@ -1205,9 +1238,11 @@ components:
       - AcceptTermsAndConditions
       - locationOrAddress
       - birthday
-      - educationStatus
-      - employmentStatus
+      - IdNumber
+      - IdDocumentLink
       - gender
+      - resetToken
+      - resetTokenExpiration
       type: object
       properties:
         firstname:
@@ -1230,26 +1265,32 @@ components:
           type: string
         birthday:
           type: string
-        educationStatus:
+        IdNumber:
           type: string
-        employmentStatus:
+        IdDocumentLink:
           type: string
         gender:
           type: string
+        resetToken:
+          type: string
+        resetTokenExpiration:
+          type: string
       example:
-        firstname: ''
-        secondname: ''
-        surname: ''
-        profilePicture: ''
-        phoneNumber: ''
-        email: ''
-        password: ''
-        AcceptTermsAndConditions: ''
-        locationOrAddress: ''
-        birthday: ''
-        educationStatus: ''
-        employmentStatus: ''
-        gender: ''
+        firstname: Carlos
+        secondname: Alberto
+        surname: Riberio
+        profilePicture: Lucas's photo string
+        phoneNumber: '0812344905'
+        email: lucasR@gmail.com
+        password: lucas123
+        AcceptTermsAndConditions: Yes
+        locationOrAddress: Cairo,Egypt
+        birthday: 27/09/1975
+        IdNumber: '8905285921090'
+        IdDocumentLink: document link
+        gender: male
+        resetToken: generated by forgot password
+        resetTokenExpiration: generated by forgot password endpoint
     RegisterBusinessOwnerRequest:
       title: RegisterBusinessOwnerRequest
       required:
@@ -1301,16 +1342,16 @@ components:
         resetTokenExpiration:
           type: string
       example:
-        firstname: Carlos
-        secondname: Alberto
-        surname: Riberio
-        profilePicture: Lucas's photo string
-        phoneNumber: '0812344905'
-        email: lucasR@gmail.com
-        password: lucas123
+        firstname: teboho
+        secondname: james
+        surname: roberts
+        profilePicture: teboho's photo string
+        phoneNumber: '0812344915'
+        email: teboho@gmail.com
+        password: teboho123
         AcceptTermsAndConditions: Yes
-        locationOrAddress: Sao Paulo,Brazil
-        birthday: 27/09/1975
+        locationOrAddress: Johannesburg,South Africa
+        birthday: 27/09/1985
         IdNumber: '8905285921090'
         IdDocumentLink: document link
         gender: male
@@ -1343,38 +1384,30 @@ components:
     UserResetPasswordRequest:
       title: UserResetPasswordRequest
       required:
-      - resetToken
       - newPassword
       - email
       type: object
       properties:
-        resetToken:
-          type: string
         newPassword:
           type: string
         email:
           type: string
       example:
-        resetToken: de7f467c2ff39e27f60bf08d8fa2aca68b277e70
-        newPassword: william
+        newPassword: lizwi
         email: saliba@gmail.com
     BusinessOwnerPasswordResetRequest:
       title: BusinessOwnerPasswordResetRequest
       required:
-      - resetToken
       - newPassword
       - email
       type: object
       properties:
-        resetToken:
-          type: string
         newPassword:
           type: string
         email:
           type: string
       example:
-        resetToken: 536c8de904d4c35c9894c64d38a35dc7004380a2
-        newPassword: william
+        newPassword: lizwi
         email: saliba@gmail.com
     BusinessOwnerForgotPasswordRequest:
       title: BusinessOwnerForgotPasswordRequest
