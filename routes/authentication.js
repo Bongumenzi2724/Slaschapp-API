@@ -18,7 +18,7 @@ router.post('/register/owner',registerBusinessOwner)
 //login business owner
 router.post('/login/owner',loginBusinessOwner)
 //owner forgot and reset password route
-router.post('/login/owner/forgot',forgotPassword)
-router.post('/login/owner/reset',passwordReset)
+router.patch('/login/owner/forgot',forgotPassword)
+router.patch('/login/owner/reset/:resetToken',passwordReset)
 
 module.exports=router

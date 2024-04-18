@@ -1,7 +1,6 @@
 const User=require('../models/UserRegistrationSchema')
 const crypto=require('crypto');
 const bcrypt = require('bcryptjs')
-
 //Forgot Password Functionality
 const forgotPassword=async(req,res)=>{
     try {
