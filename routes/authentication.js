@@ -11,8 +11,8 @@ router.post('/register/user',registerUser)
 //login app user
 router.post('/login/user',loginUser)
 //user forgot and reset password route
-router.post('/login/user/forgot',forgotPassword)
-router.post('/login/user/reset',passwordReset)
+router.patch('/login/user/forgot',forgotPassword)
+router.patch('/login/user/reset/:resetToken',passwordReset)
 //register business owner
 router.post('/register/owner',registerBusinessOwner)
 //login business owner

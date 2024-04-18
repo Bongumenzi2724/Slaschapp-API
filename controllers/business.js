@@ -100,11 +100,8 @@ const updateBusinessDetails= async(req,res)=>{
 }
 //Delete A Business
 const deleteBusiness=async(req,res)=>{
-
     const{user:{userId},params:{id:businessId}}=req
-
     const business=await Business.findByIdAndDelete({_id:businessId,createdBy:userId})
-
     if(!business){
         throw new NotFoundError(`No Business with id ${businessId}`)
     }

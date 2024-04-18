@@ -39,7 +39,7 @@ const registerUser= async(req,res)=>{
     //console.log("Original Password")
     //console.log(user.password);
     //console.log(user)
-    res.status(StatusCodes.CREATED).json({user:{user},token:{token}})
+    res.status(StatusCodes.CREATED).json({user,token})
 }
 //user verification controller
 const userVerification=async({email},res)=>{
@@ -71,7 +71,7 @@ const loginUser=async(req,res)=>{
         throw new UnauthenticatedError('Invalid Credentials')
     }
 
-    //console.log("========================================");
+    console.log("========================================");
     //console.log(user)
     const isPasswordCorrect= await user.comparePassword(password)
 
@@ -89,7 +89,7 @@ const registerBusinessOwner=async(req,res)=>{
     const businessOwner = await BusinessOwner.create({...req.body})
     const token = businessOwner.createJWT()
     console.log(token);
-    res.status(StatusCodes.CREATED).json({user:{businessOwner},token:{token}});
+    res.status(StatusCodes.CREATED).json({businessOwner},{token});
 }
 //logout the user
 //deregister the user

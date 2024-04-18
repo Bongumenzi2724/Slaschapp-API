@@ -5,25 +5,18 @@ const bcrypt = require('bcryptjs')
 //Forgot Password Functionality
 const forgotPassword=async(req,res)=>{
     try {
-        console.log("=====================================");
         const {email}=req.body;
-        const user=await User.findOne({email});
-        //console.log(user);
-        console.log("Original Password");
-        //console.log(user.firstname);
-        console.log(user.password);
+         //Generate Token
+         resetToken=crypto.randomBytes(20).toString('hex');
+         resetTokenExpiration=Date.now()+3600000;
+        const user=await User.findOneAndUpdate({email:email},{resetToken:resetToken,resetTokenExpiration:resetTokenExpiration},{new:true,runValidators:true});
+        const user1=await User.findOne({email});
+        console.log(user);
         if(!user){
             return res.status(400).json({error:"User not found"});
         }
-        //Generate Token
-        const resetToken=crypto.randomBytes(20).toString('hex');
-        user.resetToken=resetToken;
-        user.resetTokenExpiration=Date.now()+3600000;
-        console.log(user.resetToken);
-        console.log(user.resetTokenExpiration);
         await user.save();
-        //console.log(user);
-        res.status(200).json({message:"Password reset token sent",resetToken:resetToken});
+        res.status(200).json({message:"Password reset token sent",token:user1.resetToken});
 
     } catch (error) {
         console.error('Error Generating Token',error);
@@ -33,20 +26,17 @@ const forgotPassword=async(req,res)=>{
 //Reset Password Functionality
 const passwordReset=async(req,res)=>{
     try {
-        const {resetToken,newPassword,email}=req.body;
+        const {newPassword,email}=req.body;
+        const {resetToken}=req.params;
+        const salt=await bcrypt.genSalt(10);
+        const hashedPassword=await bcrypt.hash(newPassword,salt);
         //find the user with the matching reset token
-        const user=await User.findOne({resetToken,
-        resetTokenExpiration:{$gt:Date.now()},email});
-        console.log("Original Password");
-        console.log(user.password);
-        console.log("=====================================");
+        const user=await User.findOneAndUpdate({email,resetToken},{password:hashedPassword,resetToken:'',resetTokenExpiration:''},{new:true,runValidators:true});
+        const user1=await User.findOne({email});
         if(!user){
             return res.status(401).json({error:"Invalid or expired reset token"});
         }
-        const newUser=await user.ForgotPassword(newPassword);
-        console.log("New Password")
-        console.log(newUser.password);
-        return res.status(200).json({message:"Password Reset Successfully",password:newPassword});
+        return res.status(200).json({message:"Password Reset Successfully"});
     } catch (error) {
         console.error('Error Generating Token',error);
         res.status(500).json({error:"An error occurred while resetting the password"});

@@ -89,19 +89,19 @@ const UserSchema = new mongoose.Schema({
     },
     resetToken:{
         type:String,
-        required:false,
-        default:''
+        required:[false,'Please Provide the Expiration Time Of The Token']
     },
     resetTokenExpiration:{
         type:String,
-        required:false,
-        default:''
+        required:[false,'Please Provide the Expiration Time Of The Token']
     },
 });
 
 UserSchema.pre('save',async function(){
     const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password,salt)
+    this.password = await bcrypt.hash(this.password,salt);
+    //this.resetToken=undefined;
+    //this.resetTokenExpiration=undefined;
 })
 
 UserSchema.methods.createJWT=function(){
@@ -110,19 +110,18 @@ UserSchema.methods.createJWT=function(){
 
 UserSchema.methods.ForgotPassword=async function(newPassword){
          //Encypt and hash the new password
-        const salt=await bcrypt.genSalt(10);
-        const hashedPassword=await bcrypt.hash(newPassword,salt);
+        //const salt=await bcrypt.genSalt(10);
+        //const hashedPassword=await bcrypt.hash(newPassword,salt);
         //update the new user password, reset token fields and save
-        this.password=hashedPassword;
+        /* this.password=hashedPassword;
         this.resetToken=undefined;
         this.resetTokenExpiration=undefined;
         await this.save();
-        return this.password
+        return this.password */
 }
 
 UserSchema.methods.comparePassword = async function(candidatePassword){
     const isMatch = await bcrypt.compare(candidatePassword,this.password);
     return isMatch
 } 
-
 module.exports=mongoose.model('User',UserSchema)
