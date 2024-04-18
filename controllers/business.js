@@ -8,7 +8,7 @@ const createBusinessOwner=async(req,res)=>{
     //console.log(req.body);
     req.body.createdBy=req.user.userId
     const businessOwner = await BusinessOwner.create(req.body);
-    return res.status(StatusCodes.CREATED).json({businessOwner});
+    return res.status(StatusCodes.CREATED).json({businessOwner:{businessOwner}});
 }
 //update business owner details
 const updateBusinessOwnerDetails=async(req,res)=>{
@@ -18,9 +18,9 @@ const updateBusinessOwnerDetails=async(req,res)=>{
 
         throw new BadRequestError("Fields cannot be empty please fill everything")
     }
-    const businessOwner=await BusinessOwner.findOneAndUpdate({_id:ownerId,createdBy:userId},req.body,{new:true,runValidators:true})
+    const businessOwner=await BusinessOwner.findByIdAndUpdate({_id:ownerId,createdBy:userId},req.body,{new:true,runValidators:true})
     if(!businessOwner){
-        throw new NotFoundError(`No Business with id ${ownerId}`)
+        throw new NotFoundError(`No Business Owner with id ${ownerId}`)
     }
     res.status(StatusCodes.OK).json({businessOwner});
 }
@@ -50,7 +50,7 @@ const getSingleBusinessOwner=async(req,res)=>{
 
     const{user:{userId},params:{id:ownerId}}=req
 
-    const businessOwner=await BusinessOwner.findOne({_id:ownerId,createdBy:userId})
+    const businessOwner=await BusinessOwner.findById({_id:ownerId})
 
     if(!businessOwner){
         throw new NotFoundError(`No Business Owner with id ${ownerId}`)
@@ -111,6 +111,7 @@ const deleteBusiness=async(req,res)=>{
 
     res.status(StatusCodes.OK).send("Business Deleted Successfully")
 }
+
 //Search for businesses
 const searchBusiness=async(req,res)=>{
     const{query:{BusinessCategory:BusinessCategory,BusinessLocation:BusinessLocation}}=req

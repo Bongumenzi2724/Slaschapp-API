@@ -12,15 +12,12 @@ const createAuction=async(req,res)=>{
 const updateAuctions=async(req,res)=>{
 
    const{body:{campaignName,campaignDescription,campaignBudget,campaignDailyBudget,campaignStartDate,checkInStoreAvailability,percentageDiscount,interests,baitPlant:{name,descriptionBaitPlant,price,photos}},user:{userId},params:{auctionId:auctionId}}=req
+   if(campaignName==""||campaignDescription==""||campaignBudget==""||campaignDailyBudget==""||campaignStartDate==""||checkInStoreAvailability==""||percentageDiscount==""||interests==""||name==""||descriptionBaitPlant==""||price==""||photos==""){
 
-    const auctionData=await Auction.findOneAndUpdate({_id:auctionId,createdBy:userId},req.body,{new:true,runValidators:true})
-    
-    if(campaignName==""||campaignDescription==""||campaignBudget==""||campaignDailyBudget==""||campaignStartDate==""||checkInStoreAvailability==""||percentageDiscount==""||interests==""||name==""||descriptionBaitPlant==""||price==""||photos==""){
-
-        throw new BadRequestError("Fields cannot be empty please fill everything")
+    throw new BadRequestError("Fields cannot be empty please fill everything")
     }
-
-    if(!business){
+    const auctionData=await Auction.findOneAndUpdate({_id:auctionId,createdBy:userId},req.body,{new:true,runValidators:true})
+    if(!auctionData){
         throw new NotFoundError(`No Auction with id ${auctionId}`)
     }
     res.status(StatusCodes.OK).json({auctionData}) 
