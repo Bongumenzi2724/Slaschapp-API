@@ -109,18 +109,6 @@ UserSchema.methods.createJWT=function(){
     return jwt.sign({userId:this._id,name:this.name},process.env.JWT_SECRET,{expiresIn:process.env.JWT_LIFETIME})
 }
 
-UserSchema.methods.ForgotPassword=async function(newPassword){
-         //Encypt and hash the new password
-        //const salt=await bcrypt.genSalt(10);
-        //const hashedPassword=await bcrypt.hash(newPassword,salt);
-        //update the new user password, reset token fields and save
-        /* this.password=hashedPassword;
-        this.resetToken=undefined;
-        this.resetTokenExpiration=undefined;
-        await this.save();
-        return this.password */
-}
-
 UserSchema.methods.comparePassword = async function(candidatePassword){
     const isMatch = await bcrypt.compare(candidatePassword,this.password);
     return isMatch
