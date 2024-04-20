@@ -569,7 +569,7 @@ paths:
         variables: {}
     delete:
       tags:
-      - Auction Endpoints
+      - Business Owner Endpoints
       summary: Delete An Auction
       operationId: DeleteAnAuction
       parameters:
@@ -587,6 +587,21 @@ paths:
         style: simple
         schema:
           type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /all/auctions:
+    get:
+      tags:
+      - Auction Endpoints
+      summary: Get All Auctions
+      operationId: GetAllAuctions
+      parameters: []
       responses:
         '200':
           description: ''
@@ -803,9 +818,6 @@ paths:
           headers: {}
       deprecated: false
       security: []
-      servers:
-      - url: https://adlinc-api.onrender.com/api/slaschapp
-        variables: {}
   /auth/login/owner/reset/{resetToken}:
     patch:
       tags:
@@ -925,6 +937,51 @@ paths:
               key: '123455'
               userID: userID string
         required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /all/users:
+    get:
+      tags:
+      - Get All Database Elements Admin
+      summary: Get All Users
+      operationId: GetAllUsers
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /all/businesses:
+    get:
+      tags:
+      - Get All Database Elements Admin
+      summary: All Businesses
+      operationId: AllBusinesses
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /all/owners:
+    get:
+      tags:
+      - Get All Database Elements Admin
+      summary: Get All Business Owner
+      operationId: GetAllBusinessOwner
+      parameters: []
       responses:
         '200':
           description: ''
@@ -1472,4 +1529,6 @@ tags:
 - name: Business Owner Authentication Endpoints
   description: ''
 - name: Data Collection Endpoints
+  description: ''
+- name: Get All Database Elements Admin
   description: ''
