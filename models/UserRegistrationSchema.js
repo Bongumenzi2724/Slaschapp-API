@@ -84,8 +84,9 @@ const UserSchema = new mongoose.Schema({
     },
     interests:{
         type:String,
-        enum:['Music','Entertainment','Sports','Gaming','Fashion And Beauty','Food And Drinks','Business And Finance','Travel And Tourism','Technology And Service','Fashion And Jewellery','Outdoors','Fitness','Home Design'],
-        default:'Entertainment'
+        required:[true,'Please Provide Your Interests'],
+        maxlength:10000,
+        minlength:1
     },
     resetToken:{
         type:String,
