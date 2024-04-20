@@ -50,6 +50,10 @@ const deleteSingleAuction=async(req,res)=>{
     res.status(StatusCodes.OK).send("Business Deleted Successfully")
 }
 
+const getAllAuctionMaterial=async(req,res)=>{
+    const AllAuctionData=await Auction.find({}).sort('createdAt')
+    res.status(StatusCodes.OK).json({AllAuctionData,count:AllAuctionData.length});
+}
 
 const auctionSearchResults=async(req,res)=>{
     const{query:{campaignName:campaignName,campaignBudget}}=req
@@ -66,4 +70,4 @@ const auctionSearchResults=async(req,res)=>{
     } 
 }
 
-module.exports={createAuction,getSingleAuction,deleteSingleAuction,auctionSearchResults,getAllAuctions,updateAuctions}
+module.exports={createAuction,getSingleAuction,getAllAuctionMaterial,deleteSingleAuction,auctionSearchResults,getAllAuctions,updateAuctions}

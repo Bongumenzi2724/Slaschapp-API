@@ -91,6 +91,7 @@ const registerBusinessOwner=async(req,res)=>{
     console.log(token);
     res.status(StatusCodes.CREATED).json({businessOwner},{token});
 }
+
 //logout the user
 //deregister the user
 //login business owner

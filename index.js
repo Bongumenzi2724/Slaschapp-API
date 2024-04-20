@@ -8,7 +8,9 @@ const cors=require('cors')
 //const xss=require('xss-clean')
 const rateLimiter=require('express-rate-limit')
 //routers
+
 const authRouter=require('./routes/authentication')
+const allRouter=require('./routes/AllRoutes')
 const businessRouter=require('./routes/business')
 const businessSearchRouter=require('./routes/search')
 const dataRouter=require('./routes/dataRoutes')
@@ -18,6 +20,9 @@ const connectDB = require('./db/connect')
 const authenticateUser=require('./middleware/authentication');
 //error-handler
 const notFoundMiddleWare=require('./middleware/no-found')
+const User=require('./models/UserRegistrationSchema')
+const Auction=require('./models/AuctionSchema')
+const Business=require('./models/BusinessRegistrationSchema')
 const errorHandlerMiddleWare=require('./middleware/error-handler')
 //Swagger
 const swaggerUI=require('swagger-ui-express')
@@ -33,7 +38,11 @@ app.use(helmet())
 app.use(cors())
 //app.use(xss())
 
+
+
 //Routes
+app.use('/api/slaschapp/all',allRouter);
+app.use('/api/slaschapp/business/auction',businessRouter);
 app.use('/api/slaschapp/auth',authRouter);
 app.use('/api/slaschapp/business',authenticateUser,businessRouter);
 app.use('/api/slaschapp/search',authenticateUser,businessSearchRouter);
