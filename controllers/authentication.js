@@ -16,7 +16,6 @@ let transporter=nodemailer.createTransport({
 //register app user
 const registerUser= async(req,res)=>{
     //sendOTP to the email provided
-
      // Find the most recent OTP for the email
 		/* const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
 		console.log(response);
@@ -36,9 +35,6 @@ const registerUser= async(req,res)=>{
     //Verify OTP,than move on and create your user
     const user = await User.create({...req.body})
     const token = user.createJWT()
-    //console.log("Original Password")
-    //console.log(user.password);
-    //console.log(user)
     res.status(StatusCodes.CREATED).json({user,token})
 }
 //user verification controller
@@ -79,16 +75,13 @@ const loginUser=async(req,res)=>{
         throw new UnauthenticatedError('Invalid Credentials')
     }
     const token = user.createJWT()
-    console.log(user.password);
-    res.status(StatusCodes.OK).json({user:{name:user.firstname,surname:user.surname,email:user.email},token})
+    res.status(StatusCodes.OK).json({user:{id:user._id,name:user.firstname,surname:user.surname,email:user.email},token})
 }
 
 //register business owner
 const registerBusinessOwner=async(req,res)=>{
-    //console.log(req.body);
     const businessOwner = await BusinessOwner.create({...req.body})
     const token = businessOwner.createJWT()
-    console.log(token);
     res.status(StatusCodes.CREATED).json({businessOwner},{token});
 }
 
@@ -111,7 +104,7 @@ const loginBusinessOwner=async(req,res)=>{
         throw new UnauthenticatedError('Invalid Credentials')
     }
     const token = owner.createJWT()
-    res.status(StatusCodes.OK).json({owner:{name:owner.firstname,surname:owner.surname,email:owner.email},token:{token}})
+    res.status(StatusCodes.OK).json({owner:{id:owner._id,name:owner.firstname,surname:owner.surname,email:owner.email},token:{token}})
 }
 
 module.exports={registerUser,loginUser,registerBusinessOwner,loginBusinessOwner,userVerification}
