@@ -82,7 +82,7 @@ const loginUser=async(req,res)=>{
 const registerBusinessOwner=async(req,res)=>{
     const businessOwner = await BusinessOwner.create({...req.body})
     const token = businessOwner.createJWT()
-    res.status(StatusCodes.CREATED).json({id:businessOwner._id,name:businessOwner.name,surname:businessOwner.surname,token:token});
+    res.status(StatusCodes.CREATED).json({id:businessOwner._id,firstname:businessOwner.firstname,surname:businessOwner.surname,token:token});
 }
 
 //logout the user
