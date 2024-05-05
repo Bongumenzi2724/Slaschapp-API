@@ -28,15 +28,11 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
     },
     phoneNumber:{
         type:String,
-        required:[true,"Please Provide Your Phone Number"],
-        unique:false,
-        minlength:2,
+        required:[true,"Please Provide Your Phone Number"]
     },
     email:{
         type:String,
         required:[true,'Please Provide Your Email'],
-        unique:false,
-        minlength:2,
         match: [
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
             'Please provide a valid email',],
@@ -79,7 +75,7 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
     },
     gender:{
         type:String,
-        enum:['male','female','other'],
+        enum:['Male','Female','other'],
         default:'male'
     },
     resetToken:{
