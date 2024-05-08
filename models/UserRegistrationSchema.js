@@ -21,10 +21,7 @@ const UserSchema = new mongoose.Schema({
         minlength:1
     },
     profilePicture:{
-        type:String,
-        required:[true,'Please Provide Your Profile Picture'],
-        maxlength:10000,
-        minlength:1
+        type:String
     },
     phoneNumber:{
         type:String,
@@ -75,14 +72,22 @@ const UserSchema = new mongoose.Schema({
     },
     gender:{
         type:String,
-        enum:['Male','Female','Rather not say'],
-        default:'male'
+        //enum:['Male','Female','Rather not say'],
+        //default:'male'
+    },
+    wallet:{
+        type:String,
+        //enum:['Male','Female','Rather not say'],
+        //default:'male'
     },
     interests:{
         type:String,
         required:[true,'Please Provide Your Interests'],
         maxlength:10000,
         minlength:1
+    },
+    cloudinary_id:{
+        type:String
     },
     resetToken:{
         type:String,

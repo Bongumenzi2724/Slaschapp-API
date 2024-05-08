@@ -21,10 +21,7 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
         minlength:1
     },
     profilePicture:{
-        type:String,
-        required:[true,'Please Provide Your Profile Picture'],
-        maxlength:10000,
-        minlength:1
+        type:String
     },
     phoneNumber:{
         type:String,
@@ -88,6 +85,7 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
         required:false,
         default:''
     },
+    cloudinary_id:{type:String}
 })
 
 BusinessOwnerRegistrationSchema.pre('save',async function(){

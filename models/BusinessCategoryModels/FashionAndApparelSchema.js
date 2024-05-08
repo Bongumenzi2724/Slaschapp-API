@@ -1,10 +1,5 @@
 const mongoose=require('mongoose')
 const FashionAndApparelSchema = new mongoose.Schema({
-
-        /* type:String,
-        required:[true,'Please Provide The Fashion And Apparel Field'],
-        maxlength:100,
-        minlength:1 */
         itemName:{
             type:String,
             required:[true,'Please Provide the Name of the item'],
@@ -60,10 +55,7 @@ const FashionAndApparelSchema = new mongoose.Schema({
             required:[true,'Please check if the percentage discount'],
             maxlength:4,
             minlength:1 
-        },
-       /*  buy:{
-
-        } */
+        }
 })
 
 module.exports=mongoose.model('FashionAndApparel',FashionAndApparelSchema)

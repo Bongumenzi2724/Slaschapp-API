@@ -7,8 +7,17 @@ const {BadRequestError,NotFoundError}=require('../errors')
 const createBusinessOwner=async(req,res)=>{
     //console.log(req.body);
     req.body.createdBy=req.user.userId
-    const businessOwner = await BusinessOwner.create(req.body);
-    return res.status(StatusCodes.CREATED).json({businessOwner:{businessOwner}});
+    try{ 
+        //req.body.createdBy=req.user.userId;
+        //.body.businessId=req.params.id;
+        const result=await cloudinary.uploader.upload(req.file.path);
+        req.body.profilePicture=result.secure_url;
+        req.body.cloudinary_id=result.public_id; 
+        const businessOwner=await BusinessOwner.create({...req.body})
+        res.status(StatusCodes.CREATED).json({businessOwner:{businessOwner}});
+    }catch(error){
+        return res.status(500).status({status:false,message:error.message})
+    }
 }
 //update business owner details
 const updateBusinessOwnerDetails=async(req,res)=>{
@@ -26,17 +35,18 @@ const updateBusinessOwnerDetails=async(req,res)=>{
 }
 //delete or tag business owner
 const deleteBusinessOwner=async(req,res)=>{
-    //res.send('delete business owner');
-
-    const{user:{userId},params:{id:ownerId}}=req
-
-    const businessOwner=await BusinessOwner.findByIdAndDelete({_id:ownerId,createdBy:userId})
-
+try{
+    const{params:{id:ownerId}}=req
+    const businessOwner=await BusinessOwner.findById(ownerId);
     if(!businessOwner){
-        throw new NotFoundError(`No Business Owner With Id ${ownerId} Exist`)
+        throw new NotFoundError(`No Business Owner With id ${ownerId}`)
     }
-
-    res.status(StatusCodes.OK).send("Business Owner Deleted Successfully")
+    await cloudinary.uploader.destroy(businessOwner.cloudinary_id);
+    await businessOwner.deleteOne({_id:req.prams.id});
+    return res.status(StatusCodes.OK).json({status:true,message:"Business Owner Successfully Deleted"});
+}catch(error){
+    return res.status(StatusCodes.OK).json({status:false,message:error.message});
+}
 }
 //get all business owners available
 const getAllBusinessOwners=async(req,res)=>{
@@ -61,9 +71,16 @@ const getSingleBusinessOwner=async(req,res)=>{
 
 //Create A Single Business
 const createBusiness=async(req,res)=>{
-    req.body.createdBy=req.user.userId
-    const business = await Business.create(req.body)
-    return res.status(StatusCodes.CREATED).json({business,businessId:business._id})
+    try{ 
+        req.body.createdBy=req.user.userId;
+        const result=await cloudinary.uploader.upload(req.file.path);
+        req.body.BusinessLogo=result.secure_url;
+        req.body.cloudinary_id=result.public_id; 
+        const business=await Business.create({...req.body})
+        return res.status(StatusCodes.CREATED).json({business:{business}});
+    }catch(error){
+        return res.status(500).status({status:false,message:error.message})
+    }
 }
 //Get All Businesses Specific for A Single Business Owner
 const getAllBusinesses =async(req,res) =>{
@@ -101,12 +118,17 @@ const updateBusinessDetails= async(req,res)=>{
 //Delete A Business
 const deleteBusiness=async(req,res)=>{
     const{user:{userId},params:{id:businessId}}=req
-    const business=await Business.findByIdAndDelete({_id:businessId,createdBy:userId})
+   try{
+    const business=await Business.findById({_id:businessId,createdBy:userId});
     if(!business){
-        throw new NotFoundError(`No Business with id ${businessId}`)
+        throw new NotFoundError(`No Business With id ${ownerId}`)
     }
-
-    res.status(StatusCodes.OK).send("Business Deleted Successfully")
+    await cloudinary.uploader.destroy(business.cloudinary_id);
+    await business.deleteOne({_id:req.prams.id});
+    return res.status(StatusCodes.OK).json({status:true,message:"Business Successfully Deleted"});
+}catch(error){
+    return res.status(StatusCodes.OK).json({status:false,message:error.message});
+}
 }
 
 //Search for businesses

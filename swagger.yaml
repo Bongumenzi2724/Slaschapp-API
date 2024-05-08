@@ -7,12 +7,12 @@ servers:
 - url: https://adlinc-api.onrender.com/api/slaschapp
   variables: {}
 paths:
-  /auth/register/user:
+  /:
     post:
       tags:
-      - User Authentication Endpoints
-      summary: Register  User
-      operationId: RegisterUser
+      - Authentication User
+      summary: Register User Profile
+      operationId: RegisterUserProfile
       parameters: []
       requestBody:
         description: ''
@@ -20,7 +20,7 @@ paths:
           application/json:
             schema:
               allOf:
-              - $ref: '#/components/schemas/RegisterUserRequest'
+              - $ref: '#/components/schemas/RegisterUserProfileRequest'
               - example:
                   firstname: William
                   secondname: Benjamin
@@ -63,26 +63,63 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
+    get:
+      tags:
+      - Businesses
+      summary: Get All Businesses
+      operationId: GetAllBusinesses
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
   /auth/login/user:
     post:
       tags:
-      - User Authentication Endpoints
+      - Authentication User
       summary: Login User
       operationId: LoginUser
       parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /auth/login/user/reset/{resetToken}:
+    patch:
+      tags:
+      - Authentication User
+      summary: User Password Reset
+      operationId: UserPasswordReset
+      parameters:
+      - name: resetToken
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
       requestBody:
         description: ''
         content:
           application/json:
             schema:
               allOf:
-              - $ref: '#/components/schemas/LoginUserRequest'
+              - $ref: '#/components/schemas/UserPasswordResetRequest'
               - example:
+                  newPassword: lizwi
                   email: saliba@gmail.com
-                  password: lizwi
             example:
+              newPassword: lizwi
               email: saliba@gmail.com
-              password: lizwi
         required: true
       responses:
         '200':
@@ -96,7 +133,7 @@ paths:
   /auth/login/user/forgot:
     patch:
       tags:
-      - User Authentication Endpoints
+      - Authentication User
       summary: User Forgot Password
       operationId: UserForgotPassword
       parameters: []
@@ -121,49 +158,12 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /auth/login/user/reset/{resetToken}:
-    patch:
-      tags:
-      - User Authentication Endpoints
-      summary: User Reset Password
-      operationId: UserResetPassword
-      parameters:
-      - name: resetToken
-        in: path
-        description: ''
-        required: true
-        style: simple
-        schema:
-          type: string
-      requestBody:
-        description: ''
-        content:
-          application/json:
-            schema:
-              allOf:
-              - $ref: '#/components/schemas/UserResetPasswordRequest'
-              - example:
-                  newPassword: lizwi
-                  email: saliba@gmail.com
-            example:
-              newPassword: lizwi
-              email: saliba@gmail.com
-        required: true
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      security: []
-      servers:
-      - url: https://adlinc-api.onrender.com/api/slaschapp
-        variables: {}
   /business:
     post:
       tags:
-      - Business Endpoints
-      summary: Create New Business
-      operationId: CreateNewBusiness
+      - Businesses
+      summary: Create Business
+      operationId: CreateBusiness
       parameters: []
       requestBody:
         description: ''
@@ -171,7 +171,7 @@ paths:
           application/json:
             schema:
               allOf:
-              - $ref: '#/components/schemas/CreateNewBusinessRequest'
+              - $ref: '#/components/schemas/CreateBusinessRequest'
               - example:
                   BusinessName: William Beauty
                   PhoneNumber: '0718999211'
@@ -200,31 +200,13 @@ paths:
           description: ''
           headers: {}
       deprecated: false
-      security:
-      - bearer: []
-      servers:
-      - url: https://adlinc-api.onrender.com/api/slaschapp
-        variables: {}
-    get:
-      tags:
-      - Business Endpoints
-      summary: Get All Businesses
-      operationId: GetAllBusinesses
-      parameters: []
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      security:
-      - bearer: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
   /business/{businessID}:
     get:
       tags:
-      - Business Endpoints
+      - Businesses
       summary: Get Single Business
       operationId: GetSingleBusiness
       parameters:
@@ -240,16 +222,14 @@ paths:
           description: ''
           headers: {}
       deprecated: false
-      security:
-      - bearer: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
     delete:
       tags:
-      - Business Endpoints
-      summary: Delete Business
-      operationId: DeleteBusiness
+      - Businesses
+      summary: Delete
+      operationId: Delete
       parameters:
       - name: businessID
         in: path
@@ -263,14 +243,12 @@ paths:
           description: ''
           headers: {}
       deprecated: false
-      security:
-      - bearer: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
     patch:
       tags:
-      - Business Endpoints
+      - Businesses
       summary: Update Single Business
       operationId: UpdateSingleBusiness
       parameters:
@@ -316,15 +294,13 @@ paths:
           description: ''
           headers: {}
       deprecated: false
-      security:
-      - bearer: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
   /search:
     get:
       tags:
-      - Business Endpoints
+      - Businesses
       summary: Business Search
       operationId: BusinessSearch
       parameters:
@@ -342,17 +318,15 @@ paths:
           description: ''
           headers: {}
       deprecated: false
-      security:
-      - bearer: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
   /business/{ownerID}/auction:
     post:
       tags:
-      - Auction Endpoints
-      summary: Create Auction Material
-      operationId: CreateAuctionMaterial
+      - Auctions
+      summary: Create Auction
+      operationId: CreateAuction
       parameters:
       - name: ownerID
         in: path
@@ -361,57 +335,19 @@ paths:
         style: simple
         schema:
           type: string
-      requestBody:
-        description: ''
-        content:
-          application/json:
-            schema:
-              allOf:
-              - $ref: '#/components/schemas/CreateAuctionMaterialRequest'
-              - example:
-                  campaignName: Fish And Chips
-                  campaignDescription: High Quality Fashion
-                  campaignBudget: R500
-                  campaignDailyBudget: R123
-                  campaignStartDate: 12-06-1995
-                  checkInStoreAvailability: Yes
-                  percentageDiscount: 12%
-                  interests: Food And Drinks
-                  baitPlant:
-                    name: Duck Fish
-                    baitPlantDescription: Quality Duck Dish
-                    price: R400
-                    photos: Duck photos
-            example:
-              campaignName: Fish And Chips
-              campaignDescription: High Quality Fashion
-              campaignBudget: R500
-              campaignDailyBudget: R123
-              campaignStartDate: 12-06-1995
-              checkInStoreAvailability: Yes
-              percentageDiscount: 12%
-              interests: Food And Drinks
-              baitPlant:
-                name: Duck Fish
-                baitPlantDescription: Quality Duck Dish
-                price: R400
-                photos: Duck photos
-        required: true
       responses:
         '200':
           description: ''
           headers: {}
       deprecated: false
-      security:
-      - bearer: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
     get:
       tags:
-      - Auction Endpoints
-      summary: Get All Auction Material
-      operationId: GetAllAuctionMaterial
+      - Auctions
+      summary: Get All Auctions
+      operationId: GetAllAuctions
       parameters:
       - name: ownerID
         in: path
@@ -425,15 +361,13 @@ paths:
           description: ''
           headers: {}
       deprecated: false
-      security:
-      - bearer: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
   /business/{ownerID}/search/auction:
     get:
       tags:
-      - Auction Endpoints
+      - Auctions
       summary: Auction Search
       operationId: AuctionSearch
       parameters:
@@ -467,17 +401,15 @@ paths:
           description: ''
           headers: {}
       deprecated: false
-      security:
-      - bearer: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
   /business/{ownerID}/auction/{auctionID}:
     patch:
       tags:
-      - Auction Endpoints
-      summary: Update Auction Material
-      operationId: UpdateAuctionMaterial
+      - Auctions
+      summary: Update Auction
+      operationId: UpdateAuction
       parameters:
       - name: ownerID
         in: path
@@ -499,7 +431,7 @@ paths:
           application/json:
             schema:
               allOf:
-              - $ref: '#/components/schemas/UpdateAuctionMaterialRequest'
+              - $ref: '#/components/schemas/UpdateAuctionRequest'
               - example:
                   campaignName: ''
                   campaignDescription: ''
@@ -534,14 +466,12 @@ paths:
           description: ''
           headers: {}
       deprecated: false
-      security:
-      - bearer: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
     get:
       tags:
-      - Auction Endpoints
+      - Auctions
       summary: Get Single Auction
       operationId: GetSingleAuction
       parameters:
@@ -569,9 +499,9 @@ paths:
         variables: {}
     delete:
       tags:
-      - Business Owner Endpoints
-      summary: Delete An Auction
-      operationId: DeleteAnAuction
+      - Auctions
+      summary: Delete Auction
+      operationId: DeleteAuction
       parameters:
       - name: ownerID
         in: path
@@ -595,27 +525,12 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /all/auctions:
-    get:
-      tags:
-      - Auction Endpoints
-      summary: Get All Auctions
-      operationId: GetAllAuctions
-      parameters: []
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      servers:
-      - url: https://adlinc-api.onrender.com/api/slaschapp
-        variables: {}
   /business/owner/{ownerID}:
     patch:
       tags:
-      - Business Owner Endpoints
-      summary: Update Business Owner Details
-      operationId: UpdateBusinessOwnerDetails
+      - Business Owner
+      summary: Update Business Owner
+      operationId: UpdateBusinessOwner
       parameters:
       - name: ownerID
         in: path
@@ -630,7 +545,7 @@ paths:
           application/json:
             schema:
               allOf:
-              - $ref: '#/components/schemas/UpdateBusinessOwnerDetailsRequest'
+              - $ref: '#/components/schemas/UpdateBusinessOwnerRequest'
               - example:
                   firstname: Carlos
                   secondname: Alberto
@@ -669,14 +584,12 @@ paths:
           description: ''
           headers: {}
       deprecated: false
-      security:
-      - bearer: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
     delete:
       tags:
-      - Business Owner Endpoints
+      - Business Owner
       summary: Delete Business Owner
       operationId: DeleteBusinessOwner
       parameters:
@@ -692,14 +605,12 @@ paths:
           description: ''
           headers: {}
       deprecated: false
-      security:
-      - bearer: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
     get:
       tags:
-      - Business Owner Endpoints
+      - Business Owner
       summary: Get Single Business Owner
       operationId: GetSingleBusinessOwner
       parameters:
@@ -715,15 +626,13 @@ paths:
           description: ''
           headers: {}
       deprecated: false
-      security:
-      - bearer: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
   /business/owner:
     get:
       tags:
-      - Business Owner Endpoints
+      - Business Owner
       summary: Get All Business Owners
       operationId: GetAllBusinessOwners
       parameters: []
@@ -738,9 +647,9 @@ paths:
   /auth/register/owner:
     post:
       tags:
-      - Business Owner Authentication Endpoints
-      summary: Register Business Owner
-      operationId: RegisterBusinessOwner
+      - Authentication Business Owner
+      summary: Register Business Owner Profile
+      operationId: RegisterBusinessOwnerProfile
       parameters: []
       requestBody:
         description: ''
@@ -748,7 +657,7 @@ paths:
           application/json:
             schema:
               allOf:
-              - $ref: '#/components/schemas/RegisterBusinessOwnerRequest'
+              - $ref: '#/components/schemas/RegisterBusinessOwnerProfileRequest'
               - example:
                   firstname: teboho
                   secondname: james
@@ -794,7 +703,7 @@ paths:
   /auth/login/owner:
     post:
       tags:
-      - Business Owner Authentication Endpoints
+      - Authentication Business Owner
       summary: Login Business Owner
       operationId: LoginBusinessOwner
       parameters: []
@@ -818,10 +727,13 @@ paths:
           headers: {}
       deprecated: false
       security: []
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
   /auth/login/owner/reset/{resetToken}:
     patch:
       tags:
-      - Business Owner Authentication Endpoints
+      - Authentication Business Owner
       summary: Business Owner Password Reset
       operationId: BusinessOwnerPasswordReset
       parameters:
@@ -858,7 +770,7 @@ paths:
   /auth/login/owner/forgot:
     patch:
       tags:
-      - Business Owner Authentication Endpoints
+      - Authentication Business Owner
       summary: Business Owner Forgot Password
       operationId: BusinessOwnerForgotPassword
       parameters: []
@@ -886,26 +798,10 @@ paths:
   /data/collection/start:
     post:
       tags:
-      - Data Collection Endpoints
+      - Data Collection
       summary: Start Data Collection
       operationId: StartDataCollection
       parameters: []
-      requestBody:
-        description: ''
-        content:
-          application/json:
-            schema:
-              allOf:
-              - $ref: '#/components/schemas/StartDataCollectionRequest'
-              - example:
-                  pageID: page ID string
-                  key: '123455'
-                  userID: userID string
-            example:
-              pageID: page ID string
-              key: '123455'
-              userID: userID string
-        required: true
       responses:
         '200':
           description: ''
@@ -917,26 +813,10 @@ paths:
   /data/collection/stop:
     post:
       tags:
-      - Data Collection Endpoints
+      - Data Collection
       summary: Stop Data Collection
       operationId: StopDataCollection
       parameters: []
-      requestBody:
-        description: ''
-        content:
-          application/json:
-            schema:
-              allOf:
-              - $ref: '#/components/schemas/StopDataCollectionRequest'
-              - example:
-                  pageID: page ID string
-                  key: '123455'
-                  userID: userID string
-            example:
-              pageID: page ID string
-              key: '123455'
-              userID: userID string
-        required: true
       responses:
         '200':
           description: ''
@@ -945,10 +825,26 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
+  /all/auctions:
+    get:
+      tags:
+      - Admin
+      summary: Get All Auctions
+      operationId: GetAllAuctions1
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
   /all/users:
     get:
       tags:
-      - Get All Database Elements Admin
+      - Admin
       summary: Get All Users
       operationId: GetAllUsers
       parameters: []
@@ -963,9 +859,9 @@ paths:
   /all/businesses:
     get:
       tags:
-      - Get All Database Elements Admin
-      summary: All Businesses
-      operationId: AllBusinesses
+      - Admin
+      summary: Get All Businesses
+      operationId: GetAllBusinesses1
       parameters: []
       responses:
         '200':
@@ -978,10 +874,389 @@ paths:
   /all/owners:
     get:
       tags:
-      - Get All Database Elements Admin
-      summary: Get All Business Owner
-      operationId: GetAllBusinessOwner
+      - Admin
+      summary: Get All Business Owners
+      operationId: GetAllBusinessOwners1
       parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /category/all:
+    get:
+      tags:
+      - Admin
+      summary: Get All Categories
+      operationId: GetAllCategories
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /category/delete/663abc70fdb5d0c63191368b:
+    delete:
+      tags:
+      - Admin
+      summary: Delete Category
+      operationId: DeleteCategory
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /category:
+    post:
+      tags:
+      - Admin
+      summary: Create A Category
+      operationId: CreateACategory
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /user/all:
+    get:
+      tags:
+      - Admin
+      summary: Get All Users1
+      operationId: GetAllUsers1
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /user/{userID}:
+    delete:
+      tags:
+      - Admin
+      summary: Delete User Profile
+      operationId: DeleteUserProfile
+      parameters:
+      - name: userID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+    patch:
+      tags:
+      - User Profile
+      summary: Update user profile
+      operationId: Updateuserprofile
+      parameters:
+      - name: userID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /bait/delete/{baitID}:
+    delete:
+      tags:
+      - Admin
+      summary: Delete Single Bait Plant
+      operationId: DeleteSingleBaitPlant
+      parameters:
+      - name: baitID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /bait/all:
+    get:
+      tags:
+      - Admin
+      summary: Get All Bait Plants
+      operationId: GetAllBaitPlants
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /category/delete/{categoryID}:
+    patch:
+      tags:
+      - Admin
+      summary: Update Category
+      operationId: UpdateCategory
+      parameters:
+      - name: categoryID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+    delete:
+      tags:
+      - Categories
+      summary: Delete Category
+      operationId: DeleteCategory1
+      parameters:
+      - name: categoryID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /bait:
+    post:
+      tags:
+      - Bait Plants
+      summary: Create Bait Plant
+      operationId: CreateBaitPlant
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            encoding: {}
+            schema:
+              required:
+              - name
+              - baitPlantDescription
+              - checkInStoreAvailability
+              - percentageDiscount
+              - price
+              - color
+              - size
+              - image
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Swagger
+                baitPlantDescription:
+                  type: string
+                  example: Python,SQL and Analytics
+                checkInStoreAvailability:
+                  type: string
+                  example: available
+                percentageDiscount:
+                  type: string
+                  example: 12%
+                price:
+                  type: string
+                  example: R30000
+                color:
+                  type: string
+                  example: Blue
+                size:
+                  type: string
+                  example: XL
+                image:
+                  type: string
+                  format: binary
+        required: false
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /bait/single/{baitID}:
+    get:
+      tags:
+      - Bait Plants
+      summary: Get Single Bait Plant
+      operationId: GetSingleBaitPlant
+      parameters:
+      - name: baitID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /bait/update/{baitID}:
+    patch:
+      tags:
+      - Bait Plants
+      summary: Update Bait Plant
+      operationId: UpdateBaitPlant
+      parameters:
+      - name: baitID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            encoding: {}
+            schema:
+              required:
+              - name
+              - baitPlantDescription
+              - checkInStoreAvailabilty
+              - percentageDiscount
+              - price
+              - color
+              - size
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Frontend Engineer
+                baitPlantDescription:
+                  type: string
+                  example: Python,SQL and Analytics
+                checkInStoreAvailabilty:
+                  type: string
+                  example: not available
+                percentageDiscount:
+                  type: string
+                  example: 28%
+                price:
+                  type: string
+                  example: R30000
+                color:
+                  type: string
+                  example: Purple
+                size:
+                  type: string
+                  example: Large
+        required: false
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /user/{useID}:
+    get:
+      tags:
+      - User Profile
+      summary: Get User Profile
+      operationId: GetUserProfile
+      parameters:
+      - name: useID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /user:
+    post:
+      tags:
+      - User Profile
+      summary: Create A New User
+      operationId: CreateANewUser
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /bait/category/single/{categoryID}:
+    get:
+      tags:
+      - Categories
+      summary: Get a single category
+      operationId: Getasinglecategory
+      parameters:
+      - name: categoryID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
       responses:
         '200':
           description: ''
@@ -992,8 +1267,8 @@ paths:
         variables: {}
 components:
   schemas:
-    RegisterUserRequest:
-      title: RegisterUserRequest
+    RegisterUserProfileRequest:
+      title: RegisterUserProfileRequest
       required:
       - firstname
       - secondname
@@ -1058,22 +1333,32 @@ components:
         interests: Fashion And Beauty
         resetToken: ''
         resetTokenExpiration: ''
-    LoginUserRequest:
-      title: LoginUserRequest
+    UserPasswordResetRequest:
+      title: UserPasswordResetRequest
+      required:
+      - newPassword
+      - email
+      type: object
+      properties:
+        newPassword:
+          type: string
+        email:
+          type: string
+      example:
+        newPassword: lizwi
+        email: saliba@gmail.com
+    UserForgotPasswordRequest:
+      title: UserForgotPasswordRequest
       required:
       - email
-      - password
       type: object
       properties:
         email:
           type: string
-        password:
-          type: string
       example:
         email: saliba@gmail.com
-        password: lizwi
-    CreateNewBusinessRequest:
-      title: CreateNewBusinessRequest
+    CreateBusinessRequest:
+      title: CreateBusinessRequest
       required:
       - BusinessName
       - PhoneNumber
@@ -1164,78 +1449,8 @@ components:
         verificationDoc: verificationDoc string
         status: pending
         socials: twitter
-    CreateAuctionMaterialRequest:
-      title: CreateAuctionMaterialRequest
-      required:
-      - campaignName
-      - campaignDescription
-      - campaignBudget
-      - campaignDailyBudget
-      - campaignStartDate
-      - checkInStoreAvailability
-      - percentageDiscount
-      - interests
-      - baitPlant
-      type: object
-      properties:
-        campaignName:
-          type: string
-        campaignDescription:
-          type: string
-        campaignBudget:
-          type: string
-        campaignDailyBudget:
-          type: string
-        campaignStartDate:
-          type: string
-        checkInStoreAvailability:
-          type: string
-        percentageDiscount:
-          type: string
-        interests:
-          type: string
-        baitPlant:
-          allOf:
-          - $ref: '#/components/schemas/BaitPlant'
-          - {}
-      example:
-        campaignName: Fish And Chips
-        campaignDescription: High Quality Fashion
-        campaignBudget: R500
-        campaignDailyBudget: R123
-        campaignStartDate: 12-06-1995
-        checkInStoreAvailability: Yes
-        percentageDiscount: 12%
-        interests: Food And Drinks
-        baitPlant:
-          name: Duck Fish
-          baitPlantDescription: Quality Duck Dish
-          price: R400
-          photos: Duck photos
-    BaitPlant:
-      title: BaitPlant
-      required:
-      - name
-      - baitPlantDescription
-      - price
-      - photos
-      type: object
-      properties:
-        name:
-          type: string
-        baitPlantDescription:
-          type: string
-        price:
-          type: string
-        photos:
-          type: string
-      example:
-        name: Duck Fish
-        baitPlantDescription: Quality Duck Dish
-        price: R400
-        photos: Duck photos
-    UpdateAuctionMaterialRequest:
-      title: UpdateAuctionMaterialRequest
+    UpdateAuctionRequest:
+      title: UpdateAuctionRequest
       required:
       - campaignName
       - campaignDescription
@@ -1282,8 +1497,30 @@ components:
           baitPlantDescription: ''
           price: ''
           photos: ''
-    UpdateBusinessOwnerDetailsRequest:
-      title: UpdateBusinessOwnerDetailsRequest
+    BaitPlant:
+      title: BaitPlant
+      required:
+      - name
+      - baitPlantDescription
+      - price
+      - photos
+      type: object
+      properties:
+        name:
+          type: string
+        baitPlantDescription:
+          type: string
+        price:
+          type: string
+        photos:
+          type: string
+      example:
+        name: ''
+        baitPlantDescription: ''
+        price: ''
+        photos: ''
+    UpdateBusinessOwnerRequest:
+      title: UpdateBusinessOwnerRequest
       required:
       - firstname
       - secondname
@@ -1348,8 +1585,8 @@ components:
         gender: male
         resetToken: generated by forgot password
         resetTokenExpiration: generated by forgot password endpoint
-    RegisterBusinessOwnerRequest:
-      title: RegisterBusinessOwnerRequest
+    RegisterBusinessOwnerProfileRequest:
+      title: RegisterBusinessOwnerProfileRequest
       required:
       - firstname
       - secondname
@@ -1428,30 +1665,6 @@ components:
       example:
         email: lucasR@gmail.com
         password: lucas123
-    UserForgotPasswordRequest:
-      title: UserForgotPasswordRequest
-      required:
-      - email
-      type: object
-      properties:
-        email:
-          type: string
-      example:
-        email: saliba@gmail.com
-    UserResetPasswordRequest:
-      title: UserResetPasswordRequest
-      required:
-      - newPassword
-      - email
-      type: object
-      properties:
-        newPassword:
-          type: string
-        email:
-          type: string
-      example:
-        newPassword: lizwi
-        email: saliba@gmail.com
     BusinessOwnerPasswordResetRequest:
       title: BusinessOwnerPasswordResetRequest
       required:
@@ -1476,59 +1689,20 @@ components:
           type: string
       example:
         email: saliba@gmail.com
-    StartDataCollectionRequest:
-      title: StartDataCollectionRequest
-      required:
-      - pageID
-      - key
-      - userID
-      type: object
-      properties:
-        pageID:
-          type: string
-        key:
-          type: string
-        userID:
-          type: string
-      example:
-        pageID: page ID string
-        key: '123455'
-        userID: userID string
-    StopDataCollectionRequest:
-      title: StopDataCollectionRequest
-      required:
-      - pageID
-      - key
-      - userID
-      type: object
-      properties:
-        pageID:
-          type: string
-        key:
-          type: string
-        userID:
-          type: string
-      example:
-        pageID: page ID string
-        key: '123455'
-        userID: userID string
   securitySchemes:
-    bearer:
+    httpBearer:
       type: http
       scheme: bearer
-security: []
+security:
+- httpBearer: []
 tags:
-- name: User Authentication Endpoints
-  description: ''
-- name: Business Endpoints
-  description: ''
-- name: Auction Endpoints
-  description: ''
-- name: Business Owner Endpoints
-  description: ''
-- name: Business Owner Authentication Endpoints
-  description: ''
-- name: Data Collection Endpoints
-  description: ''
-- name: Get All Database Elements Admin
-  description: ''
+- name: Authentication User
+- name: Businesses
+- name: Auctions
+- name: Business Owner
+- name: Authentication Business Owner
+- name: Data Collection
+- name: Admin
+- name: Bait Plants
+- name: User Profile
+- name: Categories

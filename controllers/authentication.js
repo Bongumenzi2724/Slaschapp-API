@@ -33,10 +33,18 @@ const registerUser= async(req,res)=>{
 			});
 		} */
     //Verify OTP,than move on and create your user
-    const user = await User.create({...req.body})
-    const token = user.createJWT()
-    res.status(StatusCodes.CREATED).json({user,token})
+    try{ 
+        const result=await cloudinary.uploader.upload(req.file.path);
+        req.body.profilePicture=result.secure_url;
+        req.body.cloudinary_id=result.public_id; 
+        const user=await User.create({...req.body})
+        const token=user.createJWT()
+        res.status(StatusCodes.CREATED).json({user:user,token:token});
+    }catch(error){
+        return res.status(500).status({status:false,message:error.message})
+    }
 }
+
 //user verification controller
 const userVerification=async({email},res)=>{
     try {
@@ -61,16 +69,10 @@ const loginUser=async(req,res)=>{
         throw new BadRequestError("Please provide email and password")
     }
     const user= await User.findOne({email})
-    console.log("Login Password")
-    console.log(user.password);
     if(!user){
         throw new UnauthenticatedError('Invalid Credentials')
     }
-
-    console.log("========================================");
-    //console.log(user)
     const isPasswordCorrect= await user.comparePassword(password)
-
     if(!isPasswordCorrect){
         throw new UnauthenticatedError('Invalid Credentials')
     }
@@ -80,9 +82,16 @@ const loginUser=async(req,res)=>{
 
 //register business owner
 const registerBusinessOwner=async(req,res)=>{
-    const businessOwner = await BusinessOwner.create({...req.body})
-    const token = businessOwner.createJWT()
-    res.status(StatusCodes.CREATED).json({id:businessOwner._id,firstname:businessOwner.firstname,surname:businessOwner.surname,token:token});
+    try{ 
+        const result=await cloudinary.uploader.upload(req.file.path);
+        req.body.profilePicture=result.secure_url;
+        req.body.cloudinary_id=result.public_id; 
+        const owner=await BusinessOwner.create({...req.body})
+        const token=owner.createJWT()
+        res.status(StatusCodes.CREATED).json({owner:owner,token:token});
+    }catch(error){
+        return res.status(500).status({status:false,message:error.message})
+    }
 }
 
 //logout the user

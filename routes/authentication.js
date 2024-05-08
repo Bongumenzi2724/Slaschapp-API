@@ -1,13 +1,12 @@
 const express=require('express')
 const router=express.Router()
-
+const upload=require('../utils/multer');
 const {registerUser,loginUser,registerBusinessOwner,loginBusinessOwner}=require('../controllers/authentication');
-
 const {sendOTP}=require('../controllers/optController');
 const { forgotPassword, passwordReset } = require('../controllers/password_controller');
 
 //register app user
-router.post('/register/user',registerUser)
+router.post('/register/user',upload.single('image'),registerUser)
 //login app user
 router.post('/login/user',loginUser)
 //user forgot and reset password route

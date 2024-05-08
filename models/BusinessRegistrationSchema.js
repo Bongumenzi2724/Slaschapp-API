@@ -45,10 +45,7 @@ const BusinessRegistrationSchema = new mongoose.Schema({
         minlength:1
     },
     BusinessLogo:{
-        type:String,
-        required:[false,'Please Provide Your Birthday in the format (YYYY/MM/DD)'],
-        maxlength:12,
-        minlength:1
+        type:String
     },
     verificationDoc:{
         type:String,
@@ -70,6 +67,9 @@ const BusinessRegistrationSchema = new mongoose.Schema({
         default:'facebook',
         maxlength:10000,
         minlength:1
+    },
+    cloudinary_id:{
+        type:String
     },
     createdBy:{
         type:mongoose.Types.ObjectId,
