@@ -1,74 +1,6 @@
 const { StatusCodes } = require("http-status-codes")
 const Business=require('../models/BusinessRegistrationSchema')
-const BusinessOwner=require('../models/BusinessOwnerRegistration')
 const {BadRequestError,NotFoundError}=require('../errors')
-
-//create a new business owner
-const createBusinessOwner=async(req,res)=>{
-    //console.log(req.body);
-    req.body.createdBy=req.user.userId
-    try{ 
-        //req.body.createdBy=req.user.userId;
-        //.body.businessId=req.params.id;
-        const result=await cloudinary.uploader.upload(req.file.path);
-        req.body.profilePicture=result.secure_url;
-        req.body.cloudinary_id=result.public_id; 
-        const businessOwner=await BusinessOwner.create({...req.body})
-        res.status(StatusCodes.CREATED).json({businessOwner:{businessOwner}});
-    }catch(error){
-        return res.status(500).status({status:false,message:error.message})
-    }
-}
-//update business owner details
-const updateBusinessOwnerDetails=async(req,res)=>{
-
-    const{body:{firstname,secondname,surname,profilePicture,phoneNumber,email,password,AcceptTermsAndConditions,locationOrAddress,birthday,IdNumber,IdDocumentLink,gender,resetToken,resetTokenExpiration},user:{userId},params:{id:ownerId}}=req
-    if(firstname==""||secondname==""||surname==""||profilePicture==""||phoneNumber==""||email==""||password==""||AcceptTermsAndConditions==""||locationOrAddress==""||birthday==""||IdNumber==""||IdDocumentLink==""||gender==""){
-
-        throw new BadRequestError("Fields cannot be empty please fill everything")
-    }
-    const businessOwner=await BusinessOwner.findByIdAndUpdate({_id:ownerId,createdBy:userId},req.body,{new:true,runValidators:true})
-    if(!businessOwner){
-        throw new NotFoundError(`No Business Owner with id ${ownerId}`)
-    }
-    res.status(StatusCodes.OK).json({businessOwner});
-}
-//delete or tag business owner
-const deleteBusinessOwner=async(req,res)=>{
-try{
-    const{params:{id:ownerId}}=req
-    const businessOwner=await BusinessOwner.findById(ownerId);
-    if(!businessOwner){
-        throw new NotFoundError(`No Business Owner With id ${ownerId}`)
-    }
-    await cloudinary.uploader.destroy(businessOwner.cloudinary_id);
-    await businessOwner.deleteOne({_id:req.prams.id});
-    return res.status(StatusCodes.OK).json({status:true,message:"Business Owner Successfully Deleted"});
-}catch(error){
-    return res.status(StatusCodes.OK).json({status:false,message:error.message});
-}
-}
-//get all business owners available
-const getAllBusinessOwners=async(req,res)=>{
-    // res.send("Get All The Business Owners");
-
-    const businessOwners=await BusinessOwner.find({}).sort('createdAt')
-    res.status(StatusCodes.OK).json({businessOwners,count:auctionData.length});
-}
-//get single business owner
-const getSingleBusinessOwner=async(req,res)=>{
-
-    const{user:{userId},params:{id:ownerId}}=req
-
-    const businessOwner=await BusinessOwner.findById({_id:ownerId})
-
-    if(!businessOwner){
-        throw new NotFoundError(`No Business Owner with id ${ownerId}`)
-    }
-    
-    res.status(StatusCodes.OK).json({businessOwner})
-}
-
 //Create A Single Business
 const createBusiness=async(req,res)=>{
     try{ 
@@ -147,4 +79,4 @@ const searchBusiness=async(req,res)=>{
     }
 }
 
-module.exports={createBusiness,searchBusiness,getSingleBusiness,updateBusinessDetails,getAllBusinesses,deleteBusiness,createBusinessOwner,updateBusinessOwnerDetails,deleteBusinessOwner,getSingleBusinessOwner,getAllBusinessOwners}
+module.exports={createBusiness,searchBusiness,getSingleBusiness,updateBusinessDetails,getAllBusinesses,deleteBusiness}

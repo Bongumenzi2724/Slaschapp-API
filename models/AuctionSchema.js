@@ -1,6 +1,5 @@
 const mongoose=require('mongoose')  
 const AuctionSchema = new mongoose.Schema({
-    
     campaignName:{
         type:String,
         required:[true,'Please Provide The Name For Your Campaign'],

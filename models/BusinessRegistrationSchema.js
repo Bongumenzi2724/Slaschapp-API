@@ -48,10 +48,7 @@ const BusinessRegistrationSchema = new mongoose.Schema({
         type:String
     },
     verificationDoc:{
-        type:String,
-        required:[true,'Please Provide Your Verification Document'],
-        maxlength:10000,
-        minlength:1
+        type:String
     },
     status:{
         type:String,

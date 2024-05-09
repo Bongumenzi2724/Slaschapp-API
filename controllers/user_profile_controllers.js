@@ -1,6 +1,5 @@
 const {NotFoundError} = require('../errors')
 const User=require('../models/UserRegistrationSchema')
-const cloudinary=require('../utils/cloudinary');
 const {StatusCodes}=require('http-status-codes')
 //get single user
 const getUserProfile=async(req,res)=>{
@@ -18,7 +17,6 @@ const deleteUserProfile=async(req,res)=>{
      if(!user){
         throw new NotFoundError(`No user profile with id ${req.params.id}`);
     }
-    await cloudinary.uploader.destroy(user.cloudinary_id);
     await user.deleteOne({_id:req.params.id});
     return res.status(StatusCodes.OK).json({status:true,message:"Business Deleted Successfully"})
 }catch(error){

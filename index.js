@@ -5,20 +5,18 @@ const app = express()
 //extra security packages
 const helmet=require('helmet')
 const cors=require('cors')
-const expressBusboy = require('express-busboy');
-
 const bodyParser=require('body-parser');
-
 //const xss=require('xss-clean')
 const rateLimiter=require('express-rate-limit')
 
 //routers
 const authRouter=require('./routes/authentication')
-const allRouter=require('./routes/AllRoutes')
+const adminRouter=require('./routes/admin_routes')
 const businessRouter=require('./routes/business')
 const businessSearchRouter=require('./routes/search')
 const dataRouter=require('./routes/dataRoutes')
 const baitRouter=require('./routes/bait_plant')
+const ownerRouter=require('./routes/owner')
 const categoriesRouter=require('./routes/categories')
 const userRoute=require('./routes/user_profile')
 //Database Connection
@@ -28,7 +26,8 @@ const authenticateUser=require('./middleware/authentication');
 //error-handler
 const notFoundMiddleWare=require('./middleware/no-found')
 const errorHandlerMiddleWare=require('./middleware/error-handler')
-
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.set('trust proxy',1);
 app.use(rateLimiter({
     windowMS:15*60*1000,//15 minutes
@@ -37,24 +36,22 @@ app.use(rateLimiter({
 app.use(express.json())
 app.use(helmet())
 app.use(cors())
-app.use(bodyParser.json())
-expressBusboy.extend(app);
-//app.use(xss())
 //Swagger
 const swaggerUI=require('swagger-ui-express')
 const YAML=require('yamljs')
 const swaggerDocument=YAML.load('./swagger.yaml')
 
 //Routes
-app.use('/api/slaschapp/all',allRouter);
-app.use('/api/slaschapp/business/auction',businessRouter);
+app.use('/api/slaschapp/admin',adminRouter);
+app.use('/api/slaschapp/business/auction',authenticateUser,businessRouter);
 app.use('/api/slaschapp/auth',authRouter);
 app.use('/api/slaschapp/business',authenticateUser,businessRouter);
 app.use('/api/slaschapp/search',authenticateUser,businessSearchRouter);
 app.use('/api/slaschapp/data',dataRouter);
-app.use('/api/slaschapp/bait',baitRouter);
+app.use('/api/slaschapp/bait',authenticateUser,baitRouter);
 app.use('/api/slaschapp/category',categoriesRouter)
-app.use('/api/slaschapp/user',userRoute)
+app.use('/api/slaschapp/user',authenticateUser,userRoute)
+app.use('/api/slaschapp/owner',ownerRouter)
 app.get('/',(req,res)=>{
     res.send('<h1>Business API</h1><a href="/api-docs">Documentation</a>');
 })

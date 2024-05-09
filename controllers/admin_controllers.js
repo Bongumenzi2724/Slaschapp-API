@@ -3,6 +3,9 @@ const Auction=require('../models/AuctionSchema')
 const Business=require('../models/BusinessRegistrationSchema')
 const BusinessOwner=require('../models/BusinessOwnerRegistration')
 const {StatusCodes}=require('http-status-codes')
+const { create_category, get_all_categories } = require('./categories_controllers')
+const { getAllUsersProfiles, deleteUserProfile, getUserProfile } = require('./user_profile_controllers')
+const { read_bait_plants, update_bait_plant } = require('./bait_plant_controllers')
 
 const AllUsers=async(req,res)=>{
     const AllUsersData=await User.find({}).sort('createdAt')
@@ -22,4 +25,4 @@ const AllAuctions=async(req,res)=>{
     res.status(StatusCodes.OK).json({AllAuctionData,count:AllAuctionData.length});
 }
 
-module.exports={AllUsers,AllBusiness,AllAuctions,AllBusinessOwners}
+module.exports={AllUsers,AllBusiness,AllAuctions,AllBusinessOwners,get_all_categories,create_category,getAllUsersProfiles,read_bait_plants,deleteUserProfile,update_bait_plant,getUserProfile}

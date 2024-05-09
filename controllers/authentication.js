@@ -34,17 +34,20 @@ const registerUser= async(req,res)=>{
 		} */
     //Verify OTP,than move on and create your user
     try{ 
-        const result=await cloudinary.uploader.upload(req.file.path);
-        req.body.profilePicture=result.secure_url;
-        req.body.cloudinary_id=result.public_id; 
+        //const result=await cloudinary.uploader.upload(req.file.path);
+        //console.log(result);
+        //req.body.profilePicture=result.secure_url;
+        //req.body.cloudinary_id=result.public_id; 
+        
         const user=await User.create({...req.body})
         const token=user.createJWT()
-        res.status(StatusCodes.CREATED).json({user:user,token:token});
+        return res.status(200).json({user:user,token:token});
+
     }catch(error){
+        console.log(req.body)
         return res.status(500).status({status:false,message:error.message})
     }
 }
-
 //user verification controller
 const userVerification=async({email},res)=>{
     try {
@@ -60,7 +63,6 @@ const userVerification=async({email},res)=>{
         
     }
 }
-
 //login app user
 const loginUser=async(req,res)=>{
     const {email,password}=req.body
@@ -79,21 +81,6 @@ const loginUser=async(req,res)=>{
     const token = user.createJWT()
     res.status(StatusCodes.OK).json({user:{id:user._id,name:user.firstname,surname:user.surname,email:user.email},token})
 }
-
-//register business owner
-const registerBusinessOwner=async(req,res)=>{
-    try{ 
-        const result=await cloudinary.uploader.upload(req.file.path);
-        req.body.profilePicture=result.secure_url;
-        req.body.cloudinary_id=result.public_id; 
-        const owner=await BusinessOwner.create({...req.body})
-        const token=owner.createJWT()
-        res.status(StatusCodes.CREATED).json({owner:owner,token:token});
-    }catch(error){
-        return res.status(500).status({status:false,message:error.message})
-    }
-}
-
 //logout the user
 //deregister the user
 //login business owner
@@ -116,4 +103,4 @@ const loginBusinessOwner=async(req,res)=>{
     res.status(StatusCodes.OK).json({owner:{id:owner._id,name:owner.firstname,surname:owner.surname,email:owner.email},token:{token}})
 }
 
-module.exports={registerUser,loginUser,registerBusinessOwner,loginBusinessOwner,userVerification}
+module.exports={registerUser,loginUser,loginBusinessOwner,userVerification}

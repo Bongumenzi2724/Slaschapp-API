@@ -65,10 +65,8 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
         minlength:1
     },
     IdDocumentLink:{
-        type:String,
-        required:[true,'Please Provide Your ID Document Link'],
-        maxlength:1000,
-        minlength:1
+        //id document upload
+        type:String
     },
     gender:{
         type:String,
@@ -84,8 +82,7 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
         type:String,
         required:false,
         default:''
-    },
-    cloudinary_id:{type:String}
+    }
 })
 
 BusinessOwnerRegistrationSchema.pre('save',async function(){

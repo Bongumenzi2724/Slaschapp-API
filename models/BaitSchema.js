@@ -43,16 +43,13 @@ size:{
     minlength:1
 },
 photos:{
-    type:String
-    //required:[true,'Please Provide Photos For Your Bait Plant']
+    type:Array
 },
-
-cloudinary_id:{type:String},
 createdBy:{
     type:mongoose.Types.ObjectId,
     ref:'Auction',
     required:[true,'Please provide the business owner']
-}
+} 
 },{timestamps:true})
 
-module.exports=mongoose.model('BaitSchema',BaitSchema)
+module.exports=mongoose.model('Bait',BaitSchema)
