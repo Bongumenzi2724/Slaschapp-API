@@ -51,7 +51,7 @@ app.use('/api/slaschapp/data',dataRouter);
 app.use('/api/slaschapp/bait',authenticateUser,baitRouter);
 app.use('/api/slaschapp/category',categoriesRouter)
 app.use('/api/slaschapp/user',authenticateUser,userRoute)
-app.use('/api/slaschapp/owner',ownerRouter)
+app.use('/api/slaschapp/business/owner',authenticateUser,ownerRouter)
 app.get('/',(req,res)=>{
     res.send('<h1>Business API</h1><a href="/api-docs">Documentation</a>');
 })
