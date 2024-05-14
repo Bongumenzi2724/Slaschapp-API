@@ -19,6 +19,7 @@ const baitRouter=require('./routes/bait_plant')
 const ownerRouter=require('./routes/owner')
 const categoriesRouter=require('./routes/categories')
 const userRoute=require('./routes/user_profile')
+const cartRouter=require('./routes/cart_routes')
 //Database Connection
 const connectDB = require('./db/connect')
 //middleware
@@ -52,6 +53,8 @@ app.use('/api/slaschapp/bait',authenticateUser,baitRouter);
 app.use('/api/slaschapp/category',categoriesRouter)
 app.use('/api/slaschapp/user',authenticateUser,userRoute)
 app.use('/api/slaschapp/business/owner',authenticateUser,ownerRouter)
+app.use('/api/slaschapp/cart/bait',cartRouter)
+
 app.get('/',(req,res)=>{
     res.send('<h1>Business API</h1><a href="/api-docs">Documentation</a>');
 })

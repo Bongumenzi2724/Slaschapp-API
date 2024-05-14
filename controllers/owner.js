@@ -4,7 +4,6 @@ const BusinessOwnerRegistration = require("../models/BusinessOwnerRegistration")
 //register business owner
 const registerBusinessOwner=async(req,res)=>{
     try{ 
-        console.log(req.body);
         const BusinessOwner = await BusinessOwnerRegistration.create({...req.body})
         const token=owner.createJWT()
         return res.status(StatusCodes.CREATED).json({BusinessOwner:BusinessOwner,token:token});

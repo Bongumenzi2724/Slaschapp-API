@@ -84,6 +84,7 @@ const loginUser=async(req,res)=>{
 //logout the user
 //deregister the user
 //login business owner
+
 const loginBusinessOwner=async(req,res)=>{
     const {email,password}=req.body
     if(!email||!password){
@@ -102,5 +103,6 @@ const loginBusinessOwner=async(req,res)=>{
     const token = owner.createJWT()
     res.status(StatusCodes.OK).json({owner:{id:owner._id,name:owner.firstname,surname:owner.surname,email:owner.email},token:{token}})
 }
+
 
 module.exports={registerUser,loginUser,loginBusinessOwner,userVerification}
