@@ -106,22 +106,6 @@ const loginBusinessOwner=async(req,res)=>{
     res.status(StatusCodes.OK).json({owner:{id:owner._id,name:owner.firstname,surname:owner.surname,email:owner.email},token:{token}})
 }
 
-//register business owner
-//firstname
-//secondname
-//surname
-//profilePicture
-//phoneNumber
-//email
-//password
-//AcceptTermsAndConditions
-//locationOrAddress
-//birthday
-//IdNumber
-//IdDocumentLink
-//gender
-//resetToken
-//resetTokenExpiration
 const registerBusinessOwner=async(req,res)=>{
 
     try{ 
@@ -145,8 +129,6 @@ const registerBusinessOwner=async(req,res)=>{
         //console.log(newOwner); 
         //const BusinessOwner = await BusinessOwner.create({...req.body})
         newOwner.save();
-        //const token=owner.createJWT();
-        //console.log(token);
         const token=jwt.sign({userId:newOwner._id,name:newOwner.name},process.env.JWT_SECRET,{expiresIn:process.env.JWT_LIFETIME})
         return res.status(201).json({BusinessOwner:newOwner,token:token});
     }catch(error){

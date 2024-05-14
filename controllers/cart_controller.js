@@ -1,7 +1,20 @@
 const Cart = require("../models/Cart");
 
 const getCart=async(req,res)=>{
-    res.status(200).json({status:true,message:"Get Cart",cartID:req.params.cartID})
+    const userId=req.user.id;
+        try {
+            const cart=await Cart.find({userId:userId}).populate({
+                path:'cart',
+                populate:{
+                    path:'bait',
+                    select:'time coords'
+                }
+            });
+
+        return res.status(200).json({status:true,cart:cart});
+        } catch (error) {
+        return res.status(500).json({status:false,message:error.message});
+        }
 }
 //incude the bait id and the user id
 const addBaitToCart=async(req,res)=>{
@@ -72,18 +85,15 @@ const decrementBaitQuantity=async(req,res)=>{
     }
     //res.status(200).json({status:true,message:"Decrement Bait Quantity From Cart",baitID:req.params.baitID})
 }
-    
-
-
 const getCartCount=async(req,res)=>{
-    const userId=req.user.id;
-        try {
-        const count=await Cart.countDocuments({userId:userId});
-        return res.status(200).json({status:true,count:count});
+    const userID=req.user.id;
+    try {
+    const count=await Cart.countDocuments({userID:userID});
+    return res.status(200).json({status:true,count:count});
   
-        } catch (error) {
-        return res.status(500).json({status:false,message:error.message});
-        }
+    } catch (error) {
+    return res.status(500).json({status:false,message:error.message});
+    }
 
 }
 

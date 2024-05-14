@@ -17,12 +17,12 @@ const AllBusinessOwners=async(req,res)=>{
 }
 const AllBusiness=async(req,res)=>{
     const businesses=await Business.find({}).sort('createdAt')
-    res.status(StatusCodes.OK).json({businesses,count:BusinessData.length});
+    res.status(StatusCodes.OK).json({businesses,count:businesses.length});
 }
 
 const AllAuctions=async(req,res)=>{
     const AuctionData=await Auction.find({}).sort('createdAt')
-    res.status(StatusCodes.OK).json({auctionData,count:AuctionData.length});
+    res.status(StatusCodes.OK).json({AuctionData,count:AuctionData.length});
 }
 
 module.exports={AllUsers,AllBusiness,AllAuctions,AllBusinessOwners,get_all_categories,create_category,getAllUsersProfiles,read_bait_plants,deleteUserProfile,update_bait_plant,getUserProfile}
