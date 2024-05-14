@@ -1,6 +1,7 @@
 const {BadRequestError,UnauthenticatedError} = require('../errors')
 const User=require('../models/UserRegistrationSchema')
 const {StatusCodes}=require('http-status-codes')
+const jwt = require('jsonwebtoken')
 const BusinessOwner=require('../models/BusinessOwnerRegistration')
 const nodemailer=require('nodemailer');
 const OTP=require('../models/userOTPVerification')
@@ -106,11 +107,48 @@ const loginBusinessOwner=async(req,res)=>{
 }
 
 //register business owner
+//firstname
+//secondname
+//surname
+//profilePicture
+//phoneNumber
+//email
+//password
+//AcceptTermsAndConditions
+//locationOrAddress
+//birthday
+//IdNumber
+//IdDocumentLink
+//gender
+//resetToken
+//resetTokenExpiration
 const registerBusinessOwner=async(req,res)=>{
+
     try{ 
-        const BusinessOwner = await BusinessOwnerRegistration.create({...req.body})
-        const token=owner.createJWT()
-        return res.status(StatusCodes.CREATED).json({BusinessOwner:BusinessOwner,token:token});
+          const newOwner=new BusinessOwner({
+            firstname:req.body.firstname,
+            secondname:req.body.secondname,
+            surname:req.body.surname,
+            profilePicture:req.body.profilePicture,
+            phoneNumber:req.body.phoneNumber,
+            email:req.body.email,
+            password:req.body.password,
+            AcceptTermsAndConditions:req.body.AcceptTermsAndConditions,
+            locationOrAddress:req.body.locationOrAddress,
+            birthday:req.body.birthday,
+            IdNumber:req.body.IdNumber,
+            IdDocumentLink:req.body.IdDocumentLink,
+            gender:req.body.gender,
+            resetToken:req.body.resetToken,
+            resetTokenExpiration:req.body.resetTokenExpiration
+        });
+        //console.log(newOwner); 
+        //const BusinessOwner = await BusinessOwner.create({...req.body})
+        newOwner.save();
+        //const token=owner.createJWT();
+        //console.log(token);
+        const token=jwt.sign({userId:newOwner._id,name:newOwner.name},process.env.JWT_SECRET,{expiresIn:process.env.JWT_LIFETIME})
+        return res.status(201).json({BusinessOwner:newOwner,token:token});
     }catch(error){
         return res.status(500).status({status:false,message:error.message})
     }

@@ -13,7 +13,6 @@ const addBaitToCart=async(req,res)=>{
         const existingBait=await Cart.findOne({userID:userID,baitID:baitID});
         count=await Cart.countDocuments({userID:userID});
         if(existingBait){
-            console.log(existingBait.totalPrice)
             existingBait.totalPrice+=totalPrice*quantity;
             existingBait.quantity+=quantity;
             await existingBait.save();
@@ -35,9 +34,9 @@ const addBaitToCart=async(req,res)=>{
 }
 
 const removeBaitFromCart=async(req,res)=>{
-   console.log(req.params.cartItemID,"",req.params.userID)
+   console.log(req.params.baitID,"",req.params.userID)
    try {
-        await Cart.findByIdAndDelete({_id:cartItemID});
+        await Cart.findByIdAndDelete({_id:baitID});
         count=await Cart.countDocuments({userID:userID});
         return res.status(200).json({status:true,count:count,message:"Cart Item Removed"});
     } catch (error) {
@@ -48,9 +47,10 @@ const removeBaitFromCart=async(req,res)=>{
 
 const decrementBaitQuantity=async(req,res)=>{
     //const userId=req.user.id;
-    const id=req.params.id;
+    //use baitID for filtering
+    const {cartID}=req.params;
     try {
-        const cartItem=await Cart.findById(id);
+        const cartItem=await Cart.findById(cartID);
         if(cartItem){
             const productPrice=cartItem.totalPrice/cartItem.quantity;
             if(cartItem.quantity>1){
@@ -59,7 +59,7 @@ const decrementBaitQuantity=async(req,res)=>{
                 await cartItem.save();
                 return res.status(200).json({status:true,message:"Product quantity successfully decremented",quantity:cartItem.quantity});
             }else{
-                await Cart.findOneAndDelete({_id:id});
+                await Cart.findOneAndDelete({_id:cartID});
                 return res.status(200).json({status:true,message:"Product quantity successfully removed from the cart"});
             }
         }
@@ -76,7 +76,14 @@ const decrementBaitQuantity=async(req,res)=>{
 
 
 const getCartCount=async(req,res)=>{
-    res.status(200).json({status:true,message:"Get Cart Count",cartID:req.params.cartID})
+    const userId=req.user.id;
+        try {
+        const count=await Cart.countDocuments({userId:userId});
+        return res.status(200).json({status:true,count:count});
+  
+        } catch (error) {
+        return res.status(500).json({status:false,message:error.message});
+        }
 
 }
 

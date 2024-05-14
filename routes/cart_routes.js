@@ -3,9 +3,9 @@ const {addBaitToCart, decrementBaitQuantity, removeBaitFromCart, getCartCount, g
 
 router.post('/:baitID/:userID',addBaitToCart);
 
-router.delete('/decrement/:cartID',decrementBaitQuantity);
+router.get('/decrement/:cartID',decrementBaitQuantity);
 
-router.delete('/remove/:cartItemID/:userID',removeBaitFromCart);
+router.delete('/remove/:baitID/:userID',removeBaitFromCart);
 
 router.get('/count',getCartCount);
 
