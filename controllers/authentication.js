@@ -85,6 +85,7 @@ const loginUser=async(req,res)=>{
 //deregister the user
 //login business owner
 
+
 const loginBusinessOwner=async(req,res)=>{
     const {email,password}=req.body
     if(!email||!password){
@@ -104,5 +105,15 @@ const loginBusinessOwner=async(req,res)=>{
     res.status(StatusCodes.OK).json({owner:{id:owner._id,name:owner.firstname,surname:owner.surname,email:owner.email},token:{token}})
 }
 
+//register business owner
+const registerBusinessOwner=async(req,res)=>{
+    try{ 
+        const BusinessOwner = await BusinessOwnerRegistration.create({...req.body})
+        const token=owner.createJWT()
+        return res.status(StatusCodes.CREATED).json({BusinessOwner:BusinessOwner,token:token});
+    }catch(error){
+        return res.status(500).status({status:false,message:error.message})
+    }
+}
 
-module.exports={registerUser,loginUser,loginBusinessOwner,userVerification}
+module.exports={registerUser,loginUser,loginBusinessOwner,registerBusinessOwner,userVerification}

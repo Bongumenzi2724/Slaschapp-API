@@ -1,16 +1,6 @@
 const { StatusCodes } = require("http-status-codes")
 const {BadRequestError,NotFoundError}=require('../errors');
 const BusinessOwnerRegistration = require("../models/BusinessOwnerRegistration");
-//register business owner
-const registerBusinessOwner=async(req,res)=>{
-    try{ 
-        const BusinessOwner = await BusinessOwnerRegistration.create({...req.body})
-        const token=owner.createJWT()
-        return res.status(StatusCodes.CREATED).json({BusinessOwner:BusinessOwner,token:token});
-    }catch(error){
-        return res.status(500).status({status:false,message:error.message})
-    }
-}
 //update business owner details
 const updateBusinessOwnerDetails=async(req,res)=>{
 

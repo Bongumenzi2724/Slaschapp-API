@@ -57,7 +57,7 @@ const decrementBaitQuantity=async(req,res)=>{
                 cartItem.quantity-=1;
                 cartItem.totalPrice-=productPrice;
                 await cartItem.save();
-                return res.status(200).json({status:true,message:"Product quantity successfully decremented"});
+                return res.status(200).json({status:true,message:"Product quantity successfully decremented",quantity:cartItem.quantity});
             }else{
                 await Cart.findOneAndDelete({_id:id});
                 return res.status(200).json({status:true,message:"Product quantity successfully removed from the cart"});
