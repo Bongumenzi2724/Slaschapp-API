@@ -1,6 +1,6 @@
 const express=require('express')
 const router=express.Router()
-const {registerBusinessOwner,getAllBusinessOwners,deleteBusinessOwner,getSingleBusinessOwner,updateBusinessOwnerDetails}=require('../controllers/owner')
+const {getAllBusinessOwners,deleteBusinessOwner,getSingleBusinessOwner,updateBusinessOwnerDetails}=require('../controllers/owner')
 
 //Get all business owners
 router.get('/',getAllBusinessOwners)

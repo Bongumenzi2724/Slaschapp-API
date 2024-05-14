@@ -52,5 +52,4 @@ module.exports={
     ,deleteBusinessOwner
     ,getAllBusinessOwners
     ,getSingleBusinessOwner
-    ,registerBusinessOwner
 }
