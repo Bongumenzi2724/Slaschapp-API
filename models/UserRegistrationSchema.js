@@ -76,9 +76,7 @@ const UserSchema = new mongoose.Schema({
         //default:'male'
     },
     wallet:{
-        type:String,
-        //enum:['Male','Female','Rather not say'],
-        //default:'male'
+        type:String
     },
     interests:{
         type:String,
@@ -97,7 +95,7 @@ const UserSchema = new mongoose.Schema({
         type:String,
         required:[false,'Please Provide the Expiration Time Of The Token']
     },
-});
+},{timestamps:true});
 
 UserSchema.pre('save',async function(){
     const salt = await bcrypt.genSalt(10);

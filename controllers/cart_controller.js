@@ -51,7 +51,7 @@ const removeBaitFromCart=async(req,res)=>{
    try {
         await Cart.findByIdAndDelete({_id:baitID});
         count=await Cart.countDocuments({userID:userID});
-        return res.status(200).json({status:true,count:count,message:"Cart Item Removed"});
+        return res.status(200).json({status:true,count:count,message:"Bait Item Removed Successfully"});
     } catch (error) {
         return res.status(500).json({status:false,message:error.message});
     } 
@@ -85,6 +85,7 @@ const decrementBaitQuantity=async(req,res)=>{
     }
     //res.status(200).json({status:true,message:"Decrement Bait Quantity From Cart",baitID:req.params.baitID})
 }
+
 const getCartCount=async(req,res)=>{
     const userID=req.user.id;
     try {

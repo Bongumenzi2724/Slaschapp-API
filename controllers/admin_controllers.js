@@ -11,18 +11,20 @@ const AllUsers=async(req,res)=>{
     const UsersData=await User.find({}).sort('createdAt')
     res.status(StatusCodes.OK).json({UsersData,count:UsersData.length});
 }
+
 const AllBusinessOwners=async(req,res)=>{
     const BusinessOwnersData=await BusinessOwner.find({}).sort('createdAt')
     res.status(StatusCodes.OK).json({BusinessOwnersData,count:BusinessOwnersData.length});
 }
+
 const AllBusiness=async(req,res)=>{
     const businesses=await Business.find({}).sort('createdAt')
     res.status(StatusCodes.OK).json({businesses,count:businesses.length});
 }
 
 const AllAuctions=async(req,res)=>{
-    const AuctionData=await Auction.find({}).sort('createdAt')
-    res.status(StatusCodes.OK).json({AuctionData,count:AuctionData.length});
+    const auctionData=await Auction.find({}).sort('createdAt')
+    res.status(StatusCodes.OK).json({auctionData,count:auctionData.length});
 }
 
 module.exports={AllUsers,AllBusiness,AllAuctions,AllBusinessOwners,get_all_categories,create_category,getAllUsersProfiles,read_bait_plants,deleteUserProfile,update_bait_plant,getUserProfile}

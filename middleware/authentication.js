@@ -1,4 +1,3 @@
-const User = require('../models/UserRegistrationSchema')
 const jwt = require('jsonwebtoken')
 const { UnauthenticatedError } = require('../errors')
 
