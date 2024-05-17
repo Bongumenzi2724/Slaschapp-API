@@ -35,14 +35,29 @@ const registerUser= async(req,res)=>{
 		} */
     //Verify OTP,than move on and create your user
     try{ 
-        //const result=await cloudinary.uploader.upload(req.file.path);
-        //console.log(result);
-        //req.body.profilePicture=result.secure_url;
-        //req.body.cloudinary_id=result.public_id; 
-        
-        const user=await User.create({...req.body})
-        const token=user.createJWT()
-        return res.status(200).json({user:user,token:token});
+        const newUser=new User({
+            firstname:req.body.firstname,
+            secondname:req.body.secondname,
+            surname:req.body.surname,
+            profilePicture:req.body.profilePicture,
+            phoneNumber:req.body.phoneNumber,
+            email:req.body.email,
+            password:req.body.password,
+            AcceptTermsAndConditions:req.body.AcceptTermsAndConditions,
+            locationOrAddress:req.body.locationOrAddress,
+            birthday:req.body.birthday,
+            IdNumber:req.body.IdNumber,
+            IdDocumentLink:req.body.IdDocumentLink,
+            gender:req.body.gender,
+            wallet:req.body.wallet,
+            interests:req.body.interests,
+            resetToken:req.body.resetToken,
+            resetTokenExpiration:req.body.resetTokenExpiration
+        });
+        console.log(newUser);
+        newUser.save();
+        const token=jwt.sign({userId:newUser._id,name:newUser.name},process.env.JWT_SECRET,{expiresIn:process.env.JWT_LIFETIME})
+        return res.status(201).json({User:newUser,token:token}); 
 
     }catch(error){
         console.log(req.body)

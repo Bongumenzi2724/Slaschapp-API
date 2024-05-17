@@ -80,12 +80,7 @@ const UserSchema = new mongoose.Schema({
     },
     interests:{
         type:String,
-        required:[true,'Please Provide Your Interests'],
-        maxlength:10000,
-        minlength:1
-    },
-    cloudinary_id:{
-        type:String
+        required:[true,'Please Provide Your Interests']
     },
     resetToken:{
         type:String,
