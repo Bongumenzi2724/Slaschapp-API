@@ -2,7 +2,12 @@ const { NotFoundError } = require("../errors");
 const Categories = require("../models/Categories");
 const create_category=async(req,res)=>{
     try{ 
-    const categories=await Categories.create({...req.body})
+        const categories=new BusinessOwner({
+            categoryName:req.body.categoryName,
+            categoryImage:req.body.categoryImage,
+        });
+        categories.save();
+    //const categories=await Categories.create({...req.body})
     return res.status(201).json(categories);
     }catch(error){
         return res.status(500).status({status:false,message:error.message})

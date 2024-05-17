@@ -4,15 +4,15 @@ const {StatusCodes}=require('http-status-codes')
 
 const createAuction=async(req,res)=>{
     req.body.createdBy=req.user.userId;
-    req.body.businessId=req.params.id;
-    const auction = await Auction.create(req.body);
-    res.status(StatusCodes.CREATED).json({auction});
+    console.log(req.user)
+    const newAuction=await Auction.create({...req.body});
+    res.status(StatusCodes.CREATED).json({newAuction});
 }
 
 const updateAuctions=async(req,res)=>{
 
-   const{body:{campaignName,campaignDescription,campaignBudget,campaignDailyBudget,campaignStartDate,checkInStoreAvailability,percentageDiscount,interests,baitPlant:{name,descriptionBaitPlant,price,photos}},user:{userId},params:{auctionId:auctionId}}=req
-   if(campaignName==""||campaignDescription==""||campaignBudget==""||campaignDailyBudget==""||campaignStartDate==""||checkInStoreAvailability==""||percentageDiscount==""||interests==""||name==""||descriptionBaitPlant==""||price==""||photos==""){
+   const{body:{campaignName,campaignDescription,campaignBudget,campaignDailyBudget,campaignStartDate,interests},user:{userId},params:{auctionId:auctionId}}=req
+   if(campaignName==""||campaignDescription==""||campaignBudget==""||campaignDailyBudget==""||campaignStartDate==""||interests==""){
 
     throw new BadRequestError("Fields cannot be empty please fill everything")
     }
@@ -33,7 +33,7 @@ const getSingleAuction=async(req,res)=>{
     const auction= await Auction.findOne({_id:req.params.auctionId,createdBy:req.user.userId})
 
     if(!auction){
-        throw new NotFoundError(`No auction with id ${req.params.auctionId}`)
+        throw new NotFoundError(`No auction with id ${req.params.auctionID}`)
     }
     
     res.status(StatusCodes.OK).json({auction})
@@ -44,14 +44,14 @@ const deleteSingleAuction=async(req,res)=>{
     const auctionDelete= await Auction.findByIdAndDelete({_id:req.params.auctionId,createdBy:req.user.userId})
 
     if(!auctionDelete){
-        throw new NotFoundError(`No Business with id ${businessId}`)
+        throw new NotFoundError(`No Auction with id ${auctionId}`)
     }
 
     res.status(StatusCodes.OK).send("Business Deleted Successfully")
 }
 
 const getAllAuctionMaterial=async(req,res)=>{
-    const AllAuctionData=await Auction.find({}).sort('createdAt')
+    const AllAuctionData=await Auction.find({createdBy:req.user.userId}).sort('createdAt')
     res.status(StatusCodes.OK).json({AllAuctionData,count:AllAuctionData.length});
 }
 

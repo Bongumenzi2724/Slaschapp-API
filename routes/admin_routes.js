@@ -1,12 +1,13 @@
 const express=require('express')
 const router=express.Router()
 const {AllUsers,AllBusinessOwners,AllAuctions,AllBusiness,get_all_categories,update_bait_plant,deleteUserProfile,create_category,getUserProfile, read_bait_plants}=require('../controllers/admin_controllers');
-router.get('/users',AllUsers)
+const paginated = require('../middleware/pagination');
+router.get('/users',paginated,AllUsers)
 router.get('/users/:id',getUserProfile)
-router.get('/auctions',AllAuctions)
-router.get('/businesses',AllBusiness)
-router.get('/owners',AllBusinessOwners)
-router.get('/category',get_all_categories)
+router.get('/auctions',paginated,AllAuctions)
+router.get('/businesses',paginated,AllBusiness)
+router.get('/owners',paginated,AllBusinessOwners)
+router.get('/category',paginated,get_all_categories)
 router.post('/category',create_category)
 router.patch('/bait/:id',update_bait_plant)
 router.delete('/user/:id',deleteUserProfile)

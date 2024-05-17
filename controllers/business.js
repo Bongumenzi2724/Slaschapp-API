@@ -4,11 +4,22 @@ const {BadRequestError,NotFoundError}=require('../errors')
 //Create A Single Business
 const createBusiness=async(req,res)=>{
     try{ 
-        req.body.createdBy=req.user.userId;
-        const result=await cloudinary.uploader.upload(req.file.path);
-        req.body.BusinessLogo=result.secure_url;
-        req.body.cloudinary_id=result.public_id; 
-        const business=await Business.create({...req.body})
+        //req.body.createdBy=req.user.userId; 
+        const business=new Business({
+            BusinessName:req.body.BusinessName,
+            PhoneNumber:req.body.PhoneNumber,
+            BusinessEmail:req.body.BusinessEmail,
+            BusinessCategory:req.body.BusinessCategory,
+            BusinessLocation:req.body.BusinessLocation,
+            BusinessHours:req.body.BusinessHours,
+            BusinessLogo:req.body.BusinessLogo,
+            verificationDoc:req.body.verificationDoc,
+            status:req.body.status,
+            socials:req.body.socials,
+            createdBy:req.user.userId
+        });
+        business.save();
+        //const business=await Business.create({...req.body})
         return res.status(StatusCodes.CREATED).json({business:{business}});
     }catch(error){
         return res.status(500).status({status:false,message:error.message})
@@ -53,9 +64,8 @@ const deleteBusiness=async(req,res)=>{
    try{
     const business=await Business.findById({_id:businessId,createdBy:userId});
     if(!business){
-        throw new NotFoundError(`No Business With id ${ownerId}`)
+        throw new NotFoundError(`No Business With id ${businessId}`)
     }
-    await cloudinary.uploader.destroy(business.cloudinary_id);
     await business.deleteOne({_id:req.prams.id});
     return res.status(StatusCodes.OK).json({status:true,message:"Business Successfully Deleted"});
 }catch(error){

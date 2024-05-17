@@ -8,9 +8,6 @@ const CategoriesSchema=new mongoose.Schema({
     },
     categoryImage:{
         type:String
-    },
-    cloudinary_id:{
-        type:String
     }
 },{timestamps:true})
 module.exports=mongoose.model('Categories',CategoriesSchema)

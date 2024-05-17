@@ -65,9 +65,6 @@ const BusinessRegistrationSchema = new mongoose.Schema({
         maxlength:10000,
         minlength:1
     },
-    cloudinary_id:{
-        type:String
-    },
     createdBy:{
         type:mongoose.Types.ObjectId,
         ref:'BusinessOwner',

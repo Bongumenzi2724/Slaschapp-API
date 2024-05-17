@@ -1,6 +1,7 @@
 const mongoose=require('mongoose')  
 const BaitSchema = new mongoose.Schema({
-name:{
+
+baitPlantName:{
     type:String,
     required:[true,'Please Provide The Name For Your Bait Plant'],
     maxlength:100,
@@ -47,9 +48,13 @@ photos:{
 },
 createdBy:{
     type:mongoose.Types.ObjectId,
+    ref:'Auction'
+},
+auctionID:{
+    type:mongoose.Types.ObjectId,
     ref:'Auction',
     required:[true,'Please provide the business owner']
 } 
-},{timestamps:true})
+},{timestamps:true});
 
 module.exports=mongoose.model('Bait',BaitSchema)

@@ -109,7 +109,7 @@ const loginBusinessOwner=async(req,res)=>{
 const registerBusinessOwner=async(req,res)=>{
 
     try{ 
-          const newOwner=new BusinessOwner({
+        const newOwner=new BusinessOwner({
             firstname:req.body.firstname,
             secondname:req.body.secondname,
             surname:req.body.surname,
@@ -126,8 +126,6 @@ const registerBusinessOwner=async(req,res)=>{
             resetToken:req.body.resetToken,
             resetTokenExpiration:req.body.resetTokenExpiration
         });
-        //console.log(newOwner); 
-        //const BusinessOwner = await BusinessOwner.create({...req.body})
         newOwner.save();
         const token=jwt.sign({userId:newOwner._id,name:newOwner.name},process.env.JWT_SECRET,{expiresIn:process.env.JWT_LIFETIME})
         return res.status(201).json({BusinessOwner:newOwner,token:token});

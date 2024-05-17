@@ -29,4 +29,4 @@ function paginated(model){
         next();
         }
 }
-module.exports=paginate
+module.exports=paginated

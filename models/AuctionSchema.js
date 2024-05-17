@@ -1,5 +1,6 @@
 const mongoose=require('mongoose')  
 const AuctionSchema = new mongoose.Schema({
+    
     campaignName:{
         type:String,
         required:[true,'Please Provide The Name For Your Campaign'],
@@ -32,19 +33,14 @@ const AuctionSchema = new mongoose.Schema({
     },
     interests:{
         type:String,
-        enum:['Music','Entertainment','Sports','Gaming','Fashion And Beauty','Food And Drinks','Business And Finance','Travel And Tourism','Technology And Service','Fashion And Jewellery','Outdoors','Fitness','Home Design'],
+        //enum:['Music','Entertainment','Sports','Gaming','Fashion And Beauty','Food And Drinks','Business And Finance','Travel And Tourism','Technology And Service','Fashion And Jewellery','Outdoors','Fitness','Home Design'],
         default:'Entertainment'
     },
-    baitPlant:{
-        type:mongoose.Types.ObjectId,
-        ref:'Bait',
-        required:true
-    },
-    businessId:{
+    /* businessId:{
         type:mongoose.Types.ObjectId,
         ref:'Business',
         required:[true,'Please provide the business']
-    },
+    }, */
     createdBy:{
         type:mongoose.Types.ObjectId,
         ref:'BusinessOwner',
