@@ -5,7 +5,7 @@ const BusinessOwner=require('../models/BusinessOwnerRegistration')
 const {StatusCodes}=require('http-status-codes')
 const { create_category, get_all_categories } = require('./categories_controllers')
 const { getAllUsersProfiles, deleteUserProfile, getUserProfile } = require('./user_profile_controllers')
-const { read_bait_plants, update_bait_plant } = require('./bait_plant_controllers')
+const { update_bait_plant } = require('./bait_plant_controllers')
 
 const AllUsers=async(req,res)=>{
     const UsersData=await User.find({}).sort('createdAt')
