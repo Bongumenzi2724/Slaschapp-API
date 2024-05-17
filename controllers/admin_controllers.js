@@ -2,6 +2,7 @@ const User=require('../models/UserRegistrationSchema')
 const Auction=require('../models/AuctionSchema')
 const Business=require('../models/BusinessRegistrationSchema')
 const BusinessOwner=require('../models/BusinessOwnerRegistration')
+const Bait = require('../models/BaitSchema');
 const {StatusCodes}=require('http-status-codes')
 const { create_category, get_all_categories } = require('./categories_controllers')
 const { getAllUsersProfiles, deleteUserProfile, getUserProfile } = require('./user_profile_controllers')
