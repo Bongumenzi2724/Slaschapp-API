@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 const BusinessOwner=require('../models/BusinessOwnerRegistration')
 const nodemailer=require('nodemailer');
 const OTP=require('../models/userOTPVerification')
+
 //Nodemailer Stuff
 let transporter=nodemailer.createTransport({
     //host:"smtp-email.gmail.com",
@@ -14,6 +15,7 @@ let transporter=nodemailer.createTransport({
         pass:process.env.SMTP_APP_PASS,
     },
 });
+
 //register app user
 const registerUser= async(req,res)=>{
     //sendOTP to the email provided
