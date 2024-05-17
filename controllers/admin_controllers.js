@@ -36,4 +36,4 @@ const AllBaitPlants=async(req,res)=>{
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false,message:error.message})
     }
 }
-module.exports={AllUsers,AllBaitPlants,AllBusiness,AllAuctions,AllBusinessOwners,get_all_categories,create_category,getAllUsersProfiles,read_bait_plants,deleteUserProfile,update_bait_plant,getUserProfile}
+module.exports={AllUsers,AllBaitPlants,AllBusiness,AllAuctions,AllBusinessOwners,get_all_categories,create_category,getAllUsersProfiles,deleteUserProfile,update_bait_plant,getUserProfile}
