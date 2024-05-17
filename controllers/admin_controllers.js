@@ -27,4 +27,12 @@ const AllAuctions=async(req,res)=>{
     res.status(StatusCodes.OK).json({auctionData,count:auctionData.length});
 }
 
-module.exports={AllUsers,AllBusiness,AllAuctions,AllBusinessOwners,get_all_categories,create_category,getAllUsersProfiles,read_bait_plants,deleteUserProfile,update_bait_plant,getUserProfile}
+const AllBaitPlants=async(req,res)=>{
+    try {
+       const bait = await Bait.find({})
+       return res.status(StatusCodes.OK).json(bait)
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false,message:error.message})
+    }
+}
+module.exports={AllUsers,AllBaitPlants,AllBusiness,AllAuctions,AllBusinessOwners,get_all_categories,create_category,getAllUsersProfiles,read_bait_plants,deleteUserProfile,update_bait_plant,getUserProfile}
