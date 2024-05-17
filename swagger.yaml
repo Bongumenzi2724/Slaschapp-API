@@ -240,8 +240,8 @@ paths:
     delete:
       tags:
       - Businesses
-      summary: Delete
-      operationId: Delete
+      summary: Delete Business
+      operationId: DeleteBusiness
       parameters:
       - name: businessID
         in: path
@@ -306,6 +306,9 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
   /search:
     get:
       tags:
@@ -344,11 +347,35 @@ paths:
         style: simple
         schema:
           type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/CreateAuctionRequest'
+              - example:
+                  campaignName: Gaming Festival
+                  campaignDescription: Festive Season Gaming Festival
+                  campaignBudget: R280000
+                  campaignDailyBudget: R50000
+                  campaignStartDate: 31 Deceember 2023
+                  interests: Gaming
+            example:
+              campaignName: Gaming Festival
+              campaignDescription: Festive Season Gaming Festival
+              campaignBudget: R280000
+              campaignDailyBudget: R50000
+              campaignStartDate: 31 Deceember 2023
+              interests: Gaming
+        required: true
       responses:
         '200':
           description: ''
           headers: {}
       deprecated: false
+      security:
+      - bearer: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
@@ -816,9 +843,6 @@ paths:
           description: ''
           headers: {}
       deprecated: false
-      servers:
-      - url: https://adlinc-api.onrender.com/api/slaschapp
-        variables: {}
   /data/collection/stop:
     post:
       tags:
@@ -831,9 +855,6 @@ paths:
           description: ''
           headers: {}
       deprecated: false
-      servers:
-      - url: https://adlinc-api.onrender.com/api/slaschapp
-        variables: {}
   /admin/users:
     get:
       tags:
@@ -1710,6 +1731,36 @@ components:
         verificationDoc: verificationDoc string
         status: pending
         socials: twitter
+    CreateAuctionRequest:
+      title: CreateAuctionRequest
+      required:
+      - campaignName
+      - campaignDescription
+      - campaignBudget
+      - campaignDailyBudget
+      - campaignStartDate
+      - interests
+      type: object
+      properties:
+        campaignName:
+          type: string
+        campaignDescription:
+          type: string
+        campaignBudget:
+          type: string
+        campaignDailyBudget:
+          type: string
+        campaignStartDate:
+          type: string
+        interests:
+          type: string
+      example:
+        campaignName: Gaming Festival
+        campaignDescription: Festive Season Gaming Festival
+        campaignBudget: R280000
+        campaignDailyBudget: R50000
+        campaignStartDate: 31 Deceember 2023
+        interests: Gaming
     UpdateAuctionRequest:
       title: UpdateAuctionRequest
       required:
