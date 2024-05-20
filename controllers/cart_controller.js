@@ -1,5 +1,5 @@
 const Cart = require("../models/Cart");
-
+const Bait = require('../models/BaitSchema');
 const getCart=async(req,res)=>{
     const userId=req.user.id;
         try {
@@ -23,7 +23,7 @@ const addBaitToCart=async(req,res)=>{
     const {baitID,userID}=req.params;
     let count;
     try {
-        const existingBait=await Cart.findOne({userID:userID,baitID:baitID});
+        const existingBait=await Bait.findOne({userID:userID,baitID:baitID});
         count=await Cart.countDocuments({userID:userID});
         if(existingBait){
             existingBait.totalPrice+=totalPrice*quantity;

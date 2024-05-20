@@ -4,8 +4,8 @@ const {BadRequestError,NotFoundError}=require('../errors')
 //Create A Single Business
 const createBusiness=async(req,res)=>{
     try{ 
-        //req.body.createdBy=req.user.userId; 
-        const business=new Business({
+        req.body.createdBy=req.user.userId; 
+        /* const business=new Business({
             BusinessName:req.body.BusinessName,
             PhoneNumber:req.body.PhoneNumber,
             BusinessEmail:req.body.BusinessEmail,
@@ -18,8 +18,8 @@ const createBusiness=async(req,res)=>{
             socials:req.body.socials,
             createdBy:req.user.userId
         });
-        business.save();
-        //const business=await Business.create({...req.body})
+        business.save(); */
+        const business=await Business.create({...req.body})
         return res.status(StatusCodes.CREATED).json({business:{business}});
     }catch(error){
         return res.status(500).status({status:false,message:error.message})

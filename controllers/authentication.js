@@ -145,6 +145,7 @@ const registerBusinessOwner=async(req,res)=>{
             resetTokenExpiration:req.body.resetTokenExpiration
         });*/
         //newOwner.save();
+        console.log(req.body);
         const owner=await BusinessOwner.create({...req.body});
         const token=owner.createJWT();
         return res.status(201).json({BusinessOwner:owner,token:token});

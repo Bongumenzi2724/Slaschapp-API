@@ -22,9 +22,7 @@ const BusinessRegistrationSchema = new mongoose.Schema({
     },
     AcceptTermsAndConditions:{
         type:String,
-        required:[true,'Please Accept Terms And Conditions'],
-        maxlength:4,
-        minlength:1
+        required:[true,'Please Accept Terms And Conditions']
     },
     BusinessCategory:{
         type:String,
