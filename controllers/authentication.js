@@ -37,7 +37,7 @@ const registerUser= async(req,res)=>{
 		} */
     //Verify OTP,than move on and create your user
     try{ 
-        const newUser=new User({
+        /*const newUser=new User({
             firstname:req.body.firstname,
             secondname:req.body.secondname,
             surname:req.body.surname,
@@ -55,11 +55,12 @@ const registerUser= async(req,res)=>{
             interests:req.body.interests,
             resetToken:req.body.resetToken,
             resetTokenExpiration:req.body.resetTokenExpiration
-        });
-        console.log(newUser);
-        newUser.save();
-        const token=jwt.sign({userId:newUser._id,name:newUser.name},process.env.JWT_SECRET,{expiresIn:process.env.JWT_LIFETIME})
-        return res.status(201).json({User:newUser,token:token}); 
+        });*/
+        //console.log(newUser);
+        //newUser.save();
+        const user=await User.create({...req.body})
+        const token=user.createJWT()
+        return res.status(201).json({User:user,token:token}); 
 
     }catch(error){
         console.log(req.body)
@@ -126,7 +127,7 @@ const loginBusinessOwner=async(req,res)=>{
 const registerBusinessOwner=async(req,res)=>{
 
     try{ 
-        const newOwner=new BusinessOwner({
+        /*const newOwner=new BusinessOwner({
             firstname:req.body.firstname,
             secondname:req.body.secondname,
             surname:req.body.surname,
@@ -142,10 +143,11 @@ const registerBusinessOwner=async(req,res)=>{
             gender:req.body.gender,
             resetToken:req.body.resetToken,
             resetTokenExpiration:req.body.resetTokenExpiration
-        });
-        newOwner.save();
-        const token=jwt.sign({userId:newOwner._id,name:newOwner.name},process.env.JWT_SECRET,{expiresIn:process.env.JWT_LIFETIME})
-        return res.status(201).json({BusinessOwner:newOwner,token:token});
+        });*/
+        //newOwner.save();
+        const owner=await BusinessOwner.create({...req.body});
+        const token=owner.createJWT();
+        return res.status(201).json({BusinessOwner:owner,token:token});
     }catch(error){
         return res.status(500).status({status:false,message:error.message})
     }
