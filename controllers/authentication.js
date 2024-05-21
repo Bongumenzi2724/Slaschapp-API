@@ -1,7 +1,6 @@
 const {BadRequestError,UnauthenticatedError} = require('../errors')
 const User=require('../models/UserRegistrationSchema')
 const {StatusCodes}=require('http-status-codes')
-const jwt = require('jsonwebtoken')
 const BusinessOwner=require('../models/BusinessOwnerRegistration')
 const nodemailer=require('nodemailer');
 const OTP=require('../models/userOTPVerification')
@@ -37,28 +36,9 @@ const registerUser= async(req,res)=>{
 		} */
     //Verify OTP,than move on and create your user
     try{ 
-        /*const newUser=new User({
-            firstname:req.body.firstname,
-            secondname:req.body.secondname,
-            surname:req.body.surname,
-            profilePicture:req.body.profilePicture,
-            phoneNumber:req.body.phoneNumber,
-            email:req.body.email,
-            password:req.body.password,
-            AcceptTermsAndConditions:req.body.AcceptTermsAndConditions,
-            locationOrAddress:req.body.locationOrAddress,
-            birthday:req.body.birthday,
-            IdNumber:req.body.IdNumber,
-            IdDocumentLink:req.body.IdDocumentLink,
-            gender:req.body.gender,
-            wallet:req.body.wallet,
-            interests:req.body.interests,
-            resetToken:req.body.resetToken,
-            resetTokenExpiration:req.body.resetTokenExpiration
-        });*/
-        //console.log(newUser);
-        //newUser.save();
+        console.log("User Registration")
         const user=await User.create({...req.body})
+        //console.log(user)
         const token=user.createJWT()
         return res.status(201).json({User:user,token:token}); 
 
@@ -100,10 +80,6 @@ const loginUser=async(req,res)=>{
     const token = user.createJWT()
     res.status(StatusCodes.OK).json({user:{id:user._id,name:user.firstname,surname:user.surname,email:user.email},token})
 }
-//logout the user
-//deregister the user
-//login business owner
-
 
 const loginBusinessOwner=async(req,res)=>{
     const {email,password}=req.body
@@ -123,11 +99,17 @@ const loginBusinessOwner=async(req,res)=>{
     const token = owner.createJWT()
     res.status(StatusCodes.OK).json({owner:{id:owner._id,name:owner.firstname,surname:owner.surname,email:owner.email},token:{token}})
 }
+const UserRegistration=async(req,res)=>{
+    console.log("Business Owner ");
+    const user=await User.create({...req.body})
+    const token=user.createJWT()
+    return res.status(201).json({User:user,token:token,message:"Business Owner Registration"});
+}
 
 const registerBusinessOwner=async(req,res)=>{
 
     try{ 
-        /*const newOwner=new BusinessOwner({
+        const newOwner=new BusinessOwner({
             firstname:req.body.firstname,
             secondname:req.body.secondname,
             surname:req.body.surname,
@@ -143,15 +125,15 @@ const registerBusinessOwner=async(req,res)=>{
             gender:req.body.gender,
             resetToken:req.body.resetToken,
             resetTokenExpiration:req.body.resetTokenExpiration
-        });*/
-        //newOwner.save();
-        console.log(req.body);
-        const owner=await BusinessOwner.create({...req.body});
-        const token=owner.createJWT();
-        return res.status(201).json({BusinessOwner:owner,token:token});
+        });
+        newOwner.save();
+        //const owner=await BusinessOwner.create({...req.body});
+        const token=newOwner.createJWT();
+        console.log(token);
+        return res.status(201).json({BusinessOwner:newOwner,token:token});
     }catch(error){
         return res.status(500).status({status:false,message:error.message})
     }
 }
 
-module.exports={registerUser,loginUser,loginBusinessOwner,registerBusinessOwner,userVerification}
+module.exports={registerUser,loginUser,UserRegistration,loginBusinessOwner,registerBusinessOwner,userVerification}

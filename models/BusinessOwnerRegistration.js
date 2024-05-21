@@ -90,7 +90,7 @@ BusinessOwnerRegistrationSchema.pre('save',async function(){
 })
 
 BusinessOwnerRegistrationSchema.methods.createJWT=function(){
-    return jwt.sign({userId:this._id,name:this.name},process.env.JWT_SECRET,{expiresIn:process.env.JWT_LIFETIME})
+    return jwt.sign({userId:this._id},process.env.JWT_SECRET,{expiresIn:process.env.JWT_LIFETIME})
 }
 
 BusinessOwnerRegistrationSchema.methods.comparePassword = async function(candidatePassword){

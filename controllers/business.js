@@ -1,14 +1,16 @@
 const { StatusCodes } = require("http-status-codes")
 const Business=require('../models/BusinessRegistrationSchema')
 const {BadRequestError,NotFoundError}=require('../errors')
+
 //Create A Single Business
 const createBusiness=async(req,res)=>{
     try{ 
         req.body.createdBy=req.user.userId; 
-        /* const business=new Business({
+        const business=new Business({
             BusinessName:req.body.BusinessName,
             PhoneNumber:req.body.PhoneNumber,
             BusinessEmail:req.body.BusinessEmail,
+            AcceptTermsAndConditions:req.body.AcceptTermsAndConditions,
             BusinessCategory:req.body.BusinessCategory,
             BusinessLocation:req.body.BusinessLocation,
             BusinessHours:req.body.BusinessHours,
@@ -18,18 +20,20 @@ const createBusiness=async(req,res)=>{
             socials:req.body.socials,
             createdBy:req.user.userId
         });
-        business.save(); */
-        const business=await Business.create({...req.body})
+        business.save(); 
+        // const business=await Business.create({...req.body})
         return res.status(StatusCodes.CREATED).json({business:{business}});
     }catch(error){
         return res.status(500).status({status:false,message:error.message})
     }
 }
+
 //Get All Businesses Specific for A Single Business Owner
 const getAllBusinesses =async(req,res) =>{
     const businesses=await Business.find({createdBy:req.user.userId}).sort('createdAt')
     return res.status(StatusCodes.OK).json({businesses,count:businesses.length})
 }
+
 //Get A Single Business For A Specific Owner
 const getSingleBusiness=async(req,res)=>{
 
@@ -43,6 +47,7 @@ const getSingleBusiness=async(req,res)=>{
     
     res.status(StatusCodes.OK).json({business})
 }
+
 //Update A Single Business
 const updateBusinessDetails= async(req,res)=>{
     const{body:{BusinessName,PhoneNumber,BusinessEmail,AcceptTermsAndConditions,BusinessCategory,BusinessLocation,BusinessHours,verificationDoc,status,socials},user:{userId},params:{id:businessId}}=req
@@ -58,6 +63,7 @@ const updateBusinessDetails= async(req,res)=>{
     res.status(StatusCodes.OK).json({business})
 
 }
+
 //Delete A Business
 const deleteBusiness=async(req,res)=>{
     const{user:{userId},params:{id:businessId}}=req
