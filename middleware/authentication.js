@@ -9,11 +9,15 @@ const auth = async (req, res, next) => {
     throw new UnauthenticatedError('Authentication invalid')
   }
   const token = authHeader.split(' ')[1]
-
+  //console.log(req.headers)
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET)
+    //console.log(payload);
+    console.log(payload.userId)
+   
+    //console.log(payload.name);
     // attach the user to the business routes
-    req.user = { userId: payload.userId, name: payload.name }
+    req.user = { userId: payload.userId}
     next()
   } catch (error) {
     throw new UnauthenticatedError('Authentication invalid')
