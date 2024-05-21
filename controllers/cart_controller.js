@@ -20,11 +20,12 @@ const getCart=async(req,res)=>{
 const addBaitToCart=async(req,res)=>{
     // userId=req.user.id;
     const {totalPrice,quantity}=req.body;
-    const {baitID,userID}=req.params;
+    const {baitID}=req.params;
+    const {userId}=req.user;
     let count;
     try {
-        const existingBait=await Cart.findOne({userID:userID,baitID:baitID});
-        count=await Cart.countDocuments({userID:userID});
+        const existingBait=await Cart.findOne({userId:userId,baitID:baitID});
+        count=await Cart.countDocuments({userId:userId});
         if(existingBait){
             existingBait.totalPrice+=totalPrice*quantity;
             existingBait.quantity+=quantity;
@@ -34,10 +35,12 @@ const addBaitToCart=async(req,res)=>{
         }else{
             const newCartItem=new Cart({
                 userID:req.params.userID,
-                baitID:req.params.baitID,
                 totalPrice:totalPrice,
-                quantity:quantity
+                quantity:quantity,
+                items:baitID,
                 //Push new bait plants id into the items array
+                status:req.body.status,
+                code:req.body.code
             });
             await newCartItem.save();
             count=await Cart.countDocuments({userId:userID});

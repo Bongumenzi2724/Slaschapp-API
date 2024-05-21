@@ -1,13 +1,7 @@
 const mongoose=require('mongoose') 
 const CartSchema=new mongoose.Schema({
-    userID:{
+    userId:{
         type:String
-    },
-    baitID:{
-        /* type:mongoose.Schema.Types.ObjectId,
-        ref:'Bait',
-        required:true */
-        type:String,
     },
     totalPrice:{
        type:Number,
@@ -24,9 +18,6 @@ const CartSchema=new mongoose.Schema({
     },
     code:{
         type:String
-    },
-    baitCount:{
-        type:Number
     }
 },{timestamps:true})
 module.exports=mongoose.model('Cart',CartSchema)
