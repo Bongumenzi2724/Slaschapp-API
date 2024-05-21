@@ -1,5 +1,6 @@
 const Cart = require("../models/Cart");
 const Bait = require('../models/BaitSchema');
+
 const getCart=async(req,res)=>{
     const userId=req.user.id;
         try {
@@ -52,10 +53,9 @@ const addBaitToCart=async(req,res)=>{
 }
 
 const removeBaitFromCart=async(req,res)=>{
-   console.log(req.params.baitID,"",req.params.userID)
    try {
-        await Cart.findByIdAndDelete({_id:baitID});
-        count=await Cart.countDocuments({userID:userID});
+        await Cart.findByIdAndDelete({_id:req.params.baitID});
+        count=await Cart.countDocuments({userID:req.user.userID});
         return res.status(200).json({status:true,count:count,message:"Bait Item Removed Successfully"});
     } catch (error) {
         return res.status(500).json({status:false,message:error.message});
