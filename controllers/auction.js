@@ -24,7 +24,7 @@ const updateAuctions=async(req,res)=>{
 }
 
 const getAllAuctions=async(req,res)=>{
-    const auctionData=await Auction.find({createdBy:req.user.userId,businessId:req.params.id}).sort('createdAt')
+    const auctionData=await Auction.find({createdBy:req.user.userId}).sort('createdAt')
     res.status(StatusCodes.OK).json({auctionData,count:auctionData.length});
 }
 
