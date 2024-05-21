@@ -15,6 +15,18 @@ const CartSchema=new mongoose.Schema({
     },
     quantity:{
         type:Number
+    },
+    items:{
+        type:Array
+    },
+    status:{
+        type:String
+    },
+    code:{
+        type:String
+    },
+    baitCount:{
+        type:Number
     }
 },{timestamps:true})
 module.exports=mongoose.model('Cart',CartSchema)

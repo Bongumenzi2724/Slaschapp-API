@@ -23,11 +23,12 @@ const addBaitToCart=async(req,res)=>{
     const {baitID,userID}=req.params;
     let count;
     try {
-        const existingBait=await Bait.findOne({userID:userID,baitID:baitID});
+        const existingBait=await Cart.findOne({userID:userID,baitID:baitID});
         count=await Cart.countDocuments({userID:userID});
         if(existingBait){
             existingBait.totalPrice+=totalPrice*quantity;
             existingBait.quantity+=quantity;
+            //push the baitID into the array but what happens to duplicates??
             await existingBait.save();
             return res.status(200).json({status:true,count:count,existingBait:existingBait});
         }else{
@@ -36,6 +37,7 @@ const addBaitToCart=async(req,res)=>{
                 baitID:req.params.baitID,
                 totalPrice:totalPrice,
                 quantity:quantity
+                //Push new bait plants id into the items array
             });
             await newCartItem.save();
             count=await Cart.countDocuments({userId:userID});
