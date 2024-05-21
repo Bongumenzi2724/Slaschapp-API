@@ -22,30 +22,30 @@ paths:
               allOf:
               - $ref: '#/components/schemas/RegisterUserProfileRequest'
               - example:
-                  firstname: richard
+                  firstname: tank
                   secondname: michael
-                  surname: john
-                  profilePicture: https://images.pexels.com/photos/10139203/pexels-photo-10139203.jpeg?auto=compress&cs=tinysrgb&w=600
-                  phoneNumber: '1234567907'
-                  email: john1234@gmail.com
-                  password: michaelJohn
+                  surname: davis
+                  profilePicture: https://images.pexels.com/photos/5764701/pexels-photo-5764701.png?auto=compress&cs=tinysrgb&w=600
+                  phoneNumber: '076981284'
+                  email: tank@gmail.com
+                  password: davis
                   AcceptTermsAndConditions: Yes
-                  locationOrAddress: Kimberley,South Africa
+                  locationOrAddress: Durban,South Africa
                   birthday: 1996/07/12
                   educationStatus: Tertiary
                   gender: male
                   wallet: Capitec Wallet
                   interests: Food And Drinks
             example:
-              firstname: richard
+              firstname: tank
               secondname: michael
-              surname: john
-              profilePicture: https://images.pexels.com/photos/10139203/pexels-photo-10139203.jpeg?auto=compress&cs=tinysrgb&w=600
-              phoneNumber: '1234567907'
-              email: john1234@gmail.com
-              password: michaelJohn
+              surname: davis
+              profilePicture: https://images.pexels.com/photos/5764701/pexels-photo-5764701.png?auto=compress&cs=tinysrgb&w=600
+              phoneNumber: '076981284'
+              email: tank@gmail.com
+              password: davis
               AcceptTermsAndConditions: Yes
-              locationOrAddress: Kimberley,South Africa
+              locationOrAddress: Durban,South Africa
               birthday: 1996/07/12
               educationStatus: Tertiary
               gender: male
@@ -76,11 +76,11 @@ paths:
               allOf:
               - $ref: '#/components/schemas/LoginUserRequest'
               - example:
-                  email: saliba@gmail.com
-                  password: lizwi
+                  email: lizwi@gmail.com
+                  password: lizwi123
             example:
-              email: saliba@gmail.com
-              password: lizwi
+              email: lizwi@gmail.com
+              password: lizwi123
         required: true
       responses:
         '200':
@@ -171,25 +171,27 @@ paths:
               allOf:
               - $ref: '#/components/schemas/CreateBusinessRequest'
               - example:
-                  BusinessName: William Beauty
-                  PhoneNumber: '0718999211'
-                  BusinessEmail: William@gmail.com
+                  BusinessName: Peter Beauty Salon
+                  PhoneNumber: '076899921'
+                  BusinessEmail: PBeauty@gmail.com
                   AcceptTermsAndConditions: Yes
                   BusinessCategory: Beauty And Cosmetics
                   BusinessLocation: Port Shepstone,KwaZulu-Natal
                   BusinessHours: 07:00-16:00,Mon-Fri
-                  verificationDoc: verificationDoc string
+                  BusinessLogo: https://images.pexels.com/photos/89112/pexels-photo-89112.jpeg?auto=compress&cs=tinysrgb&w=600
+                  verificationDoc: https://media.istockphoto.com/id/1448013633/photo/employment-eligibility-verification-form.jpg?b=1&s=612x612&w=0&k=20&c=wIqK_DjjZcFjSmL4Jf9SZ-FAN0MF32DZEhsxllGk1GY=
                   status: pending
                   socials: facebook
             example:
-              BusinessName: William Beauty
-              PhoneNumber: '0718999211'
-              BusinessEmail: William@gmail.com
+              BusinessName: Peter Beauty Salon
+              PhoneNumber: '076899921'
+              BusinessEmail: PBeauty@gmail.com
               AcceptTermsAndConditions: Yes
               BusinessCategory: Beauty And Cosmetics
               BusinessLocation: Port Shepstone,KwaZulu-Natal
               BusinessHours: 07:00-16:00,Mon-Fri
-              verificationDoc: verificationDoc string
+              BusinessLogo: https://images.pexels.com/photos/89112/pexels-photo-89112.jpeg?auto=compress&cs=tinysrgb&w=600
+              verificationDoc: https://media.istockphoto.com/id/1448013633/photo/employment-eligibility-verification-form.jpg?b=1&s=612x612&w=0&k=20&c=wIqK_DjjZcFjSmL4Jf9SZ-FAN0MF32DZEhsxllGk1GY=
               status: pending
               socials: facebook
         required: true
@@ -198,6 +200,8 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      security:
+      - bearer: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
@@ -212,6 +216,8 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      security:
+      - bearer: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
@@ -234,14 +240,16 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      security:
+      - bearer: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
     delete:
       tags:
       - Businesses
-      summary: Delete Business
-      operationId: DeleteBusiness
+      summary: Delete
+      operationId: Delete
       parameters:
       - name: businessID
         in: path
@@ -355,19 +363,19 @@ paths:
               allOf:
               - $ref: '#/components/schemas/CreateAuctionRequest'
               - example:
-                  campaignName: Gaming Festival
-                  campaignDescription: Festive Season Gaming Festival
+                  campaignName: Tech Festival
+                  campaignDescription: Festive Season Technology Festival
                   campaignBudget: R280000
                   campaignDailyBudget: R50000
-                  campaignStartDate: 31 Deceember 2023
-                  interests: Gaming
+                  campaignStartDate: 22 Deceember 2023
+                  interests: Technology
             example:
-              campaignName: Gaming Festival
-              campaignDescription: Festive Season Gaming Festival
+              campaignName: Tech Festival
+              campaignDescription: Festive Season Technology Festival
               campaignBudget: R280000
               campaignDailyBudget: R50000
-              campaignStartDate: 31 Deceember 2023
-              interests: Gaming
+              campaignStartDate: 22 Deceember 2023
+              interests: Technology
         required: true
       responses:
         '200':
@@ -397,6 +405,8 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      security:
+      - bearer: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
@@ -530,6 +540,8 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      security:
+      - bearer: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
@@ -695,37 +707,33 @@ paths:
               allOf:
               - $ref: '#/components/schemas/RegisterBusinessOwnerProfileRequest'
               - example:
-                  firstname: joseph
-                  secondname: cyril
-                  surname: khuzwayo
-                  profilePicture: photo string
-                  phoneNumber: '0812344965'
-                  email: khuzwayo@gmail.com
-                  password: joseph12
+                  firstname: peter
+                  secondname: king
+                  surname: peterson
+                  profilePicture: https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&w=600
+                  phoneNumber: '34'
+                  email: peterson@gmail.com
+                  password: mathews12
                   AcceptTermsAndConditions: Yes
                   locationOrAddress: Johannesburg,South Africa
                   birthday: 27/09/1985
                   IdNumber: '8905285921090'
                   IdDocumentLink: document link
                   gender: male
-                  resetToken: generated by forgot password endpoint
-                  resetTokenExpiration: generated by forgot password endpoint
             example:
-              firstname: joseph
-              secondname: cyril
-              surname: khuzwayo
-              profilePicture: photo string
-              phoneNumber: '0812344965'
-              email: khuzwayo@gmail.com
-              password: joseph12
+              firstname: peter
+              secondname: king
+              surname: peterson
+              profilePicture: https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&w=600
+              phoneNumber: '34'
+              email: peterson@gmail.com
+              password: mathews12
               AcceptTermsAndConditions: Yes
               locationOrAddress: Johannesburg,South Africa
               birthday: 27/09/1985
               IdNumber: '8905285921090'
               IdDocumentLink: document link
               gender: male
-              resetToken: generated by forgot password endpoint
-              resetTokenExpiration: generated by forgot password endpoint
         required: true
       responses:
         '200':
@@ -751,11 +759,11 @@ paths:
               allOf:
               - $ref: '#/components/schemas/LoginBusinessOwnerRequest'
               - example:
-                  email: lucasR@gmail.com
-                  password: lucas123
+                  email: lizwi@gmail.com
+                  password: lizwi123
             example:
-              email: lucasR@gmail.com
-              password: lucas123
+              email: lizwi@gmail.com
+              password: lizwi123
         required: true
       responses:
         '200':
@@ -843,6 +851,10 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      security: []
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
   /data/collection/stop:
     post:
       tags:
@@ -855,6 +867,9 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
   /admin/users:
     get:
       tags:
@@ -1099,31 +1114,31 @@ paths:
               allOf:
               - $ref: '#/components/schemas/CreateBaitPlantRequest'
               - example:
-                  baitPlantName: Fruits Baits
-                  baitPlantDescription: Fruits Baits For Everyone
+                  baitPlantName: Tech Bait
+                  baitPlantDescription: Exclusive Tech Bait
                   checkInStoreAvailability: Yes
                   percentageDiscount: 13%
                   price: R800
                   color: black
                   size: large
                   photos:
-                  - https://images.pexels.com/photos/1128678/pexels-photo-1128678.jpeg?auto=compress&cs=tinysrgb&w=600
-                  - https://images.pexels.com/photos/70746/strawberries-red-fruit-royalty-free-70746.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1
-                  - https://images.pexels.com/photos/672101/pexels-photo-672101.jpeg?auto=compress&cs=tinysrgb&w=600
-                  - https://images.pexels.com/photos/1153655/pexels-photo-1153655.jpeg?auto=compress&cs=tinysrgb&w=600
+                  - https://images.pexels.com/photos/3945688/pexels-photo-3945688.jpeg?auto=compress&cs=tinysrgb&w=600
+                  - https://images.pexels.com/photos/1082810/pexels-photo-1082810.jpeg?auto=compress&cs=tinysrgb&w=600
+                  - https://images.pexels.com/photos/3593986/pexels-photo-3593986.jpeg?auto=compress&cs=tinysrgb&w=600
+                  - https://images.pexels.com/photos/3945659/pexels-photo-3945659.jpeg?auto=compress&cs=tinysrgb&w=600
             example:
-              baitPlantName: Fruits Baits
-              baitPlantDescription: Fruits Baits For Everyone
+              baitPlantName: Tech Bait
+              baitPlantDescription: Exclusive Tech Bait
               checkInStoreAvailability: Yes
               percentageDiscount: 13%
               price: R800
               color: black
               size: large
               photos:
-              - https://images.pexels.com/photos/1128678/pexels-photo-1128678.jpeg?auto=compress&cs=tinysrgb&w=600
-              - https://images.pexels.com/photos/70746/strawberries-red-fruit-royalty-free-70746.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1
-              - https://images.pexels.com/photos/672101/pexels-photo-672101.jpeg?auto=compress&cs=tinysrgb&w=600
-              - https://images.pexels.com/photos/1153655/pexels-photo-1153655.jpeg?auto=compress&cs=tinysrgb&w=600
+              - https://images.pexels.com/photos/3945688/pexels-photo-3945688.jpeg?auto=compress&cs=tinysrgb&w=600
+              - https://images.pexels.com/photos/1082810/pexels-photo-1082810.jpeg?auto=compress&cs=tinysrgb&w=600
+              - https://images.pexels.com/photos/3593986/pexels-photo-3593986.jpeg?auto=compress&cs=tinysrgb&w=600
+              - https://images.pexels.com/photos/3945659/pexels-photo-3945659.jpeg?auto=compress&cs=tinysrgb&w=600
         required: true
       responses:
         '200':
@@ -1185,6 +1200,8 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      security:
+      - bearer: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
@@ -1306,9 +1323,6 @@ paths:
           description: ''
           headers: {}
       deprecated: false
-      servers:
-      - url: https://adlinc-api.onrender.com/api/slaschapp
-        variables: {}
   /cart/bait/remove/{baitID}:
     delete:
       tags:
@@ -1587,15 +1601,15 @@ components:
         interests:
           type: string
       example:
-        firstname: richard
+        firstname: tank
         secondname: michael
-        surname: john
-        profilePicture: https://images.pexels.com/photos/10139203/pexels-photo-10139203.jpeg?auto=compress&cs=tinysrgb&w=600
-        phoneNumber: '1234567907'
-        email: john1234@gmail.com
-        password: michaelJohn
+        surname: davis
+        profilePicture: https://images.pexels.com/photos/5764701/pexels-photo-5764701.png?auto=compress&cs=tinysrgb&w=600
+        phoneNumber: '076981284'
+        email: tank@gmail.com
+        password: davis
         AcceptTermsAndConditions: Yes
-        locationOrAddress: Kimberley,South Africa
+        locationOrAddress: Durban,South Africa
         birthday: 1996/07/12
         educationStatus: Tertiary
         gender: male
@@ -1613,8 +1627,8 @@ components:
         password:
           type: string
       example:
-        email: saliba@gmail.com
-        password: lizwi
+        email: lizwi@gmail.com
+        password: lizwi123
     UserPasswordResetRequest:
       title: UserPasswordResetRequest
       required:
@@ -1649,6 +1663,7 @@ components:
       - BusinessCategory
       - BusinessLocation
       - BusinessHours
+      - BusinessLogo
       - verificationDoc
       - status
       - socials
@@ -1668,6 +1683,8 @@ components:
           type: string
         BusinessHours:
           type: string
+        BusinessLogo:
+          type: string
         verificationDoc:
           type: string
         status:
@@ -1675,14 +1692,15 @@ components:
         socials:
           type: string
       example:
-        BusinessName: William Beauty
-        PhoneNumber: '0718999211'
-        BusinessEmail: William@gmail.com
+        BusinessName: Peter Beauty Salon
+        PhoneNumber: '076899921'
+        BusinessEmail: PBeauty@gmail.com
         AcceptTermsAndConditions: Yes
         BusinessCategory: Beauty And Cosmetics
         BusinessLocation: Port Shepstone,KwaZulu-Natal
         BusinessHours: 07:00-16:00,Mon-Fri
-        verificationDoc: verificationDoc string
+        BusinessLogo: https://images.pexels.com/photos/89112/pexels-photo-89112.jpeg?auto=compress&cs=tinysrgb&w=600
+        verificationDoc: https://media.istockphoto.com/id/1448013633/photo/employment-eligibility-verification-form.jpg?b=1&s=612x612&w=0&k=20&c=wIqK_DjjZcFjSmL4Jf9SZ-FAN0MF32DZEhsxllGk1GY=
         status: pending
         socials: facebook
     UpdateSingleBusinessRequest:
@@ -1755,12 +1773,12 @@ components:
         interests:
           type: string
       example:
-        campaignName: Gaming Festival
-        campaignDescription: Festive Season Gaming Festival
+        campaignName: Tech Festival
+        campaignDescription: Festive Season Technology Festival
         campaignBudget: R280000
         campaignDailyBudget: R50000
-        campaignStartDate: 31 Deceember 2023
-        interests: Gaming
+        campaignStartDate: 22 Deceember 2023
+        interests: Technology
     UpdateAuctionRequest:
       title: UpdateAuctionRequest
       required:
@@ -1913,8 +1931,6 @@ components:
       - IdNumber
       - IdDocumentLink
       - gender
-      - resetToken
-      - resetTokenExpiration
       type: object
       properties:
         firstname:
@@ -1943,26 +1959,20 @@ components:
           type: string
         gender:
           type: string
-        resetToken:
-          type: string
-        resetTokenExpiration:
-          type: string
       example:
-        firstname: joseph
-        secondname: cyril
-        surname: khuzwayo
-        profilePicture: photo string
-        phoneNumber: '0812344965'
-        email: khuzwayo@gmail.com
-        password: joseph12
+        firstname: peter
+        secondname: king
+        surname: peterson
+        profilePicture: https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&w=600
+        phoneNumber: '34'
+        email: peterson@gmail.com
+        password: mathews12
         AcceptTermsAndConditions: Yes
         locationOrAddress: Johannesburg,South Africa
         birthday: 27/09/1985
         IdNumber: '8905285921090'
         IdDocumentLink: document link
         gender: male
-        resetToken: generated by forgot password endpoint
-        resetTokenExpiration: generated by forgot password endpoint
     LoginBusinessOwnerRequest:
       title: LoginBusinessOwnerRequest
       required:
@@ -1975,8 +1985,8 @@ components:
         password:
           type: string
       example:
-        email: lucasR@gmail.com
-        password: lucas123
+        email: lizwi@gmail.com
+        password: lizwi123
     BusinessOwnerPasswordResetRequest:
       title: BusinessOwnerPasswordResetRequest
       required:
@@ -2034,18 +2044,18 @@ components:
             type: string
           description: ''
       example:
-        baitPlantName: Fruits Baits
-        baitPlantDescription: Fruits Baits For Everyone
+        baitPlantName: Tech Bait
+        baitPlantDescription: Exclusive Tech Bait
         checkInStoreAvailability: Yes
         percentageDiscount: 13%
         price: R800
         color: black
         size: large
         photos:
-        - https://images.pexels.com/photos/1128678/pexels-photo-1128678.jpeg?auto=compress&cs=tinysrgb&w=600
-        - https://images.pexels.com/photos/70746/strawberries-red-fruit-royalty-free-70746.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1
-        - https://images.pexels.com/photos/672101/pexels-photo-672101.jpeg?auto=compress&cs=tinysrgb&w=600
-        - https://images.pexels.com/photos/1153655/pexels-photo-1153655.jpeg?auto=compress&cs=tinysrgb&w=600
+        - https://images.pexels.com/photos/3945688/pexels-photo-3945688.jpeg?auto=compress&cs=tinysrgb&w=600
+        - https://images.pexels.com/photos/1082810/pexels-photo-1082810.jpeg?auto=compress&cs=tinysrgb&w=600
+        - https://images.pexels.com/photos/3593986/pexels-photo-3593986.jpeg?auto=compress&cs=tinysrgb&w=600
+        - https://images.pexels.com/photos/3945659/pexels-photo-3945659.jpeg?auto=compress&cs=tinysrgb&w=600
     UpdateBaitPlantRequest:
       title: UpdateBaitPlantRequest
       required:
