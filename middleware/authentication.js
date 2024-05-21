@@ -13,7 +13,7 @@ const auth = async (req, res, next) => {
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET)
     //console.log(payload);
-    console.log(payload.userId)
+    //console.log(payload.userId)
    
     //console.log(payload.name);
     // attach the user to the business routes
