@@ -30,13 +30,13 @@ const getAllAuctions=async(req,res)=>{
 
 const getSingleAuction=async(req,res)=>{
 
-    const auction= await Auction.findOne({_id:req.params.auctionId,createdBy:req.user.userId})
+    const auctionData= await Auction.findOne({_id:req.params.auctionId,createdBy:req.user.userId})
 
-    if(!auction){
+    if(!auctionData){
         throw new NotFoundError(`No auction with id ${req.params.auctionID}`)
     }
     
-    res.status(StatusCodes.OK).json({auction})
+    res.status(StatusCodes.OK).json({auctionData})
 }
 
 const deleteSingleAuction=async(req,res)=>{
@@ -51,8 +51,8 @@ const deleteSingleAuction=async(req,res)=>{
 }
 
 const getAllAuctionMaterial=async(req,res)=>{
-    const AllAuctionData=await Auction.find({createdBy:req.user.userId}).sort('createdAt')
-    res.status(StatusCodes.OK).json({AllAuctionData,count:AllAuctionData.length});
+    const auctionData=await Auction.find({createdBy:req.user.userId}).sort('createdAt')
+    res.status(StatusCodes.OK).json({auctionData,count:auctionData.length});
 }
 
 const auctionSearchResults=async(req,res)=>{
