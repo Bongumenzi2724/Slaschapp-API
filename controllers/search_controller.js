@@ -23,23 +23,23 @@ async function SearchResults(query,page,limit,sort){
         {
             $match:{
                 $or:[
-                    {description:{$regex:query,options:'i'}},
-                    {BusinessName:{$regex:query,options:'i'}},
-                    {BusinessCategory:{$regex:query,options:'i'}},
-                    {BusinessLocation:{$regex:query,options:'i'}},
-                    {firstname:{$regex:query,options:'i'}},
-                    {secondname:{$regex:query,options:'i'}},
-                    {surname:{$regex:query,options:'i'}},
-                    {locationOrAddress:{$regex:query,options:'i'}},
-                    {gender:{$regex:query,options:'i'}},
-                    {categoryName:{$regex:query,options:'i'}},
-                    {baitPlantName:{$regex:query,options:'i'}},
-                    {campaignName:{$regex:query,options:'i'}},
-                    {campaignBudget:{$regex:query,options:'i'}},
-                    {campaignStartDate:{$regex:query,options:'i'}},
-                    {campaignDailyBudget:{$regex:query,options:'i'}},
-                    {baitPlantDescription:{$regex:query,options:'i'}},
-                    {$text:{$search:query}}
+                    {description:{$regex:query,$options:'i'}},
+                    {BusinessName:{$regex:query,$options:'i'}},
+                    {BusinessCategory:{$regex:query,$options:'i'}},
+                    {BusinessLocation:{$regex:query,$options:'i'}},
+                    {firstname:{$regex:query,$options:'i'}},
+                    {secondname:{$regex:query,$options:'i'}},
+                    {surname:{$regex:query,$options:'i'}},
+                    {locationOrAddress:{$regex:query,$options:'i'}},
+                    {gender:{$regex:query,$options:'i'}},
+                    {categoryName:{$regex:query,$options:'i'}},
+                    {baitPlantName:{$regex:query,$options:'i'}},
+                    {campaignName:{$regex:query,$options:'i'}},
+                    {campaignBudget:{$regex:query,$options:'i'}},
+                    {campaignStartDate:{$regex:query,$options:'i'}},
+                    {campaignDailyBudget:{$regex:query,$options:'i'}},
+                    {baitPlantDescription:{$regex:query,$options:'i'}}
+                    //{$text:{$search:query}}
                 ]
             }
         },

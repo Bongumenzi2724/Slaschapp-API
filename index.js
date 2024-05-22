@@ -53,7 +53,7 @@ app.use('/api/slaschapp/search',authenticateUser,businessSearchRouter);
 app.use('/api/slaschapp/data',dataRouter);
 app.use('/api/slaschapp/bait',authenticateUser,baitRouter);
 app.use('/api/slaschapp/category',categoriesRouter)
-app.use('/api/slaschapp/user',authenticateUser,userRoute)
+app.use('/api/slaschapp/user',userRoute)
 app.use('/api/slaschapp/business/owner',authenticateUser,ownerRouter)
 app.use('/api/slaschapp/cart',authenticateUser,cartRouter)
 app.use('/api/slaschapp/transaction/bait',accountRouter)
