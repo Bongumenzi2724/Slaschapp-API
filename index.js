@@ -54,7 +54,7 @@ app.use('/api/slaschapp/bait',authenticateUser,baitRouter);
 app.use('/api/slaschapp/category',categoriesRouter)
 app.use('/api/slaschapp/user',authenticateUser,userRoute)
 app.use('/api/slaschapp/business/owner',authenticateUser,ownerRouter)
-app.use('/api/slaschapp/cart/bait',cartRouter)
+app.use('/api/slaschapp/cart/bait',authenticateUser,cartRouter)
 app.use('/api/slaschapp/transaction/bait',accountRouter)
 
 app.get('/',(req,res)=>{
