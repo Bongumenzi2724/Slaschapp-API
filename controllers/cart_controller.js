@@ -2,79 +2,87 @@ const Cart = require("../models/Cart");
 const Bait = require('../models/BaitSchema');
 
 const getCart=async(req,res)=>{
-    const userId=req.user.id;
-        try {
-            const cart=await Cart.find({userId:userId}).populate({
-                path:'cart',
-                populate:{
-                    path:'bait',
-                    select:'time coords'
-                }
-            });
-
-        return res.status(200).json({status:true,cart:cart});
-        } catch (error) {
+    
+    try {
+    const cart=await Cart.findOne({userId:req.user.userId});
+    return res.status(200).json({status:true,cart:cart});
+    } catch (error) {
         return res.status(500).json({status:false,message:error.message});
-        }
+    }
 }
 //incude the bait id and the user id
 const addBaitToCart=async(req,res)=>{
-    const {totalPrice,quantity}=req.body;
-    console.log(req.body);
+     const {totalPrice,quantity}=req.body;
+     console.log(req.user.userId);
     let count;
+
+    let itemsArray=[];
     try {
-        const existingBait=await Cart.findOne({userId:req.user.userId,baitID:req.params.baitID});
-        count=await Cart.countDocuments({userId:userId});
-        if(existingBait){
-            existingBait.totalPrice+=Math.ceil(totalPrice*quantity);
-            existingBait.quantity+=quantity;
-            await existingBait.save();
-            return res.status(200).json({status:true,count:count,existingBait:existingBait});
-        }else{
+        const existingCart=await Cart.findOne({userId:req.user.userId});
+        count=await Cart.countDocuments({userId:req.user.userId});
+        if(!existingCart){
+            itemsArray.push(req.params.baitID)
             const newCartItem=new Cart({
                 userId:req.user.userId,
                 totalPrice:totalPrice,
                 quantity:quantity,
-                items:items.push(req.params.baitID),
+                items:itemsArray,
                 status:req.body.status,
                 code:req.body.code
             });
             await newCartItem.save();
-            count=await Cart.countDocuments({userId:userID});
+            count=await Cart.countDocuments({userId:userId});
             return res.status(200).json({status:true,count:count,cart:newCartItem});
+        }else{
+            console.log(existingCart.items.length);
+            for(let i=0;i<=existingCart.items.length-1;i++){
+                if(existingCart.items[i]!==req.params.baitID){
+                    existingCart.items.push(req.params.baitID);
+                }
+            }
+            existingCart.items=[...new Set(existingCart.items)];
+            existingCart.totalPrice+=Math.ceil(totalPrice*quantity);
+            existingCart.quantity+=quantity;
+            await existingCart.save();
+            return res.status(200).json({status:true,count:count,existingCart:existingCart});
         }
     } catch (error) {
          return res.status(500).json({status:false,message:error.message});
-    } 
+    }  
 }
 
-const removeBaitFromCart=async(req,res)=>{
-   try {
-        await Cart.findByIdAndDelete({_id:req.params.baitID});
-        count=await Cart.countDocuments({userID:req.user.userID});
-        return res.status(200).json({status:true,count:count,message:"Bait Item Removed Successfully"});
+const removeCartItem=async(req,res)=>{
+    const cartItemId=req.params.id;
+    const userId=req.user.id;
+    try {
+        await Cart.findByIdAndDelete({_id:cartItemId});
+        count=await Cart.countDocuments({userId:userId});
+        return res.status(200).json({status:true,count:count});
     } catch (error) {
         return res.status(500).json({status:false,message:error.message});
-    } 
+    }
     //res.status(200).json({status:true,message:"Remove Bait From Cart",cartItemID:req.params.cartItemID,userID:req.params.userID})
 }
 
+
 const decrementBaitQuantity=async(req,res)=>{
-    //const userId=req.user.id;
+    const userId=req.user.id;
     //use baitID for filtering
-    const {cartID}=req.params;
+    const baitID=req.params.baitID;
     try {
-        const cartItem=await Cart.findById(cartID);
+        //find the cart first by userId
+        const cartItem=await Cart.findById(baitID);
+        //if the cart exist find the 
         if(cartItem){
-            const productPrice=cartItem.totalPrice/cartItem.quantity;
+            const baitPrice=cartItem.totalPrice/cartItem.quantity;
             if(cartItem.quantity>1){
                 cartItem.quantity-=1;
-                cartItem.totalPrice-=productPrice;
+                cartItem.totalPrice-=baitPrice;
                 await cartItem.save();
-                return res.status(200).json({status:true,message:"Product quantity successfully decremented",quantity:cartItem.quantity});
+                return res.status(200).json({status:true,message:"Bait quantity successfully decremented",quantity:cartItem.quantity});
             }else{
                 await Cart.findOneAndDelete({_id:cartID});
-                return res.status(200).json({status:true,message:"Product quantity successfully removed from the cart"});
+                return res.status(200).json({status:true,message:"Bait quantity successfully removed from the cart"});
             }
         }
         else{
@@ -88,9 +96,8 @@ const decrementBaitQuantity=async(req,res)=>{
 }
 
 const getCartCount=async(req,res)=>{
-    const userID=req.user.id;
     try {
-    const count=await Cart.countDocuments({userID:userID});
+    const count=await Cart.countDocuments({userId:req.user.userId});
     return res.status(200).json({status:true,count:count});
   
     } catch (error) {
@@ -99,4 +106,4 @@ const getCartCount=async(req,res)=>{
 
 }
 
-module.exports={getCart,addBaitToCart,removeBaitFromCart,decrementBaitQuantity,getCartCount}
+module.exports={getCart,addBaitToCart,removeCartItem,decrementBaitQuantity,getCartCount}

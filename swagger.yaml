@@ -248,8 +248,8 @@ paths:
     delete:
       tags:
       - Businesses
-      summary: Delete
-      operationId: Delete
+      summary: Delete Business
+      operationId: DeleteBusiness
       parameters:
       - name: businessID
         in: path
@@ -367,14 +367,14 @@ paths:
                   campaignDescription: Festive Season Technology Festival
                   campaignBudget: R280000
                   campaignDailyBudget: R50000
-                  campaignStartDate: 22 Deceember 2023
+                  campaignStartDate: 22 October 2024
                   interests: Technology
             example:
               campaignName: Tech Festival
               campaignDescription: Festive Season Technology Festival
               campaignBudget: R280000
               campaignDailyBudget: R50000
-              campaignStartDate: 22 Deceember 2023
+              campaignStartDate: 22 October 2024
               interests: Technology
         required: true
       responses:
@@ -851,7 +851,6 @@ paths:
           description: ''
           headers: {}
       deprecated: false
-      security: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
@@ -1092,7 +1091,7 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /business/auction/{auctionID}/bait/create:
+  /bait/auction/{auctionID}/bait/create:
     post:
       tags:
       - Bait Plants
@@ -1114,8 +1113,8 @@ paths:
               allOf:
               - $ref: '#/components/schemas/CreateBaitPlantRequest'
               - example:
-                  baitPlantName: Tech Bait
-                  baitPlantDescription: Exclusive Tech Bait
+                  baitPlantName: Gaming Bait
+                  baitPlantDescription: Exclusive Gaming Bait
                   checkInStoreAvailability: Yes
                   percentageDiscount: 13%
                   price: R800
@@ -1127,8 +1126,8 @@ paths:
                   - https://images.pexels.com/photos/3593986/pexels-photo-3593986.jpeg?auto=compress&cs=tinysrgb&w=600
                   - https://images.pexels.com/photos/3945659/pexels-photo-3945659.jpeg?auto=compress&cs=tinysrgb&w=600
             example:
-              baitPlantName: Tech Bait
-              baitPlantDescription: Exclusive Tech Bait
+              baitPlantName: Gaming Bait
+              baitPlantDescription: Exclusive Gaming Bait
               checkInStoreAvailability: Yes
               percentageDiscount: 13%
               price: R800
@@ -1150,7 +1149,7 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /business/auction/{auctionID}/bait:
+  /bait/auction/{auctionID}/bait:
     get:
       tags:
       - Bait Plants
@@ -1174,7 +1173,7 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /business/auction/{auctionID}/bait/{baitID}:
+  /bait/auction/{auctionID}/bait/{baitID}:
     get:
       tags:
       - Bait Plants
@@ -1205,6 +1204,35 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
+    delete:
+      tags:
+      - Bait Plants
+      summary: Delete Single Bait
+      operationId: DeleteSingleBait
+      parameters:
+      - name: auctionID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+      - name: baitID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /business/auction/{auctionID}/bait/{baitID}:
     patch:
       tags:
       - Bait Plants
@@ -1261,40 +1289,12 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-    delete:
-      tags:
-      - Bait Plants
-      summary: Delete Single Bait
-      operationId: DeleteSingleBait
-      parameters:
-      - name: auctionID
-        in: path
-        description: ''
-        required: true
-        style: simple
-        schema:
-          type: string
-      - name: baitID
-        in: path
-        description: ''
-        required: true
-        style: simple
-        schema:
-          type: string
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      servers:
-      - url: https://adlinc-api.onrender.com/api/slaschapp
-        variables: {}
   /user/all:
     get:
       tags:
       - User Profile
       summary: Get All Users
-      operationId: GetAllUsers2
+      operationId: GetAllUsers1
       parameters: []
       responses:
         '200':
@@ -1304,98 +1304,30 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /cart/bait/{cartID}:
+  /cart/bait:
     get:
       tags:
       - Cart
       summary: Get Cart
       operationId: GetCart
-      parameters:
-      - name: cartID
-        in: path
-        description: ''
-        required: true
-        style: simple
-        schema:
-          type: string
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-  /cart/bait/remove/{baitID}:
-    delete:
-      tags:
-      - Cart
-      summary: Remove  Bait From Cart
-      operationId: RemoveBaitFromCart
-      parameters:
-      - name: baitID
-        in: path
-        description: ''
-        required: true
-        style: simple
-        schema:
-          type: string
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      servers:
-      - url: https://adlinc-api.onrender.com/api/slaschapp
-        variables: {}
-  /cart/bait/decrement/{cartID}:
-    get:
-      tags:
-      - Cart
-      summary: Decrement Bait Quantity
-      operationId: DecrementBaitQuantity
-      parameters:
-      - name: cartID
-        in: path
-        description: ''
-        required: true
-        style: simple
-        schema:
-          type: string
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      servers:
-      - url: https://adlinc-api.onrender.com/api/slaschapp
-        variables: {}
-  /cart/bait/count:
-    get:
-      tags:
-      - Cart
-      summary: Get Cart Count
-      operationId: GetCartCount
       parameters: []
       responses:
         '200':
           description: ''
           headers: {}
       deprecated: false
+      security:
+      - bearer: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /cart/bait/{userID}/{baitID}:
+  /cart/bait/add/{baitID}:
     post:
       tags:
       - Cart
       summary: Add Bait To Cart
       operationId: AddBaitToCart
       parameters:
-      - name: userID
-        in: path
-        description: ''
-        required: true
-        style: simple
-        schema:
-          type: string
       - name: baitID
         in: path
         description: ''
@@ -1411,17 +1343,23 @@ paths:
               allOf:
               - $ref: '#/components/schemas/AddBaitToCartRequest'
               - example:
-                  totalPrice: 6
-                  quantity: 3
+                  totalPrice: 10000
+                  quantity: 1
+                  status: pending
+                  code: er345
             example:
-              totalPrice: 6
-              quantity: 3
+              totalPrice: 10000
+              quantity: 1
+              status: pending
+              code: er345
         required: true
       responses:
         '200':
           description: ''
           headers: {}
       deprecated: false
+      security:
+      - bearer: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
@@ -1444,6 +1382,7 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      security: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
@@ -1459,6 +1398,7 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      security: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
@@ -1495,6 +1435,7 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      security: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
@@ -1524,6 +1465,7 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      security: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
@@ -1777,7 +1719,7 @@ components:
         campaignDescription: Festive Season Technology Festival
         campaignBudget: R280000
         campaignDailyBudget: R50000
-        campaignStartDate: 22 Deceember 2023
+        campaignStartDate: 22 October 2024
         interests: Technology
     UpdateAuctionRequest:
       title: UpdateAuctionRequest
@@ -2044,8 +1986,8 @@ components:
             type: string
           description: ''
       example:
-        baitPlantName: Tech Bait
-        baitPlantDescription: Exclusive Tech Bait
+        baitPlantName: Gaming Bait
+        baitPlantDescription: Exclusive Gaming Bait
         checkInStoreAvailability: Yes
         percentageDiscount: 13%
         price: R800
@@ -2103,6 +2045,8 @@ components:
       required:
       - totalPrice
       - quantity
+      - status
+      - code
       type: object
       properties:
         totalPrice:
@@ -2111,9 +2055,15 @@ components:
         quantity:
           type: integer
           format: int32
+        status:
+          type: string
+        code:
+          type: string
       example:
-        totalPrice: 6
-        quantity: 3
+        totalPrice: 10000
+        quantity: 1
+        status: pending
+        code: er345
     UpdateACategoryRequest:
       title: UpdateACategoryRequest
       required:
