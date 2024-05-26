@@ -1,6 +1,8 @@
 const {NotFoundError} = require('../errors');
 const AuctionSchema = require('../models/AuctionSchema');
+const Bait = require('../models/BaitSchema');
 const BusinessOwnerRegistration = require('../models/BusinessOwnerRegistration');
+
 const User=require('../models/UserRegistrationSchema')
 const {StatusCodes}=require('http-status-codes')
 //get single user
@@ -37,7 +39,7 @@ const getAllUsersProfiles=async(req,res)=>{
 const getAllAuctions=async(req,res)=>{
     //const AllUsers=await User.find({}).sort('createdAt')
     const AllAuction=await AuctionSchema.aggregate([{$project:{updatedAt:0,createdAt:0,__v:0}}])
-    return res.status(StatusCodes.OK).json({feed:AllAuction,count:AllAuction.length});
+    return res.status(StatusCodes.OK).json({auctionFeed:AllAuction,count:AllAuction.length});
 };
 
 //only active owners feed
@@ -46,4 +48,10 @@ const AllOwnersProfiles=async(req,res)=>{
     const AllUsers=await BusinessOwnerRegistration.aggregate([{$project:{password:0,resetToken:0,resetTokenExpiration:0,__v:0,wallet:0,AcceptTermsAndConditions:0}}])
     return res.status(StatusCodes.OK).json({AllUsers,count:AllUsers.length});
 };
-module.exports={getUserProfile,AllOwnersProfiles,getAllAuctions,deleteUserProfile,updateUserProfile,getAllUsersProfiles}
+
+const getAllBaits=async(req,res)=>{
+    const baitsFeed=await Bait.find({});
+    return res.status(StatusCodes.OK).json({baitsFeed,count:baitsFeed.length});
+}
+
+module.exports={getUserProfile,AllOwnersProfiles,getAllAuctions,getAllBaits,deleteUserProfile,updateUserProfile,getAllUsersProfiles}

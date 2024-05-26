@@ -5,7 +5,7 @@ const Bait = require('../models/BaitSchema');
 const getCart=async(req,res)=>{
     
     try {
-    const cart=await Cart.findOne({userId:req.user.userId,_id:req.params.cartId});
+    const cart=await Cart.findOne({userId:'6634bfb784e9bf0c9788e950',_id:req.params.cartId});
     //check if the cart has expired
     if(cart.status=="Expired" || cart==null){
         return res.status.json({status:cart.status,messages:`The cart ${cart.status=="Expired"?"The Cart Has Expired":"The Cart Does Not Exist"}`})
