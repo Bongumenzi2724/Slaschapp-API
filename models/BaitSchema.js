@@ -26,10 +26,7 @@ percentageDiscount:{
     minlength:1
 },
 price:{
-    type:String,
-    required:[true,'Please Provide The Price For Your Campaign'],
-    maxlength:1000,
-    minlength:1
+    type:Number
 },
 color:{
     type:String,

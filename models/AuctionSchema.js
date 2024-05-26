@@ -36,6 +36,10 @@ const AuctionSchema = new mongoose.Schema({
         //enum:['Music','Entertainment','Sports','Gaming','Fashion And Beauty','Food And Drinks','Business And Finance','Travel And Tourism','Technology And Service','Fashion And Jewellery','Outdoors','Fitness','Home Design'],
         default:'Entertainment'
     },
+    status:{
+        type:String,
+        enum:['Active','Pending','Suspended','Revoked']
+    },
     /* businessId:{
         type:mongoose.Types.ObjectId,
         ref:'Business',

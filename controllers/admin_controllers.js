@@ -5,16 +5,16 @@ const BusinessOwner=require('../models/BusinessOwnerRegistration')
 const Bait = require('../models/BaitSchema');
 const {StatusCodes}=require('http-status-codes')
 const { create_category, get_all_categories } = require('./categories_controllers')
-const { getAllUsersProfiles, deleteUserProfile, getUserProfile } = require('./user_profile_controllers')
+const { getAllUsersProfiles, deleteUserProfile, getUserProfile } = require('./feeds')
 const { update_bait_plant } = require('./bait_plant_controllers')
 
 const AllUsers=async(req,res)=>{
-    const UsersData=await User.find({}).sort('createdAt')
-    res.status(StatusCodes.OK).json({UsersData,count:UsersData.length});
+    const AllUsers=await User.aggregate([{$project:{password:0,resetToken:0,resetTokenExpiration:0,__v:0,wallet:0,AcceptTermsAndConditions:0,updatedAt:0}}])
+    res.status(StatusCodes.OK).json({AllUsers:AllUsers,count:AllUsers.length});
 }
 
 const AllBusinessOwners=async(req,res)=>{
-    const BusinessOwnersData=await BusinessOwner.find({}).sort('createdAt')
+    const BusinessOwnersData=await BusinessOwner.aggregate([{$project:{password:0,__v:0,resetToken:0,resetTokenExpiration:0,IdDocumentLink:0,IdNumber:0,AcceptTermsAndConditions:0,updatedAt:0}}])
     res.status(StatusCodes.OK).json({BusinessOwnersData,count:BusinessOwnersData.length});
 }
 

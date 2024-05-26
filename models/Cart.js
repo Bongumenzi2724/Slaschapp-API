@@ -1,23 +1,42 @@
 const mongoose=require('mongoose') 
 const CartSchema=new mongoose.Schema({
+    //"user id"
     userId:{
+        type:mongoose.Schema.Types.ObjectId, 
+        ref: 'User' 
+    },
+    auctionName:{
         type:String
     },
-    totalPrice:{
-       type:Number,
-       required:true
+    auctionId:{
+        type:String
     },
-    quantity:{
+    totalCartPrice:{
+       type:Number
+    },
+    totalCartQuantity:{
         type:Number
     },
-    items:{
-        type:Array
-    },
+    baits:[{
+        baitId:{type: mongoose.Schema.Types.ObjectId, ref: 'Bait' },
+        baitName:String,
+        quantity:Number,
+        price:Number,
+        size:String,
+        color:String
+    }],
     status:{
-        type:String
+        type:String,
+        enum:["In-Progress","Pending","Complete","Canceled","Expired"]
     },
     code:{
         type:String
+    },
+    paymentMethod:{
+        type:String
+    },
+    expiryDate:{
+        type:Date
     }
 },{timestamps:true})
 module.exports=mongoose.model('Cart',CartSchema)

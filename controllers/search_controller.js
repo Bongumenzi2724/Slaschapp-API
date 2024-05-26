@@ -7,14 +7,17 @@ const Auction=require('../models/AuctionSchema')
 
 const search_controller=async(req,res)=>{
     const query=req.query.query;
+    if(query===""){
+        return res.status(404).json({status:false,message:"Please Enter A Search Query"});
+    }
     const page=parseInt(req.query.page)||1;
     const limit=10;
     const sort=req.query.sort||'firstname';
     const results=await SearchResults(query,page,limit,sort);
-    if(!results){
-        return res.status(404).json({message:"No Search Result(s) Found"})
+    if(results.length===0){
+        return res.status(404).json({status:false,message:"No Search Result(s) Found"})
     }
-    return res.status(200).json({message:"Search Results",results:results});
+    return res.status(200).json({status:true,message:"Search Results",results:results});
 }
 
 async function SearchResults(query,page,limit,sort){
@@ -53,6 +56,9 @@ async function SearchResults(query,page,limit,sort){
         },
         {
             $limit:limit
+        },
+        {
+            $project:{password:0,resetToken:0,resetTokenExpiration:0,AcceptTermsAndConditions:0}
         }
     ];
     //Search User Collection
@@ -65,7 +71,15 @@ async function SearchResults(query,page,limit,sort){
     const businesses=await Business.aggregate(pipeline);
     results.push(...businesses.map(business => ({ type: 'business', data: business })));
     //Search Categories Collection
-    const categories=await Categories.aggregate(pipeline);
+    const categories=await Categories.aggregate([
+        ...pipeline,
+        {
+          $project: {
+            password: 0,
+            email: 0
+          }
+        }
+      ]);
     results.push(...categories.map(category => ({ type: 'category', data: category })));
     //Search Bait Plants Collection
     const baitPlants=await Bait.aggregate(pipeline);

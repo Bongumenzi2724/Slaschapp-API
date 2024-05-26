@@ -90,6 +90,10 @@ const UserSchema = new mongoose.Schema({
         type:String,
         required:[false,'Please Provide the Expiration Time Of The Token']
     },
+    status:{
+        type:String,
+        enum:['Active','Pending','Suspended','Revoked']
+    }
 },{timestamps:true});
 
 UserSchema.pre('save',async function(){

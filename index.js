@@ -18,7 +18,7 @@ const dataRouter=require('./routes/dataRoutes')
 const baitRouter=require('./routes/bait_plant')
 const ownerRouter=require('./routes/owner')
 const categoriesRouter=require('./routes/categories')
-const userRoute=require('./routes/user_profile')
+const feedsRoute=require('./routes/feeds')
 const cartRouter=require('./routes/cart_routes')
 const accountRouter=require('./routes/transactions')
 const searchRouter=require('./routes/search_route')
@@ -53,11 +53,11 @@ app.use('/api/slaschapp/search',authenticateUser,businessSearchRouter);
 app.use('/api/slaschapp/data',dataRouter);
 app.use('/api/slaschapp/bait',authenticateUser,baitRouter);
 app.use('/api/slaschapp/category',categoriesRouter)
-app.use('/api/slaschapp/user',userRoute)
+app.use('/api/slaschapp/feeds',authenticateUser,feedsRoute)
 app.use('/api/slaschapp/business/owner',authenticateUser,ownerRouter)
 app.use('/api/slaschapp/cart',authenticateUser,cartRouter)
 app.use('/api/slaschapp/transaction/bait',accountRouter)
-app.use('/api/slaschapp/master',searchRouter)
+app.use('/api/slaschapp/master',authenticateUser,searchRouter)
 
 app.get('/',(req,res)=>{
     res.send('<h1>Business API</h1><a href="/api-docs">Documentation</a>');

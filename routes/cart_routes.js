@@ -1,11 +1,9 @@
 const router=require('express').Router()
 
-const {addBaitToCart, decrementBaitQuantity, removeCartItem, getCartCount, getCart} = require('../controllers/cart_controller');
+const {create_cart,getCart, updateCart} = require('../controllers/cart_controller');
 
-router.post('/bait/add/:baitID',addBaitToCart);
-router.get('/bait/decrement/:baitID',decrementBaitQuantity);
-router.delete('/bait/remove/:baitID',removeCartItem);
-router.get('/bait/count',getCartCount);
-router.get('/bait',getCart);
+router.post('/add-bait',create_cart);
+router.patch('/bait/update-cart/:cartID',updateCart);
+router.get('/',getCart);
 
 module.exports=router

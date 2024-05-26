@@ -81,6 +81,10 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
         type:String,
         required:false,
         default:''
+    },
+    status:{
+        type:String,
+        enum:['Active','Pending','Suspended','Revoked']
     }
 })
 

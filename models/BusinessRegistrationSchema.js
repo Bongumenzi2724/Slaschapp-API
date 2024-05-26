@@ -1,6 +1,6 @@
 const mongoose=require('mongoose');
 const BusinessRegistrationSchema = new mongoose.Schema({
-
+    
     BusinessName:{
         type:String,
         required:[true,'Please Provide Your Business Name'],
@@ -62,6 +62,10 @@ const BusinessRegistrationSchema = new mongoose.Schema({
         default:'facebook',
         maxlength:10000,
         minlength:1
+    },
+    status:{
+        type:String,
+        enum:['Active','Pending','Suspended','Revoked']
     },
     createdBy:{
         type:mongoose.Types.ObjectId,
