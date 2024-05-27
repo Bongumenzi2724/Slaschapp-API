@@ -171,28 +171,28 @@ paths:
               allOf:
               - $ref: '#/components/schemas/CreateBusinessRequest'
               - example:
-                  BusinessName: Peter Beauty Salon
-                  PhoneNumber: '076899921'
-                  BusinessEmail: PBeauty@gmail.com
+                  BusinessName: Lizwi's Tech Store
+                  PhoneNumber: '04486899921'
+                  BusinessEmail: LizwiTech@gmail.com
                   AcceptTermsAndConditions: Yes
-                  BusinessCategory: Beauty And Cosmetics
-                  BusinessLocation: Port Shepstone,KwaZulu-Natal
+                  BusinessCategory: Tech And Electronics
+                  BusinessLocation: Durban,KwaZulu-Natal
                   BusinessHours: 07:00-16:00,Mon-Fri
-                  BusinessLogo: https://images.pexels.com/photos/89112/pexels-photo-89112.jpeg?auto=compress&cs=tinysrgb&w=600
+                  BusinessLogo: https://images.pexels.com/photos/2417848/pexels-photo-2417848.jpeg?auto=compress&cs=tinysrgb&w=600
                   verificationDoc: https://media.istockphoto.com/id/1448013633/photo/employment-eligibility-verification-form.jpg?b=1&s=612x612&w=0&k=20&c=wIqK_DjjZcFjSmL4Jf9SZ-FAN0MF32DZEhsxllGk1GY=
-                  status: pending
+                  status: Active
                   socials: facebook
             example:
-              BusinessName: Peter Beauty Salon
-              PhoneNumber: '076899921'
-              BusinessEmail: PBeauty@gmail.com
+              BusinessName: Lizwi's Tech Store
+              PhoneNumber: '04486899921'
+              BusinessEmail: LizwiTech@gmail.com
               AcceptTermsAndConditions: Yes
-              BusinessCategory: Beauty And Cosmetics
-              BusinessLocation: Port Shepstone,KwaZulu-Natal
+              BusinessCategory: Tech And Electronics
+              BusinessLocation: Durban,KwaZulu-Natal
               BusinessHours: 07:00-16:00,Mon-Fri
-              BusinessLogo: https://images.pexels.com/photos/89112/pexels-photo-89112.jpeg?auto=compress&cs=tinysrgb&w=600
+              BusinessLogo: https://images.pexels.com/photos/2417848/pexels-photo-2417848.jpeg?auto=compress&cs=tinysrgb&w=600
               verificationDoc: https://media.istockphoto.com/id/1448013633/photo/employment-eligibility-verification-form.jpg?b=1&s=612x612&w=0&k=20&c=wIqK_DjjZcFjSmL4Jf9SZ-FAN0MF32DZEhsxllGk1GY=
-              status: pending
+              status: Active
               socials: facebook
         required: true
       responses:
@@ -245,7 +245,7 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-    delete:
+    patch:
       tags:
       - Businesses
       summary: Delete Business
@@ -258,57 +258,6 @@ paths:
         style: simple
         schema:
           type: string
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      servers:
-      - url: https://adlinc-api.onrender.com/api/slaschapp
-        variables: {}
-    patch:
-      tags:
-      - Businesses
-      summary: Update Single Business
-      operationId: UpdateSingleBusiness
-      parameters:
-      - name: businessID
-        in: path
-        description: ''
-        required: true
-        style: simple
-        schema:
-          type: string
-      requestBody:
-        description: ''
-        content:
-          application/json:
-            schema:
-              allOf:
-              - $ref: '#/components/schemas/UpdateSingleBusinessRequest'
-              - example:
-                  BusinessName: William Beauty
-                  PhoneNumber: '0718999211'
-                  BusinessEmail: William@gmail.com
-                  AcceptTermsAndConditions: Yes
-                  BusinessCategory: Beauty And Cosmetics
-                  BusinessLocation: Durban,KwaZulu-Natal
-                  BusinessHours: 07:00-16:00,Mon-Fri
-                  verificationDoc: verificationDoc string
-                  status: pending
-                  socials: twitter
-            example:
-              BusinessName: William Beauty
-              PhoneNumber: '0718999211'
-              BusinessEmail: William@gmail.com
-              AcceptTermsAndConditions: Yes
-              BusinessCategory: Beauty And Cosmetics
-              BusinessLocation: Durban,KwaZulu-Natal
-              BusinessHours: 07:00-16:00,Mon-Fri
-              verificationDoc: verificationDoc string
-              status: pending
-              socials: twitter
-        required: true
       responses:
         '200':
           description: ''
@@ -341,20 +290,13 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /business/{ownerID}/auction:
+  /business/6634bfb784e9bf0c9788e950/auction:
     post:
       tags:
       - Auctions
       summary: Create Auction
       operationId: CreateAuction
-      parameters:
-      - name: ownerID
-        in: path
-        description: ''
-        required: true
-        style: simple
-        schema:
-          type: string
+      parameters: []
       requestBody:
         description: ''
         content:
@@ -363,43 +305,20 @@ paths:
               allOf:
               - $ref: '#/components/schemas/CreateAuctionRequest'
               - example:
-                  campaignName: Tech Festival
-                  campaignDescription: Festive Season Technology Festival
-                  campaignBudget: R280000
-                  campaignDailyBudget: R50000
+                  campaignName: Fashion Festival
+                  campaignDescription: Fashion Festival For The Ages
+                  campaignBudget: 58000
+                  campaignDailyBudget: 5000
                   campaignStartDate: 22 October 2024
                   interests: Technology
             example:
-              campaignName: Tech Festival
-              campaignDescription: Festive Season Technology Festival
-              campaignBudget: R280000
-              campaignDailyBudget: R50000
+              campaignName: Fashion Festival
+              campaignDescription: Fashion Festival For The Ages
+              campaignBudget: 58000
+              campaignDailyBudget: 5000
               campaignStartDate: 22 October 2024
               interests: Technology
         required: true
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      security:
-      - bearer: []
-      servers:
-      - url: https://adlinc-api.onrender.com/api/slaschapp
-        variables: {}
-    get:
-      tags:
-      - Auctions
-      summary: Get All Auctions
-      operationId: GetAllAuctions
-      parameters:
-      - name: ownerID
-        in: path
-        description: ''
-        required: true
-        style: simple
-        schema:
-          type: string
       responses:
         '200':
           description: ''
@@ -545,20 +464,14 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-    delete:
+  /business/{ownerID}/auction:
+    get:
       tags:
       - Auctions
-      summary: Delete Auction
-      operationId: DeleteAuction
+      summary: Get All Auctions
+      operationId: GetAllAuctions
       parameters:
       - name: ownerID
-        in: path
-        description: ''
-        required: true
-        style: simple
-        schema:
-          type: string
-      - name: auctionID
         in: path
         description: ''
         required: true
@@ -570,6 +483,8 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      security:
+      - bearer: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
@@ -627,27 +542,6 @@ paths:
               resetToken: generated by forgot password
               resetTokenExpiration: generated by forgot password endpoint
         required: true
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      servers:
-      - url: https://adlinc-api.onrender.com/api/slaschapp
-        variables: {}
-    delete:
-      tags:
-      - Business Owner
-      summary: Delete Business Owner
-      operationId: DeleteBusinessOwner
-      parameters:
-      - name: ownerID
-        in: path
-        description: ''
-        required: true
-        style: simple
-        schema:
-          type: string
       responses:
         '200':
           description: ''
@@ -851,6 +745,7 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      security: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
@@ -866,6 +761,7 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      security: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
@@ -933,109 +829,6 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-    post:
-      tags:
-      - Admin
-      summary: Create A Category
-      operationId: CreateACategory
-      parameters: []
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      security: []
-      servers:
-      - url: https://adlinc-api.onrender.com/api/slaschapp
-        variables: {}
-  /category/delete/{categoryID}:
-    delete:
-      tags:
-      - Admin
-      summary: Delete Category
-      operationId: DeleteCategory
-      parameters:
-      - name: categoryID
-        in: path
-        description: ''
-        required: true
-        style: simple
-        schema:
-          type: string
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      security: []
-      servers:
-      - url: https://adlinc-api.onrender.com/api/slaschapp
-        variables: {}
-  /user/{userID}:
-    delete:
-      tags:
-      - Admin
-      summary: Delete User Profile
-      operationId: DeleteUserProfile
-      parameters:
-      - name: userID
-        in: path
-        description: ''
-        required: true
-        style: simple
-        schema:
-          type: string
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      security: []
-      servers:
-      - url: https://adlinc-api.onrender.com/api/slaschapp
-        variables: {}
-    get:
-      tags:
-      - User Profile
-      summary: Get User Profile
-      operationId: GetUserProfile
-      parameters:
-      - name: userID
-        in: path
-        description: ''
-        required: true
-        style: simple
-        schema:
-          type: string
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      servers:
-      - url: https://adlinc-api.onrender.com/api/slaschapp
-        variables: {}
-    patch:
-      tags:
-      - User Profile
-      summary: Update user profile
-      operationId: Updateuserprofile
-      parameters:
-      - name: userID
-        in: path
-        description: ''
-        required: true
-        style: simple
-        schema:
-          type: string
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      servers:
-      - url: https://adlinc-api.onrender.com/api/slaschapp
-        variables: {}
   /admin/baits:
     get:
       tags:
@@ -1091,7 +884,23 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /bait/auction/{auctionID}/bait/create:
+  /admin/carts:
+    get:
+      tags:
+      - Admin
+      summary: Get All Carts
+      operationId: GetAllCarts
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /business/auction/{auctionID}/bait/create:
     post:
       tags:
       - Bait Plants
@@ -1144,8 +953,7 @@ paths:
           description: ''
           headers: {}
       deprecated: false
-      security:
-      - bearer: []
+      security: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
@@ -1168,8 +976,7 @@ paths:
           description: ''
           headers: {}
       deprecated: false
-      security:
-      - bearer: []
+      security: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
@@ -1199,12 +1006,11 @@ paths:
           description: ''
           headers: {}
       deprecated: false
-      security:
-      - bearer: []
+      security: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-    delete:
+    patch:
       tags:
       - Bait Plants
       summary: Delete Single Bait
@@ -1229,6 +1035,7 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      security: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
@@ -1286,15 +1093,59 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      security: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /user/all:
+  /user/{userID}:
     get:
       tags:
-      - User Profile
-      summary: Get All Users
-      operationId: GetAllUsers1
+      - Profiles
+      summary: User Profile
+      operationId: UserProfile
+      parameters:
+      - name: userID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+    patch:
+      tags:
+      - Profiles
+      summary: Delete User Profile
+      operationId: DeleteUserProfile
+      parameters:
+      - name: userID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /profile/user/history:
+    patch:
+      tags:
+      - Profiles
+      summary: Suspend The Profile
+      operationId: SuspendTheProfile
       parameters: []
       responses:
         '200':
@@ -1304,12 +1155,11 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /cart/bait:
     get:
       tags:
-      - Cart
-      summary: Get Cart
-      operationId: GetCart
+      - Profiles
+      summary: Get All Past Orders
+      operationId: GetAllPastOrders
       parameters: []
       responses:
         '200':
@@ -1321,14 +1171,103 @@ paths:
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
-  /cart/bait/add/{baitID}:
+  /cart/{cartId}:
+    get:
+      tags:
+      - Cart
+      summary: Get Order
+      operationId: GetOrder
+      parameters:
+      - name: cartId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /cart/add-bait:
     post:
       tags:
       - Cart
       summary: Add Bait To Cart
       operationId: AddBaitToCart
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/AddBaitToCartRequest'
+              - example:
+                  auctionName: Tech Festival
+                  auctionId: 664cc923e5a1e4b89b7ba353
+                  status: Pending
+                  baits:
+                  - baitId: 6650b8973c45cee34da207cf
+                    baitName: Mzansi Bait
+                    price: 800
+                    quantity: 5
+                    size: large
+                    color: black
+                  - baitId: 6650b8663c45cee34da207cd
+                    baitName: Sandals Bait
+                    price: 800
+                    quantity: 5
+                    size: large
+                    color: black
+                  totalCartPrice: 2800
+                  totalCartQuantity: 8
+                  code: '12345678910'
+                  paymentMethod: Card
+            example:
+              auctionName: Tech Festival
+              auctionId: 664cc923e5a1e4b89b7ba353
+              status: Pending
+              baits:
+              - baitId: 6650b8973c45cee34da207cf
+                baitName: Mzansi Bait
+                price: 800
+                quantity: 5
+                size: large
+                color: black
+              - baitId: 6650b8663c45cee34da207cd
+                baitName: Sandals Bait
+                price: 800
+                quantity: 5
+                size: large
+                color: black
+              totalCartPrice: 2800
+              totalCartQuantity: 8
+              code: '12345678910'
+              paymentMethod: Card
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /cart/update-cart/{cartId}:
+    patch:
+      tags:
+      - Cart
+      summary: Update Order Status
+      operationId: UpdateOrderStatus
       parameters:
-      - name: baitID
+      - name: cartId
         in: path
         description: ''
         required: true
@@ -1341,18 +1280,29 @@ paths:
           application/json:
             schema:
               allOf:
-              - $ref: '#/components/schemas/AddBaitToCartRequest'
+              - $ref: '#/components/schemas/UpdateOrderStatusRequest'
               - example:
-                  totalPrice: 10000
-                  quantity: 1
-                  status: pending
-                  code: er345
+                  status: Expired
             example:
-              totalPrice: 10000
-              quantity: 1
-              status: pending
-              code: er345
+              status: Expired
         required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /cart/orders:
+    get:
+      tags:
+      - Cart
+      summary: Get All Orders
+      operationId: GetAllOrders
+      parameters: []
       responses:
         '200':
           description: ''
@@ -1382,7 +1332,6 @@ paths:
           description: ''
           headers: {}
       deprecated: false
-      security: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
@@ -1398,7 +1347,28 @@ paths:
           description: ''
           headers: {}
       deprecated: false
-      security: []
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /category/delete/{categoryID}:
+    patch:
+      tags:
+      - Categories
+      summary: Delete Category
+      operationId: DeleteCategory
+      parameters:
+      - name: categoryID
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
@@ -1435,7 +1405,6 @@ paths:
           description: ''
           headers: {}
       deprecated: false
-      security: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
@@ -1444,7 +1413,7 @@ paths:
       tags:
       - Categories
       summary: Create A Category
-      operationId: PostCreateACategory
+      operationId: CreateACategory
       parameters: []
       requestBody:
         description: ''
@@ -1465,7 +1434,6 @@ paths:
           description: ''
           headers: {}
       deprecated: false
-      security: []
       servers:
       - url: https://adlinc-api.onrender.com/api/slaschapp
         variables: {}
@@ -1493,6 +1461,89 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+  /master/search:
+    get:
+      tags:
+      - Search
+      summary: Master Search
+      operationId: MasterSearch
+      parameters:
+      - name: query
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /feeds/all/users:
+    get:
+      tags:
+      - Feeds
+      summary: Users Feed
+      operationId: UsersFeed
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /feeds/all/owners:
+    get:
+      tags:
+      - Feeds
+      summary: Business Owners Feed
+      operationId: BusinessOwnersFeed
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /feeds/all/auctions:
+    get:
+      tags:
+      - Feeds
+      summary: Auctions Feed
+      operationId: AuctionsFeed
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
+  /feeds/all/baits:
+    get:
+      tags:
+      - Feeds
+      summary: Baits Feed
+      operationId: BaitsFeed
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: https://adlinc-api.onrender.com/api/slaschapp
+        variables: {}
 components:
   schemas:
     RegisterUserProfileRequest:
@@ -1634,16 +1685,16 @@ components:
         socials:
           type: string
       example:
-        BusinessName: Peter Beauty Salon
-        PhoneNumber: '076899921'
-        BusinessEmail: PBeauty@gmail.com
+        BusinessName: Lizwi's Tech Store
+        PhoneNumber: '04486899921'
+        BusinessEmail: LizwiTech@gmail.com
         AcceptTermsAndConditions: Yes
-        BusinessCategory: Beauty And Cosmetics
-        BusinessLocation: Port Shepstone,KwaZulu-Natal
+        BusinessCategory: Tech And Electronics
+        BusinessLocation: Durban,KwaZulu-Natal
         BusinessHours: 07:00-16:00,Mon-Fri
-        BusinessLogo: https://images.pexels.com/photos/89112/pexels-photo-89112.jpeg?auto=compress&cs=tinysrgb&w=600
+        BusinessLogo: https://images.pexels.com/photos/2417848/pexels-photo-2417848.jpeg?auto=compress&cs=tinysrgb&w=600
         verificationDoc: https://media.istockphoto.com/id/1448013633/photo/employment-eligibility-verification-form.jpg?b=1&s=612x612&w=0&k=20&c=wIqK_DjjZcFjSmL4Jf9SZ-FAN0MF32DZEhsxllGk1GY=
-        status: pending
+        status: Active
         socials: facebook
     UpdateSingleBusinessRequest:
       title: UpdateSingleBusinessRequest
@@ -1707,18 +1758,20 @@ components:
         campaignDescription:
           type: string
         campaignBudget:
-          type: string
+          type: integer
+          format: int32
         campaignDailyBudget:
-          type: string
+          type: integer
+          format: int32
         campaignStartDate:
           type: string
         interests:
           type: string
       example:
-        campaignName: Tech Festival
-        campaignDescription: Festive Season Technology Festival
-        campaignBudget: R280000
-        campaignDailyBudget: R50000
+        campaignName: Fashion Festival
+        campaignDescription: Fashion Festival For The Ages
+        campaignBudget: 58000
+        campaignDailyBudget: 5000
         campaignStartDate: 22 October 2024
         interests: Technology
     UpdateAuctionRequest:
@@ -2043,27 +2096,100 @@ components:
     AddBaitToCartRequest:
       title: AddBaitToCartRequest
       required:
-      - totalPrice
-      - quantity
+      - auctionName
+      - auctionId
       - status
+      - baits
+      - totalCartPrice
+      - totalCartQuantity
       - code
+      - paymentMethod
       type: object
       properties:
-        totalPrice:
+        auctionName:
+          type: string
+        auctionId:
+          type: string
+        status:
+          type: string
+        baits:
+          type: array
+          items:
+            $ref: '#/components/schemas/Bait'
+          description: ''
+        totalCartPrice:
+          type: integer
+          format: int32
+        totalCartQuantity:
+          type: integer
+          format: int32
+        code:
+          type: string
+        paymentMethod:
+          type: string
+      example:
+        auctionName: Tech Festival
+        auctionId: 664cc923e5a1e4b89b7ba353
+        status: Pending
+        baits:
+        - baitId: 6650b8973c45cee34da207cf
+          baitName: Mzansi Bait
+          price: 800
+          quantity: 5
+          size: large
+          color: black
+        - baitId: 6650b8663c45cee34da207cd
+          baitName: Sandals Bait
+          price: 800
+          quantity: 5
+          size: large
+          color: black
+        totalCartPrice: 2800
+        totalCartQuantity: 8
+        code: '12345678910'
+        paymentMethod: Card
+    Bait:
+      title: Bait
+      required:
+      - baitId
+      - baitName
+      - price
+      - quantity
+      - size
+      - color
+      type: object
+      properties:
+        baitId:
+          type: string
+        baitName:
+          type: string
+        price:
           type: integer
           format: int32
         quantity:
           type: integer
           format: int32
-        status:
+        size:
           type: string
-        code:
+        color:
           type: string
       example:
-        totalPrice: 10000
-        quantity: 1
-        status: pending
-        code: er345
+        baitId: 6650b8973c45cee34da207cf
+        baitName: Mzansi Bait
+        price: 800
+        quantity: 5
+        size: large
+        color: black
+    UpdateOrderStatusRequest:
+      title: UpdateOrderStatusRequest
+      required:
+      - status
+      type: object
+      properties:
+        status:
+          type: string
+      example:
+        status: Expired
     UpdateACategoryRequest:
       title: UpdateACategoryRequest
       required:
@@ -2106,7 +2232,9 @@ tags:
 - name: Data Collection
 - name: Admin
 - name: Bait Plants
-- name: User Profile
+- name: Profiles
 - name: Cart
 - name: Categories
 - name: Payments
+- name: Search
+- name: Feeds

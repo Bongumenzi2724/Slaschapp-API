@@ -19,8 +19,11 @@ const getAllPastOrders=async(req,res)=>{
 }
 
 const get_user_profile=async(req,res)=>{
-    console.log("Get Single Profile");
-    return res.status(StatusCodes.OK).json({message:"User Retrieved"})
+    const user= await User.findOne({_id:req.params.id})
+    if(!user){
+        throw new NotFoundError(`No user profile with id ${req.params.id} exist`)
+    }
+    return res.status(StatusCodes.OK).json({user})
 }
 const deleteUserProfile=async(req,res)=>{
     try {
