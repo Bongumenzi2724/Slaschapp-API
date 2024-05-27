@@ -1,8 +1,8 @@
 const Auction=require('../models/AuctionSchema')
 const {NotFoundError}=require('../errors')
 const {StatusCodes}=require('http-status-codes')
-const { default: mongoose } = require('mongoose')
 
+//
 const createAuction=async(req,res)=>{
     req.body.createdBy=req.user.userId;
     const newAuction=await Auction.create({...req.body});

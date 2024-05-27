@@ -41,7 +41,7 @@ const getAllBusinesses =async(req,res) =>{
 //Get A Single Business For A Specific Owner check if the status of the business is active
 const getSingleBusiness=async(req,res)=>{
 
-    const{user:{userId},params:{id:businessId}}=req
+    const{params:{id:businessId}}=req
     
     const business= await Business.findOne({_id:businessId})
 
@@ -69,6 +69,7 @@ const updateBusinessDetails= async(req,res)=>{
 }
 
 //Change The Status of the Business but do not delete
+
 const deleteBusiness=async(req,res)=>{
 
     const{user:{userId},params:{id:businessId}}=req
