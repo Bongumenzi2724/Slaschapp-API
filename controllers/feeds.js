@@ -9,7 +9,7 @@ const {StatusCodes}=require('http-status-codes')
 const getUserProfile=async(req,res)=>{
     const user= await User.findOne({_id:req.params.id})
     if(!user){
-        throw new NotFoundError(`No user profile with id ${req.params.id}`)
+        throw new NotFoundError(`No user profile with id ${req.params.id} exist`)
     }
     return res.status(StatusCodes.OK).json({user})
 };

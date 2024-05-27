@@ -46,7 +46,7 @@ const suspendUserProfile=async(req,res)=>{
         user.status="Suspended";
         let newUser=user;
         await User.updateOne(req.user.userId,{$set:newUser},{new:true});
-        return res.status(StatusCodes.OK).json({message:"user profile suspended"})
+        return res.status(StatusCodes.OK).json({message:"User profile suspended"})
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:error.message})
     }

@@ -52,9 +52,15 @@ const update_bait_plant=async(req,res)=>{
 //delete a bait plant
 const delete_bait_plant=async(req,res)=>{
     try {
-       const user = await Bait.findById(req.params.baitID);
-       await user.deleteOne({_id:req.params.baitID});
-       return res.status(StatusCodes.OK).json({status:true,message:"Bait successfully deleted"});
+       const bait = await Bait.findById(req.params.baitID);
+       if(!bait){
+        return res.status(404).json({message:"The bait does not exist"})
+       }
+        bait.status="Revoked";
+        let newBait=bait;
+        await User.updateOne(req.user.userId,{$set:newBait},{new:true});
+       //await user.deleteOne({_id:req.params.baitID});
+        return res.status(StatusCodes.OK).json({status:true,message:"Bait successfully deleted"});
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false,message:error.message})
     }

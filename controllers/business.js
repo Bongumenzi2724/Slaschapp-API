@@ -43,7 +43,7 @@ const getSingleBusiness=async(req,res)=>{
 
     const{user:{userId},params:{id:businessId}}=req
     
-    const business= await Business.findOne({_id:businessId,createdBy:userId})
+    const business= await Business.findOne({_id:businessId})
 
     if(!business){
         throw new NotFoundError(`No Business with id ${businessId}`)
@@ -102,7 +102,8 @@ const suspendBusiness=async(req,res)=>{
     //get the status of the business
     business.status='Suspended';
 
-    await Business.updateOneOne({_id:req.prams.id},{$set:business},{new:true});
+    let newBusiness=business;
+    await Business.updateOneOne({_id:req.prams.id},{$set:newBusiness},{new:true});
 
     return res.status(StatusCodes.OK).json({status:true,message:"Your Business Account Has Been Suspended"});
 }catch(error){
@@ -125,4 +126,4 @@ const searchBusiness=async(req,res)=>{
     }
 }
 
-module.exports={createBusiness,searchBusiness,getSingleBusiness,updateBusinessDetails,getAllBusinesses,deleteBusiness}
+module.exports={createBusiness,searchBusiness,suspendBusiness,getSingleBusiness,updateBusinessDetails,getAllBusinesses,deleteBusiness}
