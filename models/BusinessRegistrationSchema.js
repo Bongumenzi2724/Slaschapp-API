@@ -16,9 +16,7 @@ const BusinessRegistrationSchema = new mongoose.Schema({
     },
     BusinessEmail:{
         type:String,
-        required:[true,'Please Provide Your Business Email Address'],
-        unique:false,
-        minlength:2
+        required:[true,'Please Provide Your Business Email Address']
     },
     AcceptTermsAndConditions:{
         type:String,

@@ -14,16 +14,12 @@ const AuctionSchema = new mongoose.Schema({
         minlength:1
     },
     campaignBudget:{
-        type:String,
-        required:[true,'Please Provide Budget For Your Campaign'],
-        maxlength:100,
-        minlength:1
+        type:Number,
+        required:[true,'Please Provide Budget For Your Campaign']
     },
     campaignDailyBudget:{
-        type:String,
-        required:[true,'Please Provide Your Email'],
-        maxlength:100,
-        minlength:1,
+        type:Number,
+        required:[true,'Please Provide The Campaign Daily Budget']
     },
     campaignStartDate:{
         type:String,
@@ -38,7 +34,8 @@ const AuctionSchema = new mongoose.Schema({
     },
     status:{
         type:String,
-        enum:['Active','Pending','Suspended','Revoked']
+        enum:['Active','Pending','Suspended','Revoked'],
+        default:'Pending'
     },
     /* businessId:{
         type:mongoose.Types.ObjectId,

@@ -1,6 +1,6 @@
 function paginated(model){
     return async(req,res,next)=>{
-        const page=req.query.start;
+        const page=req.query.start||0;
         const limit=req.query.limit;
         const startIndex=parseInt((page-1)*limit);
         const endIndex=parseInt(page*limit);

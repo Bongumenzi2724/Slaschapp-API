@@ -28,13 +28,17 @@ const createBusiness=async(req,res)=>{
     }
 }
 
-//Get All Businesses Specific for A Single Business Owner
+//Get All Businesses Specific for A Single Business Owner Whose Status Is Active
 const getAllBusinesses =async(req,res) =>{
-    const businesses=await Business.find({createdBy:req.user.userId}).sort('createdAt')
+    const businesses=await Business.aggregate([
+        {
+            $match:{status:"Active"}
+        }
+    ])
     return res.status(StatusCodes.OK).json({businesses,count:businesses.length})
 }
 
-//Get A Single Business For A Specific Owner
+//Get A Single Business For A Specific Owner check if the status of the business is active
 const getSingleBusiness=async(req,res)=>{
 
     const{user:{userId},params:{id:businessId}}=req
@@ -64,21 +68,46 @@ const updateBusinessDetails= async(req,res)=>{
 
 }
 
-//Delete A Business
+//Change The Status of the Business but do not delete
 const deleteBusiness=async(req,res)=>{
+
     const{user:{userId},params:{id:businessId}}=req
    try{
+    //find the business by id
     const business=await Business.findById({_id:businessId,createdBy:userId});
     if(!business){
         throw new NotFoundError(`No Business With id ${businessId}`)
     }
-    await business.deleteOne({_id:req.prams.id});
+    //update the status of the business 
+    //get the status of the business
+    business.status='Revoked'
+    await Business.updateOneOne({_id:req.params.id},{$set:business},{new:true});
     return res.status(StatusCodes.OK).json({status:true,message:"Business Successfully Deleted"});
+}catch(error){
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false,message:error.message});
+}
+}
+//Suspending A business
+const suspendBusiness=async(req,res)=>{
+
+    const{user:{userId},params:{id:businessId}}=req
+   try{
+    //find the business by id
+    const business=await Business.findById({_id:businessId,createdBy:userId});
+    if(!business){
+        throw new NotFoundError(`No Business With id ${businessId}`)
+    }
+    //update the status of the business 
+    //get the status of the business
+    business.status='Suspended';
+
+    await Business.updateOneOne({_id:req.prams.id},{$set:business},{new:true});
+
+    return res.status(StatusCodes.OK).json({status:true,message:"Your Business Account Has Been Suspended"});
 }catch(error){
     return res.status(StatusCodes.OK).json({status:false,message:error.message});
 }
 }
-
 //Search for businesses
 const searchBusiness=async(req,res)=>{
     const{query:{BusinessCategory:BusinessCategory,BusinessLocation:BusinessLocation}}=req
