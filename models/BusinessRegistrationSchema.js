@@ -46,13 +46,6 @@ const BusinessRegistrationSchema = new mongoose.Schema({
     verificationDoc:{
         type:String
     },
-    status:{
-        type:String,
-        enum:['pending','declined','success'],
-        default:'pending',
-        maxlength:10000,
-        minlength:1
-    },
     socials:{
         type:String,
         required:[false,'Please Provide Your Socials'],

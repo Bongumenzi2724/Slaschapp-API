@@ -3,7 +3,6 @@ const User = require("../models/UserRegistrationSchema");
 const { StatusCodes } = require("http-status-codes")
 
 const getAllPastOrders=async(req,res)=>{
-   
     try {  
         console.log(req.user);   
         const orders=await Cart.find({userId:req.user.userId});
@@ -14,8 +13,7 @@ const getAllPastOrders=async(req,res)=>{
         
     } catch (error) {
         return res.status(StatusCodes.NOT_FOUND).json({message:"an error occurred while viewing purchase history"})
-    }
-    
+    }  
 }
 
 const get_user_profile=async(req,res)=>{
