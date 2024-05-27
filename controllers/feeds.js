@@ -13,20 +13,6 @@ const getUserProfile=async(req,res)=>{
     }
     return res.status(StatusCodes.OK).json({user})
 };
-//delete single user
-const deleteUserProfile=async(req,res)=>{
-     //Find user by id
-     try{
-     const user = await User.findById(req.params.id);
-     if(!user){
-        throw new NotFoundError(`No user profile with id ${req.params.id}`);
-    }
-    await user.deleteOne({_id:req.params.id});
-    return res.status(StatusCodes.OK).json({status:true,message:"Business Deleted Successfully"})
-}catch(error){
-    return res.status(500).json({status:false,message:error.message});
-}
-};
 //update user
 const updateUserProfile=async(req,res)=>{};
 //only active users
@@ -54,4 +40,4 @@ const getAllBaits=async(req,res)=>{
     return res.status(StatusCodes.OK).json({baitsFeed,count:baitsFeed.length});
 }
 
-module.exports={getUserProfile,AllOwnersProfiles,getAllAuctions,getAllBaits,deleteUserProfile,updateUserProfile,getAllUsersProfiles}
+module.exports={getUserProfile,AllOwnersProfiles,getAllAuctions,getAllBaits,updateUserProfile,getAllUsersProfiles}

@@ -80,8 +80,9 @@ const deleteBusiness=async(req,res)=>{
     }
     //update the status of the business 
     //get the status of the business
-    business.status='Revoked'
-    await Business.updateOneOne({_id:req.params.id},{$set:business},{new:true});
+    business.status='Revoked';
+    let newBusiness=business;
+    await Business.updateOneOne({_id:req.params.id},{$set:newBusiness},{new:true});
     return res.status(StatusCodes.OK).json({status:true,message:"Business Successfully Deleted"});
 }catch(error){
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false,message:error.message});

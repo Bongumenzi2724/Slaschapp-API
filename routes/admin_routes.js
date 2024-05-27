@@ -12,6 +12,6 @@ router.get('/orders',AllCarts)
 router.get('/category',get_all_categories)
 router.post('/category',create_category)
 router.patch('/bait/:id',update_bait_plant)
-router.delete('/user/:id',deleteUserProfile)
+//router.delete('/user/:id',deleteUserProfile)
 
 module.exports=router

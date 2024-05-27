@@ -56,7 +56,8 @@ const deleteSingleAuction=async(req,res)=>{
     }
     //update the auction status
     auction.status='Revoked';
-    await Auction.updateOne({_id:req.params.id},{$set:{auction}},{new:true})
+    let newAuction=auction;
+    await Auction.updateOne({_id:req.params.id},{$set:{newAuction}},{new:true})
     res.status(StatusCodes.OK).json({message:"Business Deleted Successfully"})
     }catch(error){
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false,message:error.message});
@@ -73,7 +74,8 @@ const suspendAuction=async(req,res)=>{
     }
     //update the auction status
     auction.status='Suspended';
-    await Auction.updateOne({_id:req.params.id},{$set:{auction}},{new:true})
+    let newAuction=auction;
+    await Auction.updateOne({_id:req.params.id},{$set:{newAuction}},{new:true})
     res.status(StatusCodes.OK).json({message:"This Auction Has Been Suspended"});
 }catch(error){
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false,message:error.message});

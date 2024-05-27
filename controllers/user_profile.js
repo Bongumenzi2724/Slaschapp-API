@@ -29,7 +29,8 @@ const deleteUserProfile=async(req,res)=>{
             return res.status(StatusCodes.NOT_FOUND).json({message:"The user does not exist"})
         }
         user.status="Revoked";
-        await User.updateOne(req.user.userId,{$set:user},{new:true});
+        let newUser=user;
+        await User.updateOne(req.user.userId,{$set:newUser},{new:true});
         return res.status(StatusCodes.OK).json({message:"user profile deleted"})
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:error.message})
@@ -37,8 +38,18 @@ const deleteUserProfile=async(req,res)=>{
 }
 
 const suspendUserProfile=async(req,res)=>{
-    console.log("Delete User Profile");
-    return res.status(StatusCodes.OK).json({message:"User Account Suspended Successfully"})
+    try {
+        const user=await User.find({_id:req.user.userId});
+        if(!user){
+            return res.status(StatusCodes.NOT_FOUND).json({message:"The user does not exist"})
+        }
+        user.status="Suspended";
+        let newUser=user;
+        await User.updateOne(req.user.userId,{$set:newUser},{new:true});
+        return res.status(StatusCodes.OK).json({message:"user profile suspended"})
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:error.message})
+    }
 }
 
 module.exports={getAllPastOrders,get_user_profile,deleteUserProfile,suspendUserProfile}

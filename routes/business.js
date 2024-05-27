@@ -14,8 +14,8 @@ router.patch('/:id',updateBusinessDetails)
 
 //auctions routes
 router.route('/:id/auction').post(createAuction).get(getAllAuctions)
-router.route('/:id/auction/:auctionId').patch(updateAuctions).get(getSingleAuction).delete(deleteSingleAuction)
-
+router.route('/:id/auction/:auctionId').patch(updateAuctions).get(getSingleAuction)
+router.patch('/:id/auction/:auctionId',deleteSingleAuction)
 //search the auction results
 router.route('/:id/search/auction').get(auctionSearchResults)
 //Get all auction material available

@@ -1,5 +1,4 @@
 const Cart = require("../models/Cart");
-const Bait = require('../models/BaitSchema');
 
 
 const getCart=async(req,res)=>{
@@ -7,8 +6,8 @@ const getCart=async(req,res)=>{
     try {
     const cart=await Cart.findOne({userId:req.user.userId,_id:req.params.cartId});
     //check if the cart has expired
-    if(cart.status=="Expired" || cart==null){
-        return res.status.json({status:cart.status,messages:`The cart ${cart.status=="Expired"?"The Cart Has Expired":"The Cart Does Not Exist"}`})
+    if(!cart){
+        return res.status(404).json({status:cart.status,messages:`The cart ${cart.status=="Expired"?"The Cart Has Expired":"The Cart Does Not Exist"}`})
     }
     //if the cart has expired return a new message
     return res.status(200).json({status:cart.status,cart:cart});
@@ -16,8 +15,6 @@ const getCart=async(req,res)=>{
         return res.status(500).json({status:false,message:error.message});
     }
 }
-
-//incude the bait id and the user id
 
 const create_cart=async(req,res)=>{
    try {
@@ -66,21 +63,23 @@ const updateCart=async(req,res)=>{
     //updating the cart means updating the status of the cart
     try {
         const cart=await Cart.findOne({userId:req.user.userId,_id:req.params.cartId});
+    
+        console.log(cart)
         if(!cart||cart.status=="Expired"){
-            return res.status(404).json({status:false,message:`The cart requested does ${cart.status==="Expired" ? "The Cart Has Expired" : "The Cart Does Not Exist"}`})
+            return res.status(404).json({status:false,message:`The cart requested has the following status : ${cart.status==="Expired" ? "Expired" : "The Cart Does Not Exist"}`})
         }
         //update the status of the cart
         cart.status=req.body.status;
-        const updatedCart=await Cart.findByIdAndUpdate({userId:req.user.userId,_id:cart._id},{cart},{new:true})
-        return res.status(200).json({status:true,cart:updatedCart})
+        let newCart=cart;
+        //console.log(newCart);
+        await Cart.updateOne({userId:req.user.userId,_id:cart._id},{$set:newCart},{new:true,runValidators:true})
+        return res.status(200).json({status:true,message:"Cart Status Successfully Updated"})
     } catch (error) {
         return res.status(500).json({status:false,message:error.message})
     }
     
 }
-const getAllOrders=async(req,res)=>{
-    //get all carts using a user id
-    
+const getAllOrders=async(req,res)=>{    
     try {
         const AllOrders=await Cart.findById({userId:userId});
         return res.status(200).json({orders:AllOrders})
