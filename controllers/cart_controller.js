@@ -78,6 +78,18 @@ const updateCart=async(req,res)=>{
     }
     
 }
+const getAllOrders=async(req,res)=>{
+    //get all carts using a user id
+    
+    try {
+        const AllOrders=await Cart.findById({userId:userId});
+        return res.status(200).json({orders:AllOrders})
+    } catch (error) {
+        return res.status(500).json({message:error.message})
+    }
+    
+    
+}
 
 
-module.exports={getCart,updateCart,create_cart}
+module.exports={getCart,updateCart,create_cart, getAllOrders}
