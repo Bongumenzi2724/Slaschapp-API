@@ -27,7 +27,7 @@ const updateAuctions=async(req,res)=>{
 const getAllAuctions=async(req,res)=>{
     console.log(req.user.userId)
     const auctionData=await Auction.aggregate([{
-        $match:{status:'Active'}, 
+        $match:{status:'Pending'}, 
     },
     {
         $project:{__v:0}
