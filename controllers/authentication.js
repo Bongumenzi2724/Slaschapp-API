@@ -3,7 +3,7 @@ const User=require('../models/UserRegistrationSchema')
 const {StatusCodes}=require('http-status-codes')
 const BusinessOwner=require('../models/BusinessOwnerRegistration')
 const nodemailer=require('nodemailer');
-const OTP=require('../models/userOTPVerification')
+const OTP=require('../models/OTPSchema')
 
 //Nodemailer Stuff
 let transporter=nodemailer.createTransport({

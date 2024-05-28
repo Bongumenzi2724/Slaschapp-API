@@ -4,7 +4,7 @@ const {StatusCodes}=require('http-status-codes')
 
 //
 const createAuction=async(req,res)=>{
-    req.body.createdBy=req.user.userId;
+    req.body.businessId=req.params.businessId;
     const newAuction=await Auction.create({...req.body});
     res.status(StatusCodes.CREATED).json({newAuction});
 }
