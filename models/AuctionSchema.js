@@ -34,14 +34,8 @@ const AuctionSchema = new mongoose.Schema({
     },
     status:{
         type:String,
-        enum:['Active','Pending','Suspended','Revoked'],
-        default:'Pending'
+        enum:['Active','Expired','Canceled']
     },
-    /* businessId:{
-        type:mongoose.Types.ObjectId,
-        ref:'Business',
-        required:[true,'Please provide the business']
-    }, */
     businessId:{
         type:mongoose.Types.ObjectId,
         ref:'Business',

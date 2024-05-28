@@ -27,7 +27,7 @@ const updateAuctions=async(req,res)=>{
 const getAllAuctions=async(req,res)=>{
     console.log(req.user.userId)
     const auctionData=await Auction.aggregate([{
-        $match:{status:'Pending'}, 
+        $match:{status:'Active'}, 
     },
     {
         $project:{__v:0}
@@ -83,7 +83,7 @@ const suspendAuction=async(req,res)=>{
 }
 
 const getAllAuctionMaterial=async(req,res)=>{
-    const auctionData=await Auction.find({createdBy:req.user.userId}).sort('createdAt')
+    const auctionData=await Auction.find({businessId:req.params.businessId}).sort('createdAt')
     res.status(StatusCodes.OK).json({auctionData,count:auctionData.length});
 }
 

@@ -59,4 +59,5 @@ const getAllPastOrders=async(req,res)=>{
     }
     
 }
+
 module.exports={AllUsers,AllCarts,AllBaitPlants,getAllPastOrders,AllBusiness,AllAuctions,AllBusinessOwners,get_all_categories,create_category,getAllUsersProfiles,deleteUserProfile,update_bait_plant,getUserProfile}

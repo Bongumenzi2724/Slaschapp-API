@@ -99,6 +99,7 @@ const loginBusinessOwner=async(req,res)=>{
     const token = owner.createJWT()
     res.status(StatusCodes.OK).json({owner:{id:owner._id,name:owner.firstname,surname:owner.surname,email:owner.email},token:{token}})
 }
+
 const UserRegistration=async(req,res)=>{
     console.log("Business Owner ");
     const user=await User.create({...req.body})
@@ -124,7 +125,8 @@ const registerBusinessOwner=async(req,res)=>{
             IdDocumentLink:req.body.IdDocumentLink,
             gender:req.body.gender,
             resetToken:req.body.resetToken,
-            resetTokenExpiration:req.body.resetTokenExpiration
+            resetTokenExpiration:req.body.resetTokenExpiration,
+            status:req.body.status
         });
         newOwner.save();
         //const owner=await BusinessOwner.create({...req.body});
