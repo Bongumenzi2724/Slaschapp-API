@@ -94,6 +94,7 @@ const UserSchema = new mongoose.Schema({
         type:String,
         enum:['Active','Pending','Suspended','Revoked']
     }
+    
 },{timestamps:true});
 
 UserSchema.pre('save',async function(){

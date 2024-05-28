@@ -52,8 +52,10 @@ const generateOtp = async () => {
     await newOtp.save();
     return otp;
   };
+
+
 //send the otp, otp is important for registration
-const user_send_otp=async(req,res)=>{
+const user_send_otp=async(req,res,next)=>{
     try {
         const user=await User.findOne({email:req.body.email})
         if(!user){
@@ -74,7 +76,8 @@ const user_send_otp=async(req,res)=>{
             else{
                 console.log("OTP sent successfully");
                 console.log(info)
-                return res.status(200).json({message:"OTP sent successfully"});
+                res.status(200).json({message:"OTP sent successfully"});
+                //next();
             }
         })
     } catch (error) {
@@ -83,9 +86,12 @@ const user_send_otp=async(req,res)=>{
 }
 
 //verify otp, otp is important for registration
-const user_verify_Otp = async (req,res) => {
+const user_verify_Otp = async (req,res,next) => {
+    //find the user using the email and modify the status of the user or  owner
     try {
       const otp=req.body.otp;
+      const email=req.body.email;
+
       const user_otp = await OTP.findOne({ otp:otp });
       if (!user_otp) {
         return res.status(404).json({message:"Invalid OTP"});
@@ -94,6 +100,8 @@ const user_verify_Otp = async (req,res) => {
       if (now > user_otp.expires) {
         return res.status(404).json({message:"OTP Has Expired"});
       }
+      //find the user using the email and update the status of the user
+
       res.json(200).json({message:"OTP Verified"});
       next();
     } catch (error) {
@@ -114,4 +122,4 @@ const user_verify_token=async(req,res)=>{
         return res.status(500).json({message:error.message}); 
     }
 }
-module.exports={user_forgot_password,user_password_reset,user_send_otp}
+module.exports={user_forgot_password,user_password_reset,user_send_otp,user_verify_Otp}

@@ -1,9 +1,12 @@
 const express=require('express')
 const router=express.Router()
 const {loginUser,registerBusinessOwner,UserRegistration,loginBusinessOwner}=require('../controllers/authentication');
-//const {sendOTP}=require('../controllers/optController');
-const {  user_password_reset, user_forgot_password} = require('../controllers/user_password_controller');
+
+
 const { owner_password_reset, owner_forgot_password} = require('../controllers/owner_password_controllers');
+const { user_forgot_password, user_password_reset } = require('../controllers/user_password_controller');
+
+
 
 //register app user
 //router.post('/register/user',registerUser)
@@ -16,6 +19,7 @@ router.patch('/login/user/forgot',user_forgot_password)
 // reset password route
 router.patch('/login/user/reset',user_password_reset)
 
+//verify the OTP
 //register business owner
 router.post('/register/owner',registerBusinessOwner)
 //login business owner
