@@ -7,7 +7,7 @@ const { owner_password_reset, owner_forgot_password, owner_send_otp, owner_verif
 
 //register app user
 //router.post('/register/user',registerUser)
-router.post('/register/user',user_send_otp,user_verify_otp,UserRegistration)
+router.post('/register/user',UserRegistration)
 //login app user
 router.post('/login/user',loginUser)
 
@@ -17,7 +17,7 @@ router.patch('/login/user/forgot',user_forgot_password)
 router.patch('/login/user/reset',user_password_reset)
 
 //register business owner
-router.post('/register/owner',owner_send_otp,owner_verify_otp,registerBusinessOwner)
+router.post('/register/owner',registerBusinessOwner)
 //login business owner
 router.post('/login/owner',loginBusinessOwner)
 //owner forgot and reset password route
