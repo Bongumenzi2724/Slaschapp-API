@@ -63,9 +63,7 @@ const user_send_otp=async(req,res,next)=>{
         }
 
         const transporter=nodemailer.createTransport({
-            host:'smtp.gmail.com',
-            port:587,
-            secure:false,
+            service:'gmail',
             auth:{
                 user:'bongumenzinzama@gmail.com',
                 pass:"bongumenzi#27#"
