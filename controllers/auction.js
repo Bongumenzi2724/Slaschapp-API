@@ -11,7 +11,7 @@ const createAuction=async(req,res)=>{
 
 const updateAuctions=async(req,res)=>{
 
-   const{body:{campaignName,campaignDescription,campaignBudget,campaignDailyBudget,campaignStartDate,interests},user:{userId},params:{auctionId:auctionId,businessId:businessId}}=req
+   const{body:{campaignName,campaignDescription,campaignBudget,campaignDailyBudget,campaignStartDate,interests},params:{auctionId:auctionId,businessId:businessId}}=req
    if(campaignName==""||campaignDescription==""||campaignBudget==""||campaignDailyBudget==""||campaignStartDate==""||interests==""){
 
     throw new BadRequestError("Fields cannot be empty please fill everything")

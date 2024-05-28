@@ -34,7 +34,7 @@ const AuctionSchema = new mongoose.Schema({
     },
     status:{
         type:String,
-        enum:['Active','Expired','Canceled']
+        enum:['Active','Expired','Cancelled']
     },
     businessId:{
         type:mongoose.Types.ObjectId,
