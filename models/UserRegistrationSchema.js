@@ -76,7 +76,7 @@ const UserSchema = new mongoose.Schema({
         //default:'male'
     },
     wallet:{
-        type:String
+        type:Number
     },
     interests:{
         type:String,

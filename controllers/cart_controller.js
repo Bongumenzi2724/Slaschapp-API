@@ -1,4 +1,5 @@
 const Cart = require("../models/Cart");
+const {StatusCodes}=require('http-status-codes')
 
 
 const getCart=async(req,res)=>{
@@ -90,5 +91,18 @@ const getAllOrders=async(req,res)=>{
     
 }
 
+const searchBasedOnCode=async(req,res)=>{
+    const cart=await Cart.aggregate([{
+        $match:{code:req.body.code,status:'Pending'}
+    }])
+    if(cart.status=="Complete"||cart.status=="Expired"){
+        return res.status(StatusCodes.NOT_FOUND).json({message:`The requested has ${cart.status==='Complete'?'Completed':'Expired'}`});
+    }
+    cart.status='Complete';
+    let newCart=cart;
+    await Cart.updateOneOne({_id:cart._id},{$set:newCart},{new:true});
+    return res.status(200).json({message:"Cart Complete",cart:newCart})
+}
 
-module.exports={getCart,updateCart,create_cart, getAllOrders}
+
+module.exports={getCart,updateCart,create_cart, getAllOrders,searchBasedOnCode}

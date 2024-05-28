@@ -54,12 +54,12 @@ app.use('/api/slaschapp/search',authenticateUser,businessSearchRouter);
 app.use('/api/slaschapp/data',dataRouter);
 app.use('/api/slaschapp/bait',authenticateUser,baitRouter);
 app.use('/api/slaschapp/category',categoriesRouter)
-app.use('/api/slaschapp/feeds',authenticateUser,feedsRoute)
+app.use('/api/slaschapp/feeds',feedsRoute)
 app.use('/api/slaschapp/business/owner',authenticateUser,ownerRouter)
-app.use('/api/slaschapp/cart',authenticateUser,cartRouter)
+app.use('/api/slaschapp/cart',cartRouter)
 app.use('/api/slaschapp/transaction/bait',accountRouter)
 app.use('/api/slaschapp/master',authenticateUser,searchRouter)
-app.use('/api/slaschapp/profile',authenticateUser,userProfile);
+app.use('/api/slaschapp/profile',userProfile);
 
 app.get('/',(req,res)=>{
     res.send('<h1>Business API</h1><a href="/api-docs">Documentation</a>');

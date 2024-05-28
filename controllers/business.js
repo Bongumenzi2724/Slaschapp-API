@@ -22,7 +22,7 @@ const createBusiness=async(req,res)=>{
         });
         business.save(); 
         // const business=await Business.create({...req.body})
-        return res.status(StatusCodes.CREATED).json({business:{business}});
+        return res.status(StatusCodes.CREATED).json({business});
     }catch(error){
         return res.status(500).status({status:false,message:error.message})
     }
@@ -111,6 +111,20 @@ const suspendBusiness=async(req,res)=>{
     return res.status(StatusCodes.OK).json({status:false,message:error.message});
 }
 }
+
+//Update Business Status
+const updateBusinessStatus=async(req,res)=>{
+    //search for the auction using the auction id
+    const business=await Business.findOne({_id:req.params.businessId,createdBy:req.user.userId});
+    if(!business){
+        return res.status(StatusCodes.NOT_FOUND).json({message:`Business with ID ${req.params.businessId} does not exist`});
+    }
+    
+    business.status='Active';
+    let newBusiness=business;
+    await Business.updateOne({_id:req.params.id},{$set:newBusiness},{new:true})
+    res.status(StatusCodes.OK).json({message:"Business Status Updated Successfully"})
+}
 //Search for businesses
 const searchBusiness=async(req,res)=>{
     const{query:{BusinessCategory:BusinessCategory,BusinessLocation:BusinessLocation}}=req
@@ -127,4 +141,4 @@ const searchBusiness=async(req,res)=>{
     }
 }
 
-module.exports={createBusiness,searchBusiness,suspendBusiness,getSingleBusiness,updateBusinessDetails,getAllBusinesses,deleteBusiness}
+module.exports={createBusiness,updateBusinessStatus,searchBusiness,suspendBusiness,getSingleBusiness,updateBusinessDetails,getAllBusinesses,deleteBusiness}

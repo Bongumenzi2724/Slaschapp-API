@@ -87,6 +87,19 @@ const getAllAuctionMaterial=async(req,res)=>{
     res.status(StatusCodes.OK).json({auctionData,count:auctionData.length});
 }
 
+//update the auction status
+const updateAuctionStatus=async(req,res)=>{
+    //search for the auction using the auction id
+    const auction=await Auction.findOne({_id:req.params.auctionId,createdBy:req.user.userId});
+    if(!auction){
+        return res.status(StatusCodes.NOT_FOUND).json({message:`Auction with ID ${auction._id} does not exist`});
+    }
+    
+    auction.status='Active';
+    let newAuction=auction;
+    await Auction.updateOne({_id:req.params.id},{$set:newAuction},{new:true})
+    res.status(StatusCodes.OK).json({message:"Auction Status Updated Successfully"})
+}
 
 const auctionSearchResults=async(req,res)=>{
     const{query:{campaignName:campaignName,campaignBudget}}=req
@@ -103,4 +116,20 @@ const auctionSearchResults=async(req,res)=>{
     } 
 }
 
-module.exports={createAuction,suspendAuction,getSingleAuction,getAllAuctionMaterial,deleteSingleAuction,auctionSearchResults,getAllAuctions,updateAuctions}
+const getAllBusinessesAunctions=async(req,res)=>{
+    //use business id to search all auctions created by a business owner
+    /*try {
+        const auctionBusiness=await Auction.findById({createdBy:req.params.id})
+        if(!auctionBusiness){
+            return res.status(StatusCodes.NOT_FOUND).json({message:"No Businesses Found"})
+        }
+        return res.status(StatusCodes.OK).json({auction Business:auctionBusiness});
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:"An error occurred while fetching your businesses",error:error.message})
+    }*/
+}
+
+const auctionBusiness=async(req,res)=>{
+    return res.status(StatusCodes.OK).json({message:"auction"})
+}
+module.exports={createAuction,updateAuctionStatus,getAllBusinessesAunctions,auctionBusiness,suspendAuction,getSingleAuction,getAllAuctionMaterial,deleteSingleAuction,auctionSearchResults,getAllAuctions,updateAuctions}

@@ -23,6 +23,7 @@ const get_user_profile=async(req,res)=>{
     }
     return res.status(StatusCodes.OK).json({user})
 }
+
 const deleteUserProfile=async(req,res)=>{
     try {
         const user=await User.find({_id:req.user.userId});
@@ -53,5 +54,40 @@ const suspendUserProfile=async(req,res)=>{
     }
 }
 
-module.exports={getAllPastOrders,get_user_profile,deleteUserProfile,suspendUserProfile}
+const activateUserProfile=async(req,res)=>{
+    try {
+        const user=await User.find({_id:req.user.userId});
+        if(!user){
+            return res.status(StatusCodes.NOT_FOUND).json({message:"The user does not exist"})
+        }
+        user.status="Active";
+        let newUser=user;
+        await User.updateOne(req.user.userId,{$set:newUser},{new:true});
+        return res.status(StatusCodes.OK).json({message:"user profile activated"})
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:error.message})
+    }
+}
+
+const walletUpdate=async(req,res)=>{
+    //find the user which is to have his/her wallet updated
+    try{
+        const wallet=req.body.wallet;
+    //use this user id to search for the user to has his/her wallet
+        const userId=req.body.id
+        const user =await User.findOne({_id:req.user.userId})
+        if(!user){
+            return res.status(StatusCodes.NOT_FOUND).json({message:"User does not exist"})
+        }
+        user.wallet+=wallet;
+        let newWallet=wallet;
+        await User.updateOneOne({_id:req.params.id},{$set:newWallet},{new:true});
+        return res.status(StatusCodes.OK).json({message:`Wallet Updated successfully,new wallet is ${newWallet.wallet}`});
+    }catch(error){
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:"An Error Occurred While Updating Your Wallet"})
+    }
+    
+
+}
+module.exports={getAllPastOrders,activateUserProfile,get_user_profile,deleteUserProfile,suspendUserProfile,walletUpdate}
 

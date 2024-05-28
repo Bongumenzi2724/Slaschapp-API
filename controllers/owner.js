@@ -48,7 +48,22 @@ const suspendBusinessOwner=async(req,res)=>{
         return res.status(StatusCodes.OK).json({status:false,message:error.message});
     }
 }
-
+//update owner status
+const ownerStatus=async(req,res)=>{
+    try{
+        const{params:{id:ownerId}}=req
+        const businessOwner=await BusinessOwnerRegistration.findById(ownerId);
+        if(!businessOwner){
+            throw new NotFoundError(`No Business Owner With id ${ownerId}`)
+        }
+        businessOwner.status='Active';
+        let newBusinessOwner=business;
+        await BusinessOwnerRegistration.updateOneOne({_id:req.params.id},{$set:newBusinessOwner},{new:true});
+        return res.status(StatusCodes.OK).json({status:true,message:"Business Owner Status Successfully Updated"});
+    }catch(error){
+        return res.status(StatusCodes.OK).json({status:false,message:error.message});
+    }
+}
 //get all business owners available
 const getAllBusinessOwners=async(req,res)=>{
     const businessOwners=await BusinessOwnerRegistration.find({}).sort('createdAt')
@@ -67,4 +82,4 @@ const getSingleBusinessOwner=async(req,res)=>{
     res.status(StatusCodes.OK).json({businessOwner})
 }
 
-module.exports={updateBusinessOwnerDetails,suspendBusinessOwner,deleteBusinessOwner,getAllBusinessOwners,getSingleBusinessOwner}
+module.exports={updateBusinessOwnerDetails,ownerStatus,suspendBusinessOwner,deleteBusinessOwner,getAllBusinessOwners,getSingleBusinessOwner}
