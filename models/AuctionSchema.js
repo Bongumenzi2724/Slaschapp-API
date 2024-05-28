@@ -42,10 +42,10 @@ const AuctionSchema = new mongoose.Schema({
         ref:'Business',
         required:[true,'Please provide the business']
     }, */
-    createdBy:{
+    businessId:{
         type:mongoose.Types.ObjectId,
-        ref:'BusinessOwner',
-        required:[true,'Please provide the business owner']
+        ref:'Business',
+        required:[true,'Please provide the business']
     }
 },{timestamps:true})
 module.exports=mongoose.model('Auction',AuctionSchema)

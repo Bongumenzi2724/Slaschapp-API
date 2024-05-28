@@ -15,14 +15,14 @@ router.patch('/:id',updateBusinessDetails);
 router.patch('/:id',suspendBusiness);
 router.patch('/status/:id',updateBusinessStatus);
 //auctions routes
-router.route('/:id/auction').post(createAuction).get(getAllAuctions)
-router.route('/:id/auction/:auctionId').patch(updateAuctions).get(getSingleAuction)
-router.patch('/:id/auction/:auctionId',deleteSingleAuction)
-router.patch('/:id/auction/status/:auctionId',updateAuctionStatus)
+router.route('/:businessId/auction').post(createAuction).get(getAllAuctions)
+router.route('/:businessId/auction/:auctionId').patch(updateAuctions).get(getSingleAuction)
+router.patch('/:businessId/auction/:auctionId',deleteSingleAuction)
+router.patch('/:businessId/auction/status/:auctionId',updateAuctionStatus)
 router.get('/:businessId/auction',getAllBusinessesAunctions)
-router.patch('/:id/auction/:auctionId',suspendAuction)
+router.patch('/:businessId/auction/:auctionId',suspendAuction)
 //search the auction results
-router.route('/:id/search/auction').get(auctionSearchResults)
+router.route('/:businessId/search/auction').get(auctionSearchResults)
 //Get all auction material available
 router.route('/all').get(getAllAuctionMaterial)
 router.route('/:businessId/auctions').post(auctionBusiness)
