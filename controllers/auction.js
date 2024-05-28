@@ -38,7 +38,7 @@ const getAllAuctions=async(req,res)=>{
 
 const getSingleAuction=async(req,res)=>{
 
-    const auctionData= await Auction.findOne({_id:req.params.auctionId,businessId:req.params.businessId})
+    const auctionData= await Auction.findOne({_id:req.params.auctionId})
 
     if(!auctionData){
         throw new NotFoundError(`No auction with id ${req.params.auctionId}`)
