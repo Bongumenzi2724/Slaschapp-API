@@ -114,4 +114,4 @@ const user_verify_token=async(req,res)=>{
         return res.status(500).json({message:error.message}); 
     }
 }
-module.exports={user_forgot_password,user_password_reset,user_send_otp,user_verify_otp,user_verify_token}
+module.exports={user_forgot_password,user_password_reset,user_send_otp}
