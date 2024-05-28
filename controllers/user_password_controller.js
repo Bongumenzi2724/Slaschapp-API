@@ -61,6 +61,16 @@ const user_send_otp=async(req,res,next)=>{
         if(!user){
             return res.status(404).json({message:"User does not exist please check your email or register"})
         }
+
+        const transporter=nodemailer.createTransport({
+            host:'smtp.gmail.com',
+            port:587,
+            secure:false,
+            auth:{
+                user:'bongumenzinzama@gmail.com',
+                pass:"bongumenzi#27#"
+                }
+        })
         const otp=await generateOtp();
         const mailOptions={
             from:'bongumenzinzama@gmail.com',
@@ -68,7 +78,7 @@ const user_send_otp=async(req,res,next)=>{
             subject:"Password Reset OTP",
             text:`Your OTP is ${otp}`
         };
-        mail.transporter.sendMail(mailOptions,(err,info)=>{
+        transporter.sendMail(mailOptions,(err,info)=>{
             if(err){
                 console.log(err);
                 return res.status(500).json({message:"An error occured while sending mail"})
