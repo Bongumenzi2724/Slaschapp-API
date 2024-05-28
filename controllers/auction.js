@@ -25,7 +25,7 @@ const updateAuctions=async(req,res)=>{
 
 // Get all auctions who are 'active' 
 const getAllAuctions=async(req,res)=>{
-    console.log(req.user.userId)
+    //console.log(req.user.userId)
     const auctionData=await Auction.find({businessId:req.params.businessId})
     res.status(StatusCodes.OK).json({auctionData,count:auctionData.length});
 }
