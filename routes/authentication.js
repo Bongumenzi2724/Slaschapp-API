@@ -1,9 +1,9 @@
 const express=require('express')
 const router=express.Router()
-const {registerUser,loginUser,registerBusinessOwner,UserRegistration,loginBusinessOwner}=require('../controllers/authentication');
+const {loginUser,registerBusinessOwner,UserRegistration,loginBusinessOwner}=require('../controllers/authentication');
 //const {sendOTP}=require('../controllers/optController');
-const {  user_password_reset, user_forgot_password, user_send_otp } = require('../controllers/user_password_controller');
-const { owner_password_reset, owner_forgot_password, owner_send_otp, owner_verify_otp } = require('../controllers/owner_password_controllers');
+const {  user_password_reset, user_forgot_password} = require('../controllers/user_password_controller');
+const { owner_password_reset, owner_forgot_password} = require('../controllers/owner_password_controllers');
 
 //register app user
 //router.post('/register/user',registerUser)
