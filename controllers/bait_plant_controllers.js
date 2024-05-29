@@ -82,6 +82,7 @@ const single_bait_plant=async(req,res)=>{
         return res.status(500).json({status:false,message:error.message})
     }
 }
+
 //read all bait plants
 const read_bait_plants=async(req,res)=>{
         try {
