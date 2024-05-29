@@ -54,11 +54,7 @@ const BusinessRegistrationSchema = new mongoose.Schema({
     },
     socials:{
         type:String,
-        required:[false,'Please Provide Your Socials'],
-        enum:['facebook','twitter','instagram','Website'],
-        default:'facebook',
-        maxlength:10000,
-        minlength:1
+        required:[false,'Please Provide Your Socials']
     },
     status:{
         type:String,

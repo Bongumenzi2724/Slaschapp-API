@@ -15,6 +15,8 @@ const createBusiness=async(req,res)=>{
             BusinessLocation:req.body.BusinessLocation,
             BusinessHours:req.body.BusinessHours,
             BusinessLogo:req.body.BusinessLogo,
+            BusinessType:req.body.BusinessType,
+            BusinessBio:req.body.BusinessBio,
             verificationDoc:req.body.verificationDoc,
             status:req.body.status,
             socials:req.body.socials,
