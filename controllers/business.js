@@ -57,7 +57,8 @@ const getSingleBusiness=async(req,res)=>{
     res.status(StatusCodes.OK).json({business})
 }
 
-//Update A Single Business
+//Update A Single 
+
 const updateBusinessDetails= async(req,res)=>{
     const{body:{BusinessName,PhoneNumber,BusinessEmail,AcceptTermsAndConditions,BusinessCategory,BusinessLocation,BusinessHours,verificationDoc,status,socials},user:{userId},params:{id:businessId}}=req
     if(BusinessName==""||PhoneNumber==""||BusinessEmail==""||AcceptTermsAndConditions==""||BusinessCategory==""||BusinessLocation==""||BusinessHours==""||verificationDoc==""||status==""||socials==""){

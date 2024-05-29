@@ -1,7 +1,6 @@
 const Cart = require("../models/Cart");
 const {StatusCodes}=require('http-status-codes')
 
-
 const getCart=async(req,res)=>{
     
     try {
@@ -24,7 +23,6 @@ const create_cart=async(req,res)=>{
     const status=req.body.status;
     const code=req.body.code;
     const userId=req.user.userId;
-    //const userId="6634bfb784e9bf0c9788e950";
     const baits=req.body.baits;
     const paymentMethod=req.body.paymentMethod;
     const totalCartPrice=req.body.totalCartPrice;
@@ -32,13 +30,10 @@ const create_cart=async(req,res)=>{
 
     let expiryDate1=new Date();
     expiryDate1.setTime(expiryDate1.getTime()+(30*24*60*60*100))
-  /*   let totalCartPrice=0;
-    let totalBaitsQuantity=0;
-    for(let j=0;j<=baits.length-1;j++){
-        totalCartPrice+=baits.price;
-        totalBaitsQuantity+=baits.quantity;
-    } */
-
+  
+    if(auctionName==false||auctionId==false||status==false||code==false||baits==false||paymentMethod==false||totalCartPrice==false||totalCartQuantity==false){
+        return res.status(StatusCodes.EXPECTATION_FAILED).json({message:"Please Provide All The Fields"})
+    }
     const newCart=new Cart({
         //set the userID
         userId:userId,
@@ -80,6 +75,7 @@ const updateCart=async(req,res)=>{
     }
     
 }
+
 const getAllOrders=async(req,res)=>{    
     try {
         const AllOrders=await Cart.findById({userId:userId});

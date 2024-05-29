@@ -44,7 +44,7 @@ const getSingleAuction=async(req,res)=>{
 const deleteSingleAuction=async(req,res)=>{
     try{
 
-    console.log(req.params);
+    
     const auction= await Auction.findOne({_id:req.params.auctionId});
 
     if(!auction){
@@ -72,8 +72,8 @@ const suspendAuction=async(req,res)=>{
     //update the auction status
     auction.status='Suspended';
     let newAuction=auction;
-    await Business.findByIdAndUpdate(req.params.id,{$set:newAuction},{new:true});
-    await newBusiness.save();
+    await Auction.findByIdAndUpdate(req.params.id,{$set:newAuction},{new:true});
+    await newAuction.save();
     res.status(StatusCodes.OK).json({message:"This Auction Has Been Suspended"});
 }catch(error){
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false,message:error.message});
@@ -90,13 +90,13 @@ const activateAuction=async(req,res)=>{
     //search for the auction using the auction id
     const auction=await Auction.findOne({_id:req.params.auctionId});
     if(!auction){
-        return res.status(StatusCodes.NOT_FOUND).json({message:`Auction with ID ${auction._id} does not exist`});
+        return res.status(StatusCodes.NOT_FOUND).json({message:`Auction with ID ${req.params.auctionId} does not exist`});
     }
     
     auction.status='Active';
     let newAuction=auction;
-    await Business.findByIdAndUpdate(req.params.id,{$set:newAuction},{new:true});
-     await newBusiness.save();
+    await Auction.findByIdAndUpdate(req.params.id,{$set:newAuction},{new:true});
+     await newAuction.save();
     res.status(StatusCodes.OK).json({message:"Auction Status Activated Successfully"})
 }
 

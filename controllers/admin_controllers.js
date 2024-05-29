@@ -59,5 +59,111 @@ const getAllPastOrders=async(req,res)=>{
     }
     
 }
+//suspend auction
+const suspendAuction=async(req,res)=>{
+    try{
+    const auction= await Auction.findById({_id:req.params.auctionId});
 
-module.exports={AllUsers,AllCarts,AllBaitPlants,getAllPastOrders,AllBusiness,AllAuctions,AllBusinessOwners,get_all_categories,create_category,getAllUsersProfiles,deleteUserProfile,update_bait_plant,getUserProfile}
+    if(!auction){
+        throw new NotFoundError(`No Auction with id ${req.params.auctionId}`)
+    }
+    //update the auction status
+    auction.status='Suspended';
+    let newAuction=auction;
+    await Auction.findByIdAndUpdate(req.params.id,{$set:newAuction},{new:true});
+    await newAuction.save();
+    res.status(StatusCodes.OK).json({message:"This Auction Has Been Suspended"});
+}catch(error){
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false,message:error.message});
+}
+}
+//suspend business
+const suspendBusiness=async(req,res)=>{
+
+    try{
+     const business=await Business.findById({_id:req.params.businessId});
+     if(!business){
+         throw new NotFoundError(`No Business With id ${req.params.businessId}`)
+     }
+     business.status='Suspended';
+     let newBusiness=business;
+     await Business.findByIdAndUpdate(req.params.businessId,{$set:newBusiness},{new:true});
+
+     await newBusiness.save();
+
+     return res.status(StatusCodes.OK).json({status:true,message:"Your Business Account Has Been Suspended"});
+ }catch(error){
+     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false,message:error.message});
+ }
+ }
+//suspend user
+const suspendUserProfile=async(req,res)=>{
+    try {
+        const user=await User.find({_id:req.params.userId});
+        if(!user){
+            return res.status(StatusCodes.NOT_FOUND).json({message:"The user does not exist"})
+        }
+        user.status="Suspended";
+        let newUser=user;
+        await User.findByIdAndUpdate(req.params.userId,{$set:newUser},{new:true});
+        await newBusiness.save();
+        return res.status(StatusCodes.OK).json({message:"User profile suspended"})
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:error.message})
+    }
+}
+
+//activate auction
+const activateAuction=async(req,res)=>{
+    //search for the auction using the auction id
+    const auction=await Auction.findOne({_id:req.params.auctionId});
+    if(!auction){
+        return res.status(StatusCodes.NOT_FOUND).json({message:`Auction with ID ${req.params.auctionId} does not exist`});
+    }
+    
+    auction.status='Active';
+    let newAuction=auction;
+    await Auction.findByIdAndUpdate(req.params.id,{$set:newAuction},{new:true});
+     await newAuction.save();
+    res.status(StatusCodes.OK).json({message:"Auction Status Activated Successfully"})
+}
+//activate business
+const activateBusiness=async(req,res)=>{
+
+    try{
+     const business=await Business.findById({_id:req.params.businessId});
+     console.log(business)
+     if(!business){
+         throw new NotFoundError(`No Business With id ${req.params.businessId}`)
+     }
+     business.status='Active';
+     let newBusiness=business;
+     await Business.findByIdAndUpdate(req.params.id,{$set:newBusiness},{new:true});
+     await newBusiness.save();
+     return res.status(StatusCodes.OK).json({status:true,message:"Your Business Account Has Been Activated"});
+ }catch(error){
+     return res.status(StatusCodes.OK).json({status:false,message:error.message});
+ }
+ }
+
+//activate user
+
+const activateUserProfile=async(req,res)=>{
+    try {
+        const user=await User.findById({_id:req.params.userId});
+        if(!user){
+            return res.status(StatusCodes.NOT_FOUND).json({message:"The user does not exist"})
+        }
+        user.status="Active";
+        let newUser=user;
+        await User.findByIdAndUpdate(req.params.userId,{$set:newUser},{new:true});
+        await newUser.save();
+        return res.status(StatusCodes.OK).json({message:"user profile activated"})
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:error.message})
+    }
+}
+
+
+
+module.exports={AllUsers,activateUserProfile,activateAuction,activateBusiness,suspendAuction,suspendUserProfile,suspendBusiness,AllCarts,AllBaitPlants,getAllPastOrders,AllBusiness,AllAuctions,AllBusinessOwners,get_all_categories,create_category,getAllUsersProfiles,deleteUserProfile,update_bait_plant,getUserProfile}

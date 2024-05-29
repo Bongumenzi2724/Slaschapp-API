@@ -1,6 +1,6 @@
 const express=require('express')
 const router=express.Router()
-const {AllUsers,AllCarts,getAllPastOrders,AllBaitPlants,AllBusinessOwners,AllAuctions,AllBusiness,get_all_categories,update_bait_plant,deleteUserProfile,create_category,getUserProfile}=require('../controllers/admin_controllers');
+const {AllUsers,AllCarts,getAllPastOrders,suspendUserProfile,suspendBusiness,AllBaitPlants,AllBusinessOwners,AllAuctions,AllBusiness,get_all_categories,update_bait_plant,create_category,getUserProfile, suspendAuction, activateAuction, activateBusiness, activateUserProfile}=require('../controllers/admin_controllers');
 const paginated = require('../middleware/pagination');
 router.get('/users',AllUsers)
 router.get('/baits',AllBaitPlants)
@@ -12,6 +12,21 @@ router.get('/orders',AllCarts)
 router.get('/category',get_all_categories)
 router.post('/category',create_category)
 router.patch('/bait/:id',update_bait_plant)
-//router.delete('/user/:id',deleteUserProfile)
+
+//suspend auction
+router.patch('/suspend/auction/:auctionId',suspendAuction)
+//suspend business
+router.patch('/suspend/business/:businessId',suspendBusiness)
+//suspend user
+router.patch('/suspend/user/:userId',suspendUserProfile)
+
+//activate auction
+router.patch('/activate/auction/:auctionId',activateAuction)
+//activate business
+router.patch('/activate/business/:businessId',activateBusiness)
+//activate user
+router.patch('/activate/user/:userId',activateUserProfile)
+
+
 
 module.exports=router
