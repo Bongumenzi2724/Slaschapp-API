@@ -55,8 +55,7 @@ const BusinessRegistrationSchema = new mongoose.Schema({
         required:[false,'Please Provide Your Socials']
     },
     status:{
-        type:String,
-        enum:['Active','Pending','Suspended','Revoked']
+        type:String
     },
     createdBy:{
         type:mongoose.Types.ObjectId,

@@ -2,6 +2,7 @@ const mongoose=require('mongoose')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const UserSchema = new mongoose.Schema({
+    
     firstname:{
         type:String,
         required:[true,'Please Provide Your First Name'],
@@ -89,8 +90,7 @@ const UserSchema = new mongoose.Schema({
         required:[false,'Please Provide the Expiration Time Of The Token']
     },
     status:{
-        type:String,
-        enum:['Active','Pending','Suspended','Revoked']
+        type:String
     }
     
 },{timestamps:true});
