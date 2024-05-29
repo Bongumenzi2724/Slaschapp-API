@@ -115,7 +115,7 @@ const auctionSearchResults=async(req,res)=>{
     } 
 }
 
-const getAllBusinessesAunctions=async(req,res)=>{
+/* const getAllBusinessesAunctions=async(req,res)=>{
     //use business id to search all auctions created by a business owner
     try {
         const auctionBusiness=await Auction.findById({_id:req.params.auctionId,businessId:req.params.businessId})
@@ -126,9 +126,10 @@ const getAllBusinessesAunctions=async(req,res)=>{
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:"An error occurred while fetching your businesses",error:error.message})
     }
-}
+} */
 
 const auctionBusiness=async(req,res)=>{
     return res.status(StatusCodes.OK).json({message:"auction"})
 }
-module.exports={createAuction,activateAuction,getAllBusinessesAunctions,auctionBusiness,suspendAuction,getSingleAuction,getAllAuctionMaterial,deleteSingleAuction,auctionSearchResults,getAllAuctions,updateAuctions}
+
+module.exports={createAuction,activateAuction,auctionBusiness,suspendAuction,getSingleAuction,getAllAuctionMaterial,deleteSingleAuction,auctionSearchResults,getAllAuctions,updateAuctions}
