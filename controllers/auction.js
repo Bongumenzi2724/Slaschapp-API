@@ -84,7 +84,7 @@ const getAllAuctionMaterial=async(req,res)=>{
 }
 
 //activate auction
-const updateAuctionStatus=async(req,res)=>{
+const activateAuction=async(req,res)=>{
     //search for the auction using the auction id
     const auction=await Auction.findOne({_id:req.params.auctionId});
     if(!auction){
@@ -129,4 +129,4 @@ const getAllBusinessesAunctions=async(req,res)=>{
 const auctionBusiness=async(req,res)=>{
     return res.status(StatusCodes.OK).json({message:"auction"})
 }
-module.exports={createAuction,updateAuctionStatus,getAllBusinessesAunctions,auctionBusiness,suspendAuction,getSingleAuction,getAllAuctionMaterial,deleteSingleAuction,auctionSearchResults,getAllAuctions,updateAuctions}
+module.exports={createAuction,activateAuction,getAllBusinessesAunctions,auctionBusiness,suspendAuction,getSingleAuction,getAllAuctionMaterial,deleteSingleAuction,auctionSearchResults,getAllAuctions,updateAuctions}

@@ -77,7 +77,7 @@ const updateBusinessDetails= async(req,res)=>{
 
 const deleteBusiness=async(req,res)=>{
 
-    const{user:{userId},params:{id:businessId}}=req
+const{user:{userId},params:{id:businessId}}=req
    try{
     //find the business by id
     const business=await Business.findById({_id:businessId,createdBy:userId});
@@ -86,7 +86,8 @@ const deleteBusiness=async(req,res)=>{
     }
     business.status='Revoked';
     let newBusiness=business;
-    await Business.updateOne({_id:req.params.id},{$set:newBusiness},{new:true});
+    await Business.findByIdAndUpdate(req.params.id,{$set:newBusiness},{new:true});
+    await newBusiness.save();
     return res.status(StatusCodes.OK).json({status:true,message:"Business Successfully Deleted"});
 }catch(error){
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false,message:error.message});
