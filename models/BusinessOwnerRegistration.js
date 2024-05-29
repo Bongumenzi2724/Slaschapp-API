@@ -4,21 +4,15 @@ const jwt = require('jsonwebtoken')
 const BusinessOwnerRegistrationSchema = new mongoose.Schema({
     firstname:{
         type:String,
-        required:[true,'Please Provide Your First Name'],
-        maxlength:100,
-        minlength:1
+        required:[true,'Please Provide Your First Name']
     },
     secondname:{
         type:String,
-        required:[false,'Please Provide Your Second Name'],
-        maxlength:100,
-        minlength:1
+        required:[false,'Please Provide Your Second Name']
     },
     surname:{
         type:String,
-        required:[true,'Please Provide Your Surname'],
-        maxlength:100,
-        minlength:1
+        required:[true,'Please Provide Your Surname']
     },
     profilePicture:{
         type:String
@@ -37,35 +31,27 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
     password:{
         type:String,
         required:[true,"Please Provide Your Password"],
-        unique:true,
-        minlength:2,
+        unique:true
+        
     },
     AcceptTermsAndConditions:{
         type:String,
-        required:[true,'Please Provide Accept Terms And Conditions'],
-        maxlength:4,
-        minlength:1
+        required:[true,'Please Provide Accept Terms And Conditions']
+       
     },
     locationOrAddress:{
         type:String,
-        required:[true,'Please Provide Your location or address'],
-        maxlength:100,
-        minlength:1
+        required:[true,'Please Provide Your location or address']
     },
     birthday:{
         type:String,
-        required:[false,'Please Provide Your Birthday in the format (YYYY/MM/DD)'],
-        maxlength:12,
-        minlength:1
+        required:[false,'Please Provide Your Birthday in the format (YYYY/MM/DD)']
     },
     IdNumber:{
         type:String,
-        required:[true,'Please Provide Your ID Number'],
-        maxlength:13,
-        minlength:1
+        required:[true,'Please Provide Your ID Number']
     },
     IdDocumentLink:{
-        //id document upload
         type:String
     },
     gender:{

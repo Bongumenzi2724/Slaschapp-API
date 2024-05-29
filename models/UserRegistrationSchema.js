@@ -40,15 +40,11 @@ const UserSchema = new mongoose.Schema({
     },
     locationOrAddress:{
         type:String,
-        required:[true,'Please Provide Your location or address'],
-        maxlength:100,
-        minlength:1
+        required:[true,'Please Provide Your location or address']
     },
     birthday:{
         type:String,
-        required:[false,'Please Provide Your Birthday in the format (YYYY/MM/DD)'],
-        maxlength:12,
-        minlength:1
+        required:[false,'Please Provide Your Birthday in the format (YYYY/MM/DD)']
     },
     educationStatus:{
         type:String,

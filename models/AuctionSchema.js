@@ -3,15 +3,11 @@ const AuctionSchema = new mongoose.Schema({
     
     campaignName:{
         type:String,
-        required:[true,'Please Provide The Name For Your Campaign'],
-        maxlength:100,
-        minlength:1
+        required:[true,'Please Provide The Name For Your Campaign']
     },
     campaignDescription:{
         type:String,
-        required:[false,'Please Provide Description For Your Campaign'],
-        maxlength:1000,
-        minlength:1
+        required:[false,'Please Provide Description For Your Campaign']
     },
     campaignBudget:{
         type:Number,
@@ -23,9 +19,7 @@ const AuctionSchema = new mongoose.Schema({
     },
     campaignStartDate:{
         type:String,
-        required:[true,"Please Provide The Start Date For Your Campaign"],
-        maxlength:100,
-        minlength:1,
+        required:[true,"Please Provide The Start Date For Your Campaign"]
     },
     interests:{
         type:String

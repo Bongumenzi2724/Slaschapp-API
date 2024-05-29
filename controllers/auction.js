@@ -43,7 +43,9 @@ const getSingleAuction=async(req,res)=>{
 
 const deleteSingleAuction=async(req,res)=>{
     try{
-    const auction= await Auction.findById({_id:req.params.auctionId});
+
+    console.log(req.params);
+    const auction= await Auction.findOne({_id:req.params.auctionId});
 
     if(!auction){
         throw new NotFoundError(`No Auction with id ${req.params.auctionId}`)
@@ -51,8 +53,8 @@ const deleteSingleAuction=async(req,res)=>{
     //update the auction status
     auction.status='Revoked';
     let newAuction=auction;
-    await Business.findByIdAndUpdate(req.params.id,{$set:newAuction},{new:true});
-    await newBusiness.save();
+    await Auction.findByIdAndUpdate(req.params.auctionId,{$set:newAuction},{new:true});
+    await newAuction.save();
     res.status(StatusCodes.OK).json({message:"Auction Deleted Successfully"})
     }catch(error){
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false,message:error.message});
