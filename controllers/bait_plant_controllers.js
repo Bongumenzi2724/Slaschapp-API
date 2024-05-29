@@ -19,7 +19,8 @@ const create_bait_plant=async(req,res)=>{
             status:req.body.status,
             size:req.body.size,
             photos:req.body.photos,
-            auctionID:req.params.auctionID
+            auctionID:req.params.auctionID,
+            createdBy:req.body.createdBy
         });
         baitPlant.save();
         res.status(StatusCodes.CREATED).json({baitPlant});
@@ -56,14 +57,16 @@ const update_bait_plant=async(req,res)=>{
 //delete a bait plant
 const delete_bait_plant=async(req,res)=>{
     try {
+        console.log(req.params)
        const bait = await Bait.findById(req.params.baitID);
        if(!bait){
         return res.status(404).json({message:"The bait does not exist"})
        }
-        bait.status="Revoked";
-        let newBait=bait;
-        await User.updateOne(req.user.userId,{$set:newBait},{new:true});
-        return res.status(StatusCodes.OK).json({status:true,message:"Bait successfully deleted"});
+       bait.status='Revoked';
+       let newBait=bait;
+       await Bait.findByIdAndUpdate(req.params.baitID,{$set:newBait},{new:true});
+       await newBait.save();
+       return res.status(StatusCodes.OK).json({status:true,message:"Bait Successfully Deleted"});
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false,message:error.message})
     }
@@ -82,7 +85,7 @@ const single_bait_plant=async(req,res)=>{
 //read all bait plants
 const read_bait_plants=async(req,res)=>{
         try {
-           const bait = await Bait.find({auctionID:req.params.auctionID})
+           const bait = await Bait.find({auctionID:req.params.auctionID,createdBy:req.user.userId})
            return res.status(StatusCodes.OK).json(bait)
         } catch (error) {
             return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false,message:error.message})
