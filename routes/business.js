@@ -16,7 +16,8 @@ router.patch('/suspend/:businessId',suspendBusiness);
 router.patch('/activate/:businessId',activateBusiness)
 //auctions routes
 router.route('/:businessId/auction').post(createAuction).get(getAllAuctions)
-router.route('/:businessId/auction/:auctionId').patch(updateAuctions).get(getSingleAuction)
+router.route('/:businessId/auction/:auctionId').get(getSingleAuction)
+router.route('/:businessId/auction/update/:auctionId').patch(updateAuctions)
 router.patch('/:businessId/auction/delete/:auctionId',deleteSingleAuction)
 router.patch('/:businessId/auction/activate/:auctionId',activateAuction)
 router.get('/:businessId/auction',getAllBusinessesAunctions)
