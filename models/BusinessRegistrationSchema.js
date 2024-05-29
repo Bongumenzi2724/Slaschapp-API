@@ -43,6 +43,12 @@ const BusinessRegistrationSchema = new mongoose.Schema({
     BusinessLogo:{
         type:String
     },
+    BusinessBio:{
+        type:String
+    },
+    BusinessType:{
+        type:String
+    },
     verificationDoc:{
         type:String
     },
