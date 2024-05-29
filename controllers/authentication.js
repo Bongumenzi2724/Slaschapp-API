@@ -110,6 +110,9 @@ const UserRegistration=async(req,res)=>{
 const registerBusinessOwner=async(req,res)=>{
 
     try{ 
+        if(req.body.firstname==false||req.body.secondname==false||req.body.surname==false||req.body.profilePicture==false||req.body.AcceptTermsAndConditions==false||req.body.phoneNumber==false||req.body.email==false||req.body.password==false||req.body.locationOrAddress==false||req.body.birthday==false||req.body.IdNumber==false||req.body.IdDocumentLink==false||req.body.gender==false||req.body.status==false){
+            return res.status(StatusCodes.EXPECTATION_FAILED).json({message:"Please Provide All The Fields"})
+        } 
         const newOwner=new BusinessOwner({
             firstname:req.body.firstname,
             secondname:req.body.secondname,
@@ -131,7 +134,6 @@ const registerBusinessOwner=async(req,res)=>{
         newOwner.save();
         //const owner=await BusinessOwner.create({...req.body});
         const token=newOwner.createJWT();
-        console.log(token);
         return res.status(201).json({BusinessOwner:newOwner,token:token});
     }catch(error){
         return res.status(500).status({status:false,message:error.message})

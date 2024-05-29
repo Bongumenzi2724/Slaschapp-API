@@ -5,7 +5,11 @@ const {BadRequestError,NotFoundError}=require('../errors')
 //Create A Single Business
 const createBusiness=async(req,res)=>{
     try{ 
-        req.body.createdBy=req.user.userId; 
+        req.body.createdBy=req.user.userId;; 
+        if(req.body.BusinessName==false||req.body.PhoneNumber==false||req.body.BusinessEmail==false||req.body.AcceptTermsAndConditions==false||req.body.BusinessCategory==false||req.body.BusinessLocation==false||req.body.BusinessHours==false||req.body.BusinessLogo==false||req.body.BusinessType==false||req.body.BusinessBio==false||req.body.verificationDoc==false||req.body.status==false||req.body.socials==false){
+            return res.status(StatusCodes.EXPECTATION_FAILED).json({message:"Please Provide All The Fields"})
+        } 
+        else{
         const business=new Business({
             BusinessName:req.body.BusinessName,
             PhoneNumber:req.body.PhoneNumber,
@@ -22,9 +26,11 @@ const createBusiness=async(req,res)=>{
             socials:req.body.socials,
             createdBy:req.user.userId
         });
+       
         business.save(); 
-        // const business=await Business.create({...req.body})
+        //const business=await Business.create({...req.body})
         return res.status(StatusCodes.CREATED).json({business});
+    }
     }catch(error){
         return res.status(500).status({status:false,message:error.message})
     }
@@ -32,11 +38,8 @@ const createBusiness=async(req,res)=>{
 
 //Get All Businesses Specific for A Single Business Owner Whose Status Is Active
 const getAllBusinesses =async(req,res) =>{
-    const businesses=await Business.aggregate([
-        {
-            $match:{status:"Active"}
-        }
-    ])
+    let userId=req.user.userId;
+    const businesses=await Business.find({status:"Active",createdBy:userId})
     return res.status(StatusCodes.OK).json({businesses,count:businesses.length})
 }
 
@@ -81,8 +84,6 @@ const deleteBusiness=async(req,res)=>{
     if(!business){
         throw new NotFoundError(`No Business With id ${businessId}`)
     }
-    //update the status of the business 
-    //get the status of the business
     business.status='Revoked';
     let newBusiness=business;
     await Business.updateOne({_id:req.params.id},{$set:newBusiness},{new:true});
@@ -94,39 +95,39 @@ const deleteBusiness=async(req,res)=>{
 //Suspending A business
 const suspendBusiness=async(req,res)=>{
 
-    const{user:{userId},params:{id:businessId}}=req
    try{
-    //find the business by id
-    const business=await Business.findById({_id:businessId,createdBy:userId});
+    const business=await Business.findById({_id:req.params.businessId,createdBy:req.user.userId});
     if(!business){
-        throw new NotFoundError(`No Business With id ${businessId}`)
+        throw new NotFoundError(`No Business With id ${req.params.businessId}`)
     }
-    //update the status of the business 
-    //get the status of the business
     business.status='Suspended';
-
     let newBusiness=business;
-    await Business.updateOneOne({_id:req.prams.id},{$set:newBusiness},{new:true});
-
+    await Business.findByIdAndUpdate(req.params.id,{$set:newBusiness},{new:true});
+    await newBusiness.save();
     return res.status(StatusCodes.OK).json({status:true,message:"Your Business Account Has Been Suspended"});
 }catch(error){
-    return res.status(StatusCodes.OK).json({status:false,message:error.message});
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false,message:error.message});
 }
 }
 
-//Update Business Status
-const updateBusinessStatus=async(req,res)=>{
-    //search for the auction using the auction id
-    const business=await Business.findOne({_id:req.params.businessId,createdBy:req.user.userId});
-    if(!business){
-        return res.status(StatusCodes.NOT_FOUND).json({message:`Business with ID ${req.params.businessId} does not exist`});
-    }
-    
-    business.status='Active';
-    let newBusiness=business;
-    await Business.updateOne({_id:req.params.id},{$set:newBusiness},{new:true})
-    res.status(StatusCodes.OK).json({message:"Business Status Updated Successfully"})
-}
+const activateBusiness=async(req,res)=>{
+
+    try{
+     const business=await Business.findById({_id:req.params.businessId,createdBy:req.user.userId});
+     console.log(business)
+     if(!business){
+         throw new NotFoundError(`No Business With id ${req.params.businessId}`)
+     }
+     business.status='Active';
+     let newBusiness=business;
+     await Business.findByIdAndUpdate(req.params.id,{$set:newBusiness},{new:true});
+     await newBusiness.save();
+     return res.status(StatusCodes.OK).json({status:true,message:"Your Business Account Has Been Activated"});
+ }catch(error){
+     return res.status(StatusCodes.OK).json({status:false,message:error.message});
+ }
+ }
+
 //Search for businesses
 const searchBusiness=async(req,res)=>{
     const{query:{BusinessCategory:BusinessCategory,BusinessLocation:BusinessLocation}}=req
@@ -143,4 +144,4 @@ const searchBusiness=async(req,res)=>{
     }
 }
 
-module.exports={createBusiness,updateBusinessStatus,searchBusiness,suspendBusiness,getSingleBusiness,updateBusinessDetails,getAllBusinesses,deleteBusiness}
+module.exports={createBusiness,activateBusiness,searchBusiness,suspendBusiness,getSingleBusiness,updateBusinessDetails,getAllBusinesses,deleteBusiness}

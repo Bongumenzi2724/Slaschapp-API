@@ -1,7 +1,7 @@
 const express=require('express')
 const router=express.Router()
 
-const {createBusiness,deleteBusiness,suspendBusiness,getAllBusinesses,updateBusinessDetails,getSingleBusiness, updateBusinessStatus}=require('../controllers/business')
+const {createBusiness,deleteBusiness,activateBusiness,suspendBusiness,getAllBusinesses,updateBusinessDetails,getSingleBusiness, updateBusinessStatus}=require('../controllers/business')
 const {create_bait_plant,update_bait_plant,single_bait_plant,read_bait_plants,delete_bait_plant}=require('../controllers/bait_plant_controllers');
 const { createAuction,updateAuctionStatus,getAllBusinessesAunctions,suspendAuction,deleteSingleAuction,getAllAuctionMaterial,getAllAuctions, auctionSearchResults, updateAuctions, getSingleAuction, auctionBusiness} = require('../controllers/auction')
 //create the business
@@ -10,10 +10,10 @@ router.post('/',createBusiness)
 router.get('/',getAllBusinesses)
 //get and delete a single business
 router.route('/:id').get(getSingleBusiness);
-router.patch('/:id',deleteBusiness);
-router.patch('/:id',updateBusinessDetails);
-router.patch('/:id',suspendBusiness);
-router.patch('/status/:id',updateBusinessStatus);
+router.patch('/delete/:id',deleteBusiness);
+router.patch('/update/:id',updateBusinessDetails);
+router.patch('/suspend/:businessId',suspendBusiness);
+router.patch('/activate/:businessId',activateBusiness)
 //auctions routes
 router.route('/:businessId/auction').post(createAuction).get(getAllAuctions)
 router.route('/:businessId/auction/:auctionId').patch(updateAuctions).get(getSingleAuction)
