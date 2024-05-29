@@ -24,7 +24,7 @@ const getAllUsersProfiles=async(req,res)=>{
 //get all auctions feed
 const getAllAuctions=async(req,res)=>{
     //const AllUsers=await User.find({}).sort('createdAt')
-    const AllAuction=await AuctionSchema.aggregate([{$project:{updatedAt:0,createdAt:0,__v:0}}])
+    const AllAuction=await AuctionSchema.aggregate([{$project:{updatedAt:0,createdAt:0,__v:0}},{$match:{status:"Active"}}])
     return res.status(StatusCodes.OK).json({auctionFeed:AllAuction,count:AllAuction.length});
 };
 
