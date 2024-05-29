@@ -3,14 +3,12 @@ const BusinessRegistrationSchema = new mongoose.Schema({
     
     BusinessName:{
         type:String,
-        required:[true,'Please Provide Your Business Name'],
-        maxlength:100,
-        minlength:1
+        required:[true,'Please Provide Your Business Name']
     },
     PhoneNumber:{
         type:String,
         required:[false,'Please Provide Your Business Phone Number'],
-        unique:false,
+        unique:false
 
     },
     BusinessEmail:{
