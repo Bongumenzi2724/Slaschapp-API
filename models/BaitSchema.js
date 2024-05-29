@@ -30,9 +30,10 @@ price:{
 },
 color:{
     type:String,
-    required:[false,'Please Provide The Color For Your Bait Plant If Present'],
-    maxlength:1000,
-    minlength:1
+    required:[false,'Please Provide The Color For Your Bait Plant If Present']
+},
+status:{
+    type:String
 },
 size:{
     type:String,
