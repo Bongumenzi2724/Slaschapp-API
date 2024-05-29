@@ -2,24 +2,18 @@ const mongoose=require('mongoose')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const UserSchema = new mongoose.Schema({
-    
+
     firstname:{
         type:String,
-        required:[true,'Please Provide Your First Name'],
-        maxlength:100,
-        minlength:1
+        required:[true,'Please Provide Your First Name']
     },
     secondname:{
         type:String,
-        required:[false,'Please Provide Your Second Name'],
-        maxlength:100,
-        minlength:1
+        required:[false,'Please Provide Your Second Name']
     },
     surname:{
         type:String,
-        required:[true,'Please Provide Your Surname'],
-        maxlength:100,
-        minlength:1
+        required:[true,'Please Provide Your Surname']
     },
     profilePicture:{
         type:String
@@ -38,14 +32,11 @@ const UserSchema = new mongoose.Schema({
     password:{
         type:String,
         required:[false,"Please Provide Your Password"],
-        unique:true,
-        minlength:2,
+        unique:true
     },
     AcceptTermsAndConditions:{
         type:String,
-        required:[true,'Please Provide Accept Terms And Conditions'],
-        maxlength:4,
-        minlength:1
+        required:[true,'Please Provide Accept Terms And Conditions']
     },
     locationOrAddress:{
         type:String,
@@ -61,15 +52,10 @@ const UserSchema = new mongoose.Schema({
     },
     educationStatus:{
         type:String,
-        required:[true,'Please Provide Your Education Status'],
-        enum:['High School','Tertiary','Other'],
-        required:[true,'Please Provide Your Education Status'],
-        default:'Other'
+        required:[true,'Please Provide Your Education Status']
     },
     employmentStatus:{
-        type:String,
-        enum:['unemployed','employed','interviewing'],
-        default:'unemployed'
+        type:String
     },
     gender:{
         type:String

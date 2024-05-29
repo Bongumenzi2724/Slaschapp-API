@@ -9,7 +9,6 @@ const BusinessRegistrationSchema = new mongoose.Schema({
         type:String,
         required:[false,'Please Provide Your Business Phone Number'],
         unique:false
-
     },
     BusinessEmail:{
         type:String,
