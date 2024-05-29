@@ -69,8 +69,7 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
         type:String
     },
     gender:{
-        type:String,
-        default:'male'
+        type:String
     },
     resetToken:{
         type:String,
@@ -83,8 +82,7 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
         default:''
     },
     status:{
-        type:String,
-        enum:['Active','Pending','Suspended','Revoked']
+        type:String
     }
 })
 

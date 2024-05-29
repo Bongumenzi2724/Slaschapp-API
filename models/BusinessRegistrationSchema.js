@@ -24,9 +24,7 @@ const BusinessRegistrationSchema = new mongoose.Schema({
     },
     BusinessCategory:{
         type:String,
-        required:[true,"Please Provide Your Business Category"],
-        enum:['Fashion And Apparel','Food And Drinks','Beauty And Cosmetics','Tech And Electronics','Sneakers','Home','Jewellery'],
-        default:'Fashion & Apparel'
+        required:[true,"Please Provide Your Business Category"]
     },
     BusinessLocation:{
         type:String,

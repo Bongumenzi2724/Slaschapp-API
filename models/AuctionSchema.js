@@ -28,13 +28,10 @@ const AuctionSchema = new mongoose.Schema({
         minlength:1,
     },
     interests:{
-        type:String,
-        //enum:['Music','Entertainment','Sports','Gaming','Fashion And Beauty','Food And Drinks','Business And Finance','Travel And Tourism','Technology And Service','Fashion And Jewellery','Outdoors','Fitness','Home Design'],
-        default:'Entertainment'
+        type:String
     },
     status:{
-        type:String,
-        enum:['Active','Expired','Cancelled']
+        type:String
     },
     businessId:{
         type:mongoose.Types.ObjectId,

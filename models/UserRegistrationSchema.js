@@ -71,9 +71,7 @@ const UserSchema = new mongoose.Schema({
         default:'unemployed'
     },
     gender:{
-        type:String,
-        //enum:['Male','Female','Rather not say'],
-        //default:'male'
+        type:String
     },
     wallet:{
         type:Number
