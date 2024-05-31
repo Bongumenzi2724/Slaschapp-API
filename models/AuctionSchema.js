@@ -24,6 +24,18 @@ const AuctionSchema = new mongoose.Schema({
     interests:{
         type:String
     },
+    age:{
+        type:String
+    },
+    location:{
+        type:String
+    },
+    languages:{
+        type:String
+    },
+    birthdays:{
+        type:String
+    },
     status:{
         type:String
     },

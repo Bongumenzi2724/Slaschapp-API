@@ -3,7 +3,12 @@ const crypto=require('crypto');
 const bcrypt = require('bcryptjs');
 const nodemailer=require('nodemailer');
 const mail=require('../utils/mail');
+
 const OTP = require('../models/OTPSchema');
+
+
+
+//mail options
 
 //Forgot Password Functionality
 const user_forgot_password=async(req,res)=>{

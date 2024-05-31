@@ -6,7 +6,7 @@ const Bait = require('../models/BaitSchema');
 const Cart=require('../models/Cart')
 const {StatusCodes}=require('http-status-codes')
 const { create_category, get_all_categories } = require('./categories_controllers')
-const { getAllUsersProfiles, deleteUserProfile, getUserProfile } = require('./feeds')
+const { getAllUsersProfiles,getUserProfile } = require('./feeds')
 const { update_bait_plant } = require('./bait_plant_controllers')
 
 const AllUsers=async(req,res)=>{
@@ -166,4 +166,4 @@ const activateUserProfile=async(req,res)=>{
 
 
 
-module.exports={AllUsers,activateUserProfile,activateAuction,activateBusiness,suspendAuction,suspendUserProfile,suspendBusiness,AllCarts,AllBaitPlants,getAllPastOrders,AllBusiness,AllAuctions,AllBusinessOwners,get_all_categories,create_category,getAllUsersProfiles,deleteUserProfile,update_bait_plant,getUserProfile}
+module.exports={AllUsers,activateUserProfile,activateAuction,activateBusiness,suspendAuction,suspendUserProfile,suspendBusiness,AllCarts,AllBaitPlants,getAllPastOrders,AllBusiness,AllAuctions,AllBusinessOwners,get_all_categories,create_category,getAllUsersProfiles,update_bait_plant,getUserProfile}

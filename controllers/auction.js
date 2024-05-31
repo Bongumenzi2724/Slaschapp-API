@@ -2,17 +2,22 @@ const Auction=require('../models/AuctionSchema')
 const {NotFoundError}=require('../errors')
 const {StatusCodes}=require('http-status-codes')
 
-//
+
 const createAuction=async(req,res)=>{
     req.body.businessId=req.params.businessId;
-    const newAuction=await Auction.create({...req.body});
-    res.status(StatusCodes.CREATED).json({newAuction});
+    if(req.body.campaignName==false||req.body.campaignBudget==false||req.body.campaignDailyBudget==false||req.body.campaignDescription==false||req.body.campaignStartDate==false||req.body.interests==false||req.body.age==false||req.body.location==false||req.body.birthdays==false||req.body.languages==false){
+        return res.status(StatusCodes.EXPECTATION_FAILED).json({message:"Please Provide All The Fields"})
+    } 
+    else{
+        const newAuction=await Auction.create({...req.body});
+        res.status(StatusCodes.CREATED).json({newAuction});
+    } 
 }
 
 const updateAuctions=async(req,res)=>{
 
-   const{body:{campaignName,campaignDescription,campaignBudget,campaignDailyBudget,campaignStartDate,interests},params:{auctionId:auctionId,businessId:businessId}}=req
-   if(campaignName==""||campaignDescription==""||campaignBudget==""||campaignDailyBudget==""||campaignStartDate==""||interests==""){
+   const{body:{campaignName,campaignDescription,campaignBudget,campaignDailyBudget,campaignStartDate,interests,status,age,location,languages,birthdays},params:{auctionId:auctionId,businessId:businessId}}=req
+   if(campaignName==""||campaignDescription==""||campaignBudget==""||campaignDailyBudget==""||campaignStartDate==""||interests==""||status==""||age==""||location==""||languages==""||birthdays==""){
 
     throw new BadRequestError("Fields cannot be empty please fill everything")
     }
@@ -25,7 +30,6 @@ const updateAuctions=async(req,res)=>{
 
 // Get all auctions who are 'active' 
 const getAllAuctions=async(req,res)=>{
-    //console.log(req.user.userId)
     const auctionData=await Auction.find({businessId:req.params.businessId})
     res.status(StatusCodes.OK).json({auctionData,count:auctionData.length});
 }

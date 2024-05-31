@@ -6,39 +6,27 @@ const nodemailer=require('nodemailer');
 const OTP=require('../models/OTPSchema')
 
 //Nodemailer Stuff
-let transporter=nodemailer.createTransport({
-    //host:"smtp-email.gmail.com",
-    service:'Gmail',
+const transporter=nodemailer.createTransport({
+    service:'gmail',
+    host:'smtp.gmail.com',
+    port:587,
+    secure:false,
     auth:{
-        user:process.env.SMTP_MAIL,
-        pass:process.env.SMTP_APP_PASS,
-    },
+        user:"sender gmail account",
+        pass:"sender gmail account password"
+    }
 });
 
+
+
+const options={
+
+}
 //register app user
 const registerUser= async(req,res)=>{
-    //sendOTP to the email provided
-     // Find the most recent OTP for the email
-		/* const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
-		console.log(response);
-		if (response.length === 0) {
-			// OTP not found for the email
-			return res.status(400).json({
-				success: false,
-				message: "The OTP is not valid",
-			});
-		} else if (otp !== response[0].otp) {
-			// Invalid OTP
-			return res.status(400).json({
-				success: false,
-				message: "The OTP is not valid",
-			});
-		} */
-    //Verify OTP,than move on and create your user
+    
     try{ 
-        console.log("User Registration")
         const user=await User.create({...req.body})
-        //console.log(user)
         const token=user.createJWT()
         return res.status(201).json({User:user,token:token}); 
 
@@ -101,10 +89,31 @@ const loginBusinessOwner=async(req,res)=>{
 }
 
 const UserRegistration=async(req,res)=>{
-    console.log("Business Owner ");
-    const user=await User.create({...req.body})
+    const transporter=nodemailer.createTransport({
+        service:'gmail',
+        host:'smtp.gmail.com',
+        port:587,
+        secure:false,
+        auth:{
+            user:"sender gmail account",
+            pass:"sender gmail account password"
+        }
+    });
+
+    const options={
+        from:{
+            name:"Adlinc App",
+            address:req.body.email,//sender email address
+        }
+    }
+
+    if(req.body.firstname==false||req.body.secondname==false||req.body.surname==false||req.body.profilePicture==false||req.body.AcceptTermsAndConditions==false||req.body.phoneNumber==false||req.body.email==false||req.body.password==false||req.body.locationOrAddress==false||req.body.birthday==false||req.body.educationStatus==false||req.body.employmentStatus==false||req.body.gender==false||req.body.interests==false||req.body.status==false||req.body.status==false){
+        return res.status(StatusCodes.EXPECTATION_FAILED).json({message:"Please Provide All The Fields"})
+    } else{
+    const user=await User.create({...req.body});
     const token=user.createJWT()
     return res.status(201).json({User:user,token:token,message:"Business Owner Registration"});
+    }
 }
 
 const registerBusinessOwner=async(req,res)=>{
