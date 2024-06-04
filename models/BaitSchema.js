@@ -19,12 +19,6 @@ checkInStoreAvailability:{
     maxlength:100,
     minlength:1
 },
-percentageDiscount:{
-    type:String,
-    required:[true,'Please Provide Percentage Discount For Your Bait'],
-    maxlength:100,
-    minlength:1
-},
 price:{
     type:Number
 },
