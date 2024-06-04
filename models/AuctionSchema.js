@@ -7,7 +7,7 @@ const AuctionSchema = new mongoose.Schema({
     },
     campaignDescription:{
         type:String,
-        required:[false,'Please Provide Description For Your Campaign']
+        required:[true,'Please Provide Description For Your Campaign']
     },
     campaignBudget:{
         type:Number,
@@ -40,6 +40,14 @@ const AuctionSchema = new mongoose.Schema({
     birthdays:{
         type:String,
         required:[true,"Please Provide Birthdays"]
+    },
+    employment:{
+        type:String,
+        required:[true,"Please Provide Employment"]
+    },
+    auctionBid:{
+        type:String,
+        required:[true,"Please Provide auction bid"]
     },
     status:{
         type:String,
