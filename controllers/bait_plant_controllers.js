@@ -34,20 +34,21 @@ const create_bait_plant=async(req,res)=>{
 const update_bait_plant=async(req,res)=>{
         //Find bait by id in the database
        try{
-        let dummyArray=req.body.photos
-        const bait = await Bait.findById(req.params.baitID);
+        //what to update on the baits??
+        //Add or remove bait photos
+        //check what's present in the req.body object
+        //find the bait using the baitID
+        const bait=await Bait.findById(req.body.baitID);
         if(!bait){
-        throw new NotFoundError(`No bait with id ${req.params.baitID}`);
-       }
-         if(req.body.photos!==0){
-        for(let i=0;i<=dummyArray.length-1;i++){
-            bait.photos.push(dummyArray[i]);
-        } 
-       }
-       bait.save();
-       req.body.photos=bait.photos;
-      newBait = await BaitSchema.findByIdAndUpdate(req.params.baitID,req.body,{new:true});
-      return res.status(StatusCodes.ACCEPTED).json({status:true,message:newBait})
+            return res.status(StatusCodes.NOT_FOUND).json({message:"Bait Does Not Exist"})
+        }
+        //check the if there are any photos to add in the req.body object
+        
+        //what to use to remove a photo the ID or the string url?
+
+        //update the total bait price
+         
+        return res.status(200).json({message:"Bait Updated"});
     }
     catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false,message:error.message})

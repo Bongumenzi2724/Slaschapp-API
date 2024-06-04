@@ -22,22 +22,28 @@ const AuctionSchema = new mongoose.Schema({
         required:[true,"Please Provide The Start Date For Your Campaign"]
     },
     interests:{
-        type:String
+        type:String,
+        required:[true,"Please Provide Your Interests"]
     },
     age:{
-        type:String
+        type:String,
+        required:[true,"Please Provide Age"]
     },
     location:{
-        type:String
+        type:String,
+        required:[true,"Please Provide Location"]
     },
     languages:{
-        type:String
+        type:String,
+        required:[true,"Please Provide Languages"]
     },
     birthdays:{
-        type:String
+        type:String,
+        required:[true,"Please Provide Birthdays"]
     },
     status:{
-        type:String
+        type:String,
+        required:[true,"Please Provide The Status For Your Campaign"]
     },
     businessId:{
         type:mongoose.Types.ObjectId,
