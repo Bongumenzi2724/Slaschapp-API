@@ -60,6 +60,7 @@ const get_business_cart=async(req,res)=>{
     const orders=await Cart.aggregate([{
         $match:{
             auctionId:req.params.auctionId,
+            userId:req.user.UserId,
             status:{
             $in:["Complete","Expired","Cancelled","In-Progress"]
         }}
