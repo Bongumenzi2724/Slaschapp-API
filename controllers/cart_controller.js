@@ -56,11 +56,12 @@ const create_cart=async(req,res)=>{
 }
 
 const get_business_cart=async(req,res)=>{
-
+    try{
+    const userId=req.user.userId
     const orders=await Cart.aggregate([{
         $match:{
+            userId:`${userId}`,
             auctionId:req.params.auctionId,
-            userId:req.user.UserId,
             status:{
             $in:["Complete","Expired","Cancelled","In-Progress"]
         }}
@@ -68,8 +69,21 @@ const get_business_cart=async(req,res)=>{
     if(!orders){
         return res.status(404).json({message:"No resource exist"})
     }
-
+    
     return res.status(200).json({orders:orders});
+}
+catch(error){
+    return res.status(500).json({message:error.message});
+}
+}
+
+const user_orders=async(req,res)=>{
+    try {
+        const user_orders=await Cart.find({userId:req.user.userId});
+        return res.status(200).json({user_orders:user_orders});
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:error.message})
+    }
 }
 
 const updateCart=async(req,res)=>{
@@ -118,4 +132,4 @@ const searchBasedOnCode=async(req,res)=>{
 }
 
 
-module.exports={getCart,updateCart,get_business_cart,create_cart, getAllOrders,searchBasedOnCode}
+module.exports={getCart,updateCart,user_orders,get_business_cart,create_cart, getAllOrders,searchBasedOnCode}
