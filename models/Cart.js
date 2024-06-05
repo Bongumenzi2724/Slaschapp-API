@@ -26,8 +26,8 @@ const CartSchema=new mongoose.Schema({
         color:String
     }],
     status:{
-        type:String,
-        enum:["In-Progress","Pending","Complete","Canceled","Expired"]
+        type:String
+        //enum:["In-Progress","Pending","Complete","Canceled","Expired"]
     },
     code:{
         type:String

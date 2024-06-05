@@ -55,6 +55,22 @@ const create_cart=async(req,res)=>{
    }
 }
 
+const get_business_cart=async(req,res)=>{
+
+    const orders=await Cart.aggregate([{
+        $match:{
+            auctionId:req.params.auctionId,
+            status:{
+            $in:["Complete","Expired","Cancelled","In-Progress"]
+        }}
+    }]);
+    if(!orders){
+        return res.status(404).json({message:"No resource exist"})
+    }
+
+    return res.status(200).json({orders:orders});
+}
+
 const updateCart=async(req,res)=>{
     //updating the cart means updating the status of the cart
     try {
@@ -101,4 +117,4 @@ const searchBasedOnCode=async(req,res)=>{
 }
 
 
-module.exports={getCart,updateCart,create_cart, getAllOrders,searchBasedOnCode}
+module.exports={getCart,updateCart,get_business_cart,create_cart, getAllOrders,searchBasedOnCode}
