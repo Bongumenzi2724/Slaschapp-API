@@ -80,7 +80,7 @@ catch(error){
 const user_orders=async(req,res)=>{
     try {
         const user_orders=await Cart.find({userId:req.user.userId});
-        return res.status(200).json({user_orders:user_orders});
+        return res.status(200).json({owner_orders:user_orders});
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:error.message})
     }

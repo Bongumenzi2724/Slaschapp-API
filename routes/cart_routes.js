@@ -8,5 +8,5 @@ router.get('/:cartId',getCart);
 router.get('/orders',getAllOrders)
 router.get('/codes/order',searchBasedOnCode)
 router.get('/orders/:auctionId',get_business_cart)
-router.get('/user/orders',user_orders)
+router.get('/owner/orders',user_orders)
 module.exports=router
