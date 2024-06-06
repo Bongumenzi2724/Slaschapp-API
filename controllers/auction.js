@@ -10,7 +10,7 @@ const createAuction=async(req,res)=>{
     } 
     else{
         const newAuction=await Auction.create({...req.body});
-        res.status(StatusCodes.CREATED).json({newAuction});
+        return res.status(StatusCodes.CREATED).json({newAuction});
     } 
 }
 
