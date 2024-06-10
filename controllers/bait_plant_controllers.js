@@ -33,21 +33,17 @@ const create_bait_plant=async(req,res)=>{
 const update_bait_plant=async(req,res)=>{
         //Find bait by id in the database
        try{
-        //what to update on the baits??
-        //Add or remove bait photos
-        //check what's present in the req.body object
-        //find the bait using the baitID
-        const bait=await Bait.findById(req.body.baitID);
+        const bait=await Bait.findById(req.params.baitID);
         if(!bait){
             return res.status(StatusCodes.NOT_FOUND).json({message:"Bait Does Not Exist"})
         }
-        //check the if there are any photos to add in the req.body object
-        
-        //what to use to remove a photo the ID or the string url?
+         const updatedBait=await Bait.findOneAndUpdate({_id:req.params.baitID,auctionId:auctionID},req.body,{new:true,runValidators:true})
 
-        //update the total bait price
-         
-        return res.status(200).json({message:"Bait Updated"});
+         if(!updatedBait){
+            return res.status(StatusCodes.NOT_FOUND).json({message:"Bait Could Not Be Updated"})
+         }
+         return res.status(StatusCodes.OK).json({message:"Bait Updated Successfully",data:updatedBait})
+
     }
     catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false,message:error.message})
