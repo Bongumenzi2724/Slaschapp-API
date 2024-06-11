@@ -57,6 +57,16 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
     gender:{
         type:String
     },
+    otp:{
+        type:Number,
+        expires:'5m',
+        required:[false,'OTP number Needs to be provided']
+    },
+    verified:{
+        type:Boolean,
+        required:[false,'OTP verification confirmation'],
+        default:false
+    },
     resetToken:{
         type:String,
         required:false,
