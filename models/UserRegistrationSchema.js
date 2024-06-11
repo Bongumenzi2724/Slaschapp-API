@@ -2,7 +2,6 @@ const mongoose=require('mongoose')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const UserSchema = new mongoose.Schema({
-
     firstname:{
         type:String,
         required:[true,'Please Provide Your First Name']
@@ -73,11 +72,13 @@ const UserSchema = new mongoose.Schema({
     },
     otp:{
         type:Number,
+        expires:'5m',
         required:[false,'OTP number Needs to be provided']
     },
     verified:{
         type:Boolean,
-        required:[false,'OTP verification confirmation']
+        required:[false,'OTP verification confirmation'],
+        default:false
     },
     status:{
         type:String

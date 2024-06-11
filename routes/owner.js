@@ -3,11 +3,15 @@ const router=express.Router()
 const {getAllBusinessOwners,deleteBusinessOwner,getSingleBusinessOwner,updateBusinessOwnerDetails, suspendBusinessOwner, ownerStatus}=require('../controllers/owner')
 
 //Get all business owners
-router.get('/',getAllBusinessOwners)
-//get and delete a business owner
-router.route('/:id').patch(deleteBusinessOwner).get(getSingleBusinessOwner).patch(suspendBusinessOwner)
+router.get('/owners',getAllBusinessOwners)
+//get a single business owner
+router.route('/:id').get(getSingleBusinessOwner)
 //update business owner details
-router.patch('/update/:id',updateBusinessOwnerDetails)
+router.patch('/owner/update/:id',updateBusinessOwnerDetails)
+//delete business owner
+router.patch('/owner/delete/:id',deleteBusinessOwner)
+//suspends business owner
+router.patch('/owner/suspend/:id',suspendBusinessOwner)
 //update business owner status
 router.patch('/owner/status/:id',ownerStatus)
 

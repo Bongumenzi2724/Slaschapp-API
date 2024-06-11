@@ -75,8 +75,9 @@ const UserRegistration=async(req,res)=>{
    
     if(req.body.firstname==false||req.body.secondname==false||req.body.surname==false||req.body.profilePicture==false||req.body.AcceptTermsAndConditions==false||req.body.phoneNumber==false||req.body.email==false||req.body.password==false||req.body.locationOrAddress==false||req.body.birthday==false||req.body.educationStatus==false||req.body.employmentStatus==false||req.body.gender==false||req.body.interests==false||req.body.status==false||req.body.status==false){
         return res.status(StatusCodes.EXPECTATION_FAILED).json({message:"Please Provide All The Fields"})
-    } else{
-    
+    } 
+
+    else{
         //generate the otp 
         const otpCode=otpGenerator.generate(4, { upperCaseAlphabets: false,digits:true,specialChars: false,lowerCaseAlphabets:false });
         req.body.otp=otpCode;
@@ -92,23 +93,23 @@ const UserRegistration=async(req,res)=>{
         });
         const mailOptions={
             from:'nuenginnovations@gmail.com',
-            to:user.email,
+            to:req.body.email,
             subject:'Verify Email',
-            text:`Your OTP code is:${otpCode}`
+            text:`Your OTP code is:${req.body.otp}`
         };
         transporter.sendMail(mailOptions,(error,info)=>{
             if(error){
-                console.log(error);
+                //console.log(error);
                 return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:'Error Sending Email'})
             }
             else{
-                res.status(StatusCodes.OK).json({message:"OTP Sent Successfully"});
+                console.log("OTP Sent Successfully");
             }
         })
         //create a new user
-        const user=await User.create({...req.body});
-        const token=user.createJWT()
-        return res.status(201).json({User:user,token:token,message:"User Registration"});
+        const registeredUser=await User.create({...req.body});
+        const token=registeredUser.createJWT();
+        return res.status(201).json({User:registeredUser,token:token,message:"OTP Sent Successfully"});
     }
 }
 
