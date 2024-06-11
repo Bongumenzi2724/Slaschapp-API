@@ -18,10 +18,10 @@ const user_forgot_password=async(req,res)=>{
          resetToken=crypto.randomBytes(20).toString('hex');
          resetTokenExpiration=Date.now()+3600000;
         const user=await User.findOneAndUpdate({email:email},{resetToken:resetToken,resetTokenExpiration:resetTokenExpiration},{new:true,runValidators:true});
-        const user1=await User.findOne({email});
         if(!user){
             return res.status(400).json({error:"User not found"});
         }
+        const user1=await User.findOne({email});
         await user.save();
         res.status(200).json({message:"Password reset token sent",token:user1.resetToken});
 

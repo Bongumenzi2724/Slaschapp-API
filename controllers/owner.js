@@ -4,12 +4,12 @@ const BusinessOwnerRegistration = require("../models/BusinessOwnerRegistration")
 //update business owner details
 const updateBusinessOwnerDetails=async(req,res)=>{
 
-    const{body:{firstname,secondname,surname,profilePicture,phoneNumber,email,password,AcceptTermsAndConditions,locationOrAddress,birthday,IdNumber,IdDocumentLink,gender,resetToken,resetTokenExpiration},user:{userId},params:{id:ownerId}}=req
-    if(firstname==""||secondname==""||surname==""||profilePicture==""||phoneNumber==""||email==""||password==""||AcceptTermsAndConditions==""||locationOrAddress==""||birthday==""||IdNumber==""||IdDocumentLink==""||gender==""){
+    const{body:{firstname,secondname,surname,profilePicture,phoneNumber,email,password,locationOrAddress,birthday,IdNumber,IdDocumentLink},user:{userId},params:{id:ownerId}}=req
+    if(firstname==""||secondname==""||surname==""||profilePicture==""||phoneNumber==""||email==""||password==""||locationOrAddress==""||birthday==""||IdNumber==""||IdDocumentLink==""){
 
-        throw new BadRequestError("Fields cannot be empty please fill everything")
+        throw new BadRequestError("Empty Fields Provided")
     }
-    const businessOwner=await BusinessOwner.findByIdAndUpdate({_id:ownerId,createdBy:userId},req.body,{new:true,runValidators:true})
+    const businessOwner=await BusinessOwnerRegistration.findByIdAndUpdate({_id:ownerId,createdBy:userId},req.body,{new:true,runValidators:true})
     if(!businessOwner){
         throw new NotFoundError(`No Business Owner with id ${ownerId}`)
     }

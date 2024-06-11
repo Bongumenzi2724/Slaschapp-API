@@ -16,8 +16,8 @@ const createAuction=async(req,res)=>{
 
 const updateAuctions=async(req,res)=>{
 
-   const{body:{campaignName,campaignDescription,campaignBudget,campaignDailyBudget,campaignStartDate,interests,status,age,location,languages,birthdays},params:{auctionId:auctionId,businessId:businessId}}=req
-   if(campaignName==""||campaignDescription==""||campaignBudget==""||campaignDailyBudget==""||campaignStartDate==""||interests==""||status==""||age==""||location==""||languages==""||birthdays==""){
+   const{body:{campaignBudget,campaignDailyBudget,status},params:{auctionId:auctionId,businessId:businessId}}=req
+   if(campaignBudget==""||campaignDailyBudget==""||campaignStartDate==""||status==""||age==""||location==""||languages==""){
 
     throw new BadRequestError("Fields cannot be empty please fill everything")
     }

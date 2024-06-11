@@ -19,7 +19,10 @@ router.patch('/login/user/forgot',user_forgot_password)
 // reset password route
 router.patch('/login/user/reset',user_password_reset)
 
-//verify the OTP
+//verify the 
+
+//send otp
+
 //register business owner
 router.post('/register/owner',registerBusinessOwner)
 //login business owner

@@ -1,54 +1,65 @@
-const OTP = require('../models/userOTPVerification')
 const otpGenerator=require('otp-generator');
 const User=require('../models/UserRegistrationSchema')
 
-const sendOTP = async (req, res,next) => {
-	try {
-		const { email } = req.body;
+const nodemailer=require('nodemailer');
+const { StatusCodes } = require('http-status-codes');
 
-		// Check if user is already present
-		// Find user with provided email
-		const checkUserPresent = await User.findOne({ email });
-		// to be used in case of signup
-
-		// If user found with provided email
-		if (checkUserPresent) {
-			// Return 401 Unauthorized status code with error message
-			return res.status(401).json({
-				success: false,
-				message: `User is Already Registered`,
-			});
-		}
-
-		var otp = otpGenerator.generate(6, {
-			upperCaseAlphabets: false,
-			lowerCaseAlphabets: false,
-			specialChars: false,
-		});
-		const result = await OTP.findOne({ otp: otp });
-		console.log("Result is Generate OTP Func");
-		console.log("OTP", otp);
-		console.log("Result", result);
-		while (result) {
-			otp = otpGenerator.generate(6, {
-				upperCaseAlphabets: false,
-			});
-		}
-
-		const otpPayload = { email, otp };
-		const otpBody = await OTP.create(otpPayload);
-		console.log("OTP Body", otpBody);
-		res.status(200).json({
-			success: true,
-			message: `OTP Sent Successfully`,
-			otp,
-		});
-		next();
-		return;
-	} catch (error) {
-		console.log(error.message);
-		return res.status(500).json({ success: false, error: error.message });
+const send_otp=async(req,res)=>{
+	//find the user with email
+	const user=await User.findOne({email:req.body.email});
+	if(!user){
+		return res.status(404).json({message:"User Does Not Exist"});
 	}
-};
+	//generate the otp code
+	const otpCode=otpGenerator.generate(4, { upperCaseAlphabets: false,digits:true,specialChars: false,lowerCaseAlphabets:false });
+	console.log(otpCode);
+	//set the otp code in the user schema
+	user.opt=otpCode;
+	user.save();
+	//send the otp
+	const transporter=nodemailer.createTransport({
+		service:'gmail',
+		port:587,
+		secure:false,
+		auth:{
+			user:'nuenginnovations@gmail.com',
+			pass:'uoby xoot pebo fwrx'
+		}
+	});
+	const mailOptions={
+		from:'nuenginnovations@gmail.com',
+		to:user.email,
+		subject:'Verify Email',
+		text:`Your OTP code is:${otpCode}`
+	};
+	transporter.sendMail(mailOptions,(error,info)=>{
+		if(error){
+			console.log(error);
+			return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:'Error Sending Email'})
+		}
+		else{
+			//console.log(info.response);
+			return res.status(StatusCodes.OK).json({message:"OTP Sent Successfully"});
+		}
+	})
+}
 
-module.exports={sendOTP}
+const verify_otp=async(req,res)=>{
+	const user=User.findOne({email:req.body.email});
+	if(!user){
+		return res.status(StatusCodes.NOT_FOUND).json({message:"User Not Found"});
+	}
+	else{
+		const otpCode=req.body.otp;
+		if(otpCode===user.otp){
+			user.verified=true;
+			user.save();
+			return res.status(StatusCodes.OK).json({message:"Email Successfully Verified"})
+		}
+		else{
+			return res.status(401).json({message:"Invalid OTP"});
+		}
+	}
+}
+
+module.exports={send_otp,verify_otp}
