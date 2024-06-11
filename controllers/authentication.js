@@ -105,8 +105,8 @@ const UserRegistration=async(req,res)=>{
                 res.status(StatusCodes.OK).json({message:"OTP Sent Successfully"});
             }
         })
+        //create a new user
         const user=await User.create({...req.body});
-    //if there is verification update the verified status to true else leave it false
         const token=user.createJWT()
         return res.status(201).json({User:user,token:token,message:"User Registration"});
     }

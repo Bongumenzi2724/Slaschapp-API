@@ -7,7 +7,7 @@ router.get('/',getAllBusinessOwners)
 //get and delete a business owner
 router.route('/:id').patch(deleteBusinessOwner).get(getSingleBusinessOwner).patch(suspendBusinessOwner)
 //update business owner details
-router.patch('/owner/:id',updateBusinessOwnerDetails)
+router.patch('/update/:id',updateBusinessOwnerDetails)
 //update business owner status
 router.patch('/owner/status/:id',ownerStatus)
 

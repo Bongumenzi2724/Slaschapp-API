@@ -45,15 +45,25 @@ const send_otp=async(req,res)=>{
 }
 
 const verify_otp=async(req,res)=>{
-	const user=User.findOne({email:req.body.email});
+	//create the delay of minutes
+	const delay=5*60;
+
+	const user=User.findById({_id:req.params.id});
+
 	if(!user){
 		return res.status(StatusCodes.NOT_FOUND).json({message:"User Not Found"});
+	}
+	else if(delay){
+		return res.status(StatusCodes.EXPECTATION_FAILED).json({message:"OTP Expired"})
 	}
 	else{
 		const otpCode=req.body.otp;
 		if(otpCode===user.otp){
 			user.verified=true;
-			user.save();
+			user.status="Active";
+    		let newUser=user;
+    		await User.findByIdAndUpdate(req.params.id,{$set:newUser},{new:true});
+    		await newUser.save();
 			return res.status(StatusCodes.OK).json({message:"Email Successfully Verified"})
 		}
 		else{
