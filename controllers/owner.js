@@ -4,8 +4,6 @@ const BusinessOwnerRegistration = require("../models/BusinessOwnerRegistration")
 //update business owner details
 const updateBusinessOwnerDetails=async(req,res)=>{
     try{
-    console.log(req.body)
-
     const{body:{firstname,secondname,surname,profilePicture,phoneNumber,email,password,locationOrAddress,birthday,IdNumber,IdDocumentLink},user:{userId},params:{id:ownerId}}=req
     if(firstname==""||secondname==""||surname==""||profilePicture==""||phoneNumber==""||email==""||password==""||locationOrAddress==""||birthday==""||IdNumber==""||IdDocumentLink==""){
 
@@ -22,6 +20,7 @@ const updateBusinessOwnerDetails=async(req,res)=>{
         return res.status(500).json({message:error.message})
     }
 }
+
 //delete or tag business owner
 const deleteBusinessOwner=async(req,res)=>{
 try{

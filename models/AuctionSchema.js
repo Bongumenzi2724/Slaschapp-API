@@ -45,7 +45,7 @@ const AuctionSchema = new mongoose.Schema({
         type:String,
         required:[true,"Please Provide Employment"]
     },
-    auctionBid:{
+    acquisitionBid:{
         type:String,
         required:[true,"Please Provide auction bid"]
     },
