@@ -39,13 +39,18 @@ const getAllBaits=async(req,res)=>{
     const baitsFeed=await Bait.find({});
     return res.status(StatusCodes.OK).json({baitsFeed,count:baitsFeed.length});
 }
+
+const getAllBaitsForUsers=async(req,res)=>{
+    const baitsFeed=await Bait.find({auctionID:req.params.auctionID});
+    return res.status(StatusCodes.OK).json({baitsFeed,count:baitsFeed.length});
+}
+
 //Get all active businesses 
 const activeBusinessFeeds=async(req,res)=>{
-    console.log("Fetch Active Feeds")
      const activeBusinesses=await Business.aggregate([{$match:{status:'Active'}}]);
     if(!activeBusinesses){
         return res.status(StatusCodes.NOT_FOUND).json({message:"Businesses Not Found"});
     }
     return res.status(StatusCodes.OK).json({businesses:activeBusinesses});
 }
-module.exports={getUserProfile,activeBusinessFeeds,AllOwnersProfiles,getAllAuctions,getAllBaits,updateUserProfile,getAllUsersProfiles}
+module.exports={getUserProfile,getAllBaitsForUsers,activeBusinessFeeds,AllOwnersProfiles,getAllAuctions,getAllBaits,updateUserProfile,getAllUsersProfiles}
