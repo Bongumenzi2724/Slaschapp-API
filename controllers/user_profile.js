@@ -28,6 +28,22 @@ catch(error){
 }
 }
 
+const updateUserProfile=async(req,res)=>{
+    try {
+        console.log(req.body);
+        const user=await User.find({_id:req.params.id});
+        if(!user){
+            return res.status(StatusCodes.NOT_FOUND).json({message:"The user does not exist"})
+        }
+   
+        let newUser=await User.findByIdAndUpdate(req.params.id,req.body,{new:true});
+        await newUser.save();
+        return res.status(StatusCodes.OK).json({message:newUser})
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:error.message})
+    }
+}
+
 const deleteUserProfile=async(req,res)=>{
     try {
         const user=await User.find({_id:req.params.id});
@@ -37,7 +53,7 @@ const deleteUserProfile=async(req,res)=>{
         user.status="Revoked";
         let newUser=user;
         await User.findByIdAndUpdate(req.params.id,{$set:newUser},{new:true});
-        await newBusiness.save();
+        await newUser.save();
         return res.status(StatusCodes.OK).json({message:"user profile deleted"})
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:error.message})
@@ -95,5 +111,5 @@ const walletUpdate=async(req,res)=>{
     
 
 }
-module.exports={getAllPastOrders,activateUserProfile,get_user_profile,deleteUserProfile,suspendUserProfile,walletUpdate}
+module.exports={getAllPastOrders,updateUserProfile,activateUserProfile,get_user_profile,deleteUserProfile,suspendUserProfile,walletUpdate}
 

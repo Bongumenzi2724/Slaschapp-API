@@ -13,8 +13,7 @@ const getUserProfile=async(req,res)=>{
     }
     return res.status(StatusCodes.OK).json({user})
 };
-//update user
-const updateUserProfile=async(req,res)=>{};
+
 //only active users
 const getAllUsersProfiles=async(req,res)=>{
     //const AllUsers=await User.find({}).sort('createdAt')
@@ -53,4 +52,4 @@ const activeBusinessFeeds=async(req,res)=>{
     }
     return res.status(StatusCodes.OK).json({businesses:activeBusinesses});
 }
-module.exports={getUserProfile,getAllBaitsForUsers,activeBusinessFeeds,AllOwnersProfiles,getAllAuctions,getAllBaits,updateUserProfile,getAllUsersProfiles}
+module.exports={getUserProfile,getAllBaitsForUsers,activeBusinessFeeds,AllOwnersProfiles,getAllAuctions,getAllBaits,getAllUsersProfiles}
