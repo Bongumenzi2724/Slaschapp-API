@@ -30,7 +30,6 @@ catch(error){
 
 const updateUserProfile=async(req,res)=>{
     try {
-        console.log(req.body);
         const user=await User.find({_id:req.params.id});
         if(!user){
             return res.status(StatusCodes.NOT_FOUND).json({message:"The user does not exist"})
