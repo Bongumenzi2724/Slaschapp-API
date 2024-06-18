@@ -86,7 +86,7 @@ async function SearchResults(query,page,limit,sort){
     results.push(...baitPlants.map(baitPlant => ({ type: 'baitPlant', data: baitPlant })));
     //Search Auctions Collection
     const auctions=await Auction.aggregate(pipeline);
-    results.push(...auctions.map(auction => ({ type: 'baitPlant', data: auction })));
+    results.push(...auctions.map(auction => ({ type: 'auction', data: auction })));
     return results
 
 }
