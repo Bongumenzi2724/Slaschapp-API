@@ -109,8 +109,8 @@ const updateCart=async(req,res)=>{
 
 const getAllOrders=async(req,res)=>{    
     try {
-
-        const AllOrders=await Cart.findById({userId:req.user.userId});
+        console.log(req.user.userId)
+        const AllOrders=await Cart.findOne({userId:req.user.userId});
         return res.status(200).json({orders:AllOrders})
     } catch (error) {
         return res.status(500).json({message:error.message})
@@ -121,14 +121,9 @@ const getAllOrders=async(req,res)=>{
 
 const searchBasedOnCode=async(req,res)=>{
     const cart=await Cart.aggregate([{
-        $match:{code:req.body.code}
+        $match:{code:req.params.code}
     }])
-    if(cart.status=="Complete"||cart.status=="Expired"){
-        return res.status(StatusCodes.NOT_FOUND).json({message:`The requested has ${cart.status==='Complete'?'Completed':'Expired'}`});
-    }
-    cart.status='Complete';
-    let newCart=cart;
-    await Cart.updateOne({_id:cart._id},{$set:newCart},{new:true});
+    
     return res.status(200).json({message:"Cart Complete",cart:newCart})
 }
 
