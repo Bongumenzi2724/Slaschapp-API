@@ -127,7 +127,7 @@ const searchBasedOnCode=async(req,res)=>{
     }
     cart.status='Complete';
     let newCart=cart;
-    await Cart.updateOneOne({_id:cart._id},{$set:newCart},{new:true});
+    await Cart.updateOne({_id:cart._id},{$set:newCart},{new:true});
     return res.status(200).json({message:"Cart Complete",cart:newCart})
 }
 
