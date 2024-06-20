@@ -110,7 +110,6 @@ const updateCart=async(req,res)=>{
 const getAllOrders=async(req,res)=>{    
     try {
 
-        console.log()
         const AllOrders=await Cart.findById({userId:req.user.userId});
         return res.status(200).json({orders:AllOrders})
     } catch (error) {
