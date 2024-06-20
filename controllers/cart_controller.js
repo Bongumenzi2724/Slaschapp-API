@@ -121,7 +121,7 @@ const getAllOrders=async(req,res)=>{
 
 const searchBasedOnCode=async(req,res)=>{
     const cart=await Cart.aggregate([{
-        $match:{code:req.body.code,status:'Pending'}
+        $match:{code:req.body.code}
     }])
     if(cart.status=="Complete"||cart.status=="Expired"){
         return res.status(StatusCodes.NOT_FOUND).json({message:`The requested has ${cart.status==='Complete'?'Completed':'Expired'}`});
