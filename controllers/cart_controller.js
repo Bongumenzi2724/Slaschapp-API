@@ -86,7 +86,7 @@ const user_orders=async(req,res)=>{
     }
 }
 
-const updateCart=async(req,res)=>{
+const update_Cart_Status=async(req,res)=>{
     //updating the cart means updating the status of the cart
     try {
         const cart=await Cart.findOne({userId:req.user.userId,_id:req.params.cartId});
@@ -127,5 +127,19 @@ const searchBasedOnCode=async(req,res)=>{
     return res.status(200).json({message:"Cart Complete",cart:newCart})
 }
 
+const update_cart=async(req,res)=>{
+    try {
+        console.log(req.params.cartId);
+        const user=await Cart.find({_id:req.params.cartId});
+        if(!user){
+            return res.status(StatusCodes.NOT_FOUND).json({message:"The Cart Does Not Exist"})
+        }
+        let updated_cart=await Cart.findByIdAndUpdate(req.params.cartId,req.body,{new:true});
+        await updated_cart.save(); 
+        return res.status(StatusCodes.OK).json({updated_cart:updated_cart});
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:error.message})
+    }
+}
 
-module.exports={getCart,updateCart,user_orders,get_business_cart,create_cart, getAllOrders,searchBasedOnCode}
+module.exports={getCart,update_cart,user_orders,get_business_cart,create_cart, getAllOrders,searchBasedOnCode}

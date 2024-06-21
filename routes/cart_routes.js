@@ -1,9 +1,9 @@
 const router=require('express').Router()
 
-const {create_cart,getCart,get_business_cart,updateCart, getAllOrders, searchBasedOnCode, user_orders} = require('../controllers/cart_controller');
+const {create_cart,getCart,get_business_cart,update_cart, getAllOrders, searchBasedOnCode, user_orders} = require('../controllers/cart_controller');
 
 router.post('/add-bait',create_cart);
-router.patch('/update-cart/:cartId',updateCart);
+router.patch('/update-cart/:cartId',update_cart);
 router.get('/:cartId',getCart);
 router.get('/orders/:userId',getAllOrders);
 router.get('/codes/order/:code',searchBasedOnCode);
