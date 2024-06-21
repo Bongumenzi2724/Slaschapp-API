@@ -58,6 +58,9 @@ const UserSchema = new mongoose.Schema({
     wallet:{
         type:Number
     },
+    rewards:{
+        type:Number
+    },
     interests:{
         type:String,
         required:[true,'Please Provide Your Interests']
