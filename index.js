@@ -60,7 +60,7 @@ app.use('/api/slaschapp/business/owner',authenticateUser,ownerRouter)
 app.use('/api/slaschapp/cart',authenticateUser,cartRouter)
 app.use('/api/slaschapp/transaction/bait',accountRouter)
 app.use('/api/slaschapp/master',authenticateUser,searchRouter)
-app.use('/api/slaschapp/profile',authenticateUser,userProfile);
+app.use('/api/slaschapp/profile',userProfile);
 app.use('/api/slaschapp/verification',otpRouter);
 app.get('/',(req,res)=>{
     res.send('<h1>Business API</h1><a href="/api-docs">Documentation</a>');
