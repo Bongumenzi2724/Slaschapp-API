@@ -32,8 +32,6 @@ catch(error){
 const updateUserProfile=async(req,res)=>{
     try {
         const user=await User.find({_id:req.params.id});
-
-        
         
         if(!user){
             return res.status(StatusCodes.NOT_FOUND).json({message:"The user does not exist"})
@@ -42,12 +40,11 @@ const updateUserProfile=async(req,res)=>{
         let newUser=await User.findByIdAndUpdate(req.params.id,req.body,{new:true});
 
         await newUser.save();
-        
+
         const updatedUser=await User.aggregate([{$match:{_id:newUser._id}},{$project:{password:0,resetToken:0,resetTokenExpiration:0}}]);
 
-        console.log(updatedUser);
-
         return res.status(StatusCodes.OK).json({updatedUser:updatedUser});
+
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:error.message})
     }
