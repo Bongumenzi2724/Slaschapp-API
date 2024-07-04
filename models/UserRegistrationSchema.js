@@ -23,14 +23,15 @@ const UserSchema = new mongoose.Schema({
     },
     email:{
         type:String,
-        required:[false,'Please Provide Your Email'],
+        required:[true,'Please Provide Your Email'],
         match: [
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
             'Please provide a valid email',],
+        unique:true
     },
     password:{
         type:String,
-        required:[false,"Please Provide Your Password"],
+        required:[true,"Please Provide Your Password"],
         unique:true
     },
     AcceptTermsAndConditions:{
@@ -90,8 +91,10 @@ const UserSchema = new mongoose.Schema({
 },{timestamps:true});
 
 UserSchema.pre('save',async function(){
+
     const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password,salt);
+    this.password=await bcrypt.hash(this.password,salt);
+
 })
 
 UserSchema.methods.createJWT=function(){
@@ -99,7 +102,8 @@ UserSchema.methods.createJWT=function(){
 }
 
 UserSchema.methods.comparePassword = async function(candidatePassword){
-    const isMatch = await bcrypt.compare(candidatePassword,this.password);
+    //const isMatch=bcrypt.compareSync(candidatePassword,this.password)
+    const isMatch =await bcrypt.compare(candidatePassword,this.password);
     return isMatch
 } 
 module.exports=mongoose.model('User',UserSchema)

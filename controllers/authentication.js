@@ -4,6 +4,7 @@ const {StatusCodes}=require('http-status-codes')
 const BusinessOwner=require('../models/BusinessOwnerRegistration')
 const nodemailer=require('nodemailer');
 const otpGenerator=require('otp-generator');
+const bcrypt = require('bcryptjs')
 
 //register app user
 const registerUser= async(req,res)=>{
@@ -33,6 +34,7 @@ const userVerification=async({email},res)=>{
         
     }
 }
+
 //login app user
 const loginUser=async(req,res)=>{
     const {email,password}=req.body
@@ -40,13 +42,15 @@ const loginUser=async(req,res)=>{
     if(!email||!password){
         throw new BadRequestError("Please provide email and password")
     }
-    const user= await User.findOne({email})
+    const user= await User.findOne({email});
+    console.log(user.password);
     if(!user){
-        throw new UnauthenticatedError('Invalid Credentials')
+        throw new UnauthenticatedError('Invalid Email');
     }
-    const isPasswordCorrect= await user.comparePassword(password)
+    const isPasswordCorrect= await user.comparePassword(password);
+
     if(!isPasswordCorrect){
-        throw new UnauthenticatedError('Invalid Credentials')
+        throw new UnauthenticatedError('Invalid Password');
     }
     const token = user.createJWT()
     res.status(StatusCodes.OK).json({user:{id:user._id,name:user.firstname,surname:user.surname,email:user.email},token})
@@ -59,17 +63,18 @@ const loginBusinessOwner=async(req,res)=>{
     }
     const owner= await BusinessOwner.findOne({email})
     if(!owner){
-        throw new UnauthenticatedError('Invalid Credentials')
+        throw new UnauthenticatedError('Invalid Email');
     }
    
     const isPasswordCorrect= await owner.comparePassword(password)
 
     if(!isPasswordCorrect){
-        throw new UnauthenticatedError('Invalid Credentials')
+        throw new UnauthenticatedError('Invalid Password');
     }
     const token = owner.createJWT()
     res.status(StatusCodes.OK).json({owner:{id:owner._id,name:owner.firstname,surname:owner.surname,email:owner.email},token:{token}})
 }
+
 
 const UserRegistration=async(req,res)=>{
    
