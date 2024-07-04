@@ -43,7 +43,7 @@ const loginUser=async(req,res)=>{
         throw new BadRequestError("Please provide email and password")
     }
     const user= await User.findOne({email});
-    console.log(user.password);
+    
     if(!user){
         throw new UnauthenticatedError('Invalid Email');
     }
@@ -114,7 +114,7 @@ const UserRegistration=async(req,res)=>{
         //create a new user
         const registeredUser=await User.create({...req.body});
         const token=registeredUser.createJWT();
-        return res.status(201).json({User:registeredUser,token:token,message:"OTP Sent Successfully"});
+        return res.status(201).json({User:registeredUser,token:token});
     }
 }
 
