@@ -87,5 +87,31 @@ const getSingleBusinessOwner=async(req,res)=>{
     
     res.status(StatusCodes.OK).json({businessOwner})
 }
+//update owner wallet
+const OwnerWalletUpdate=async(req,res)=>{
+    try{
+        //use this user id to search for the user to has his/her wallet
+        const ownerId=req.user.userId;
 
-module.exports={updateBusinessOwnerDetails,ownerStatus,suspendBusinessOwner,deleteBusinessOwner,getAllBusinessOwners,getSingleBusinessOwner}
+        const owner =await BusinessOwnerRegistration.findOne({_id:ownerId});
+
+        if(!owner){
+            return res.status(StatusCodes.NOT_FOUND).json({message:"Owner does not exist"})
+        }
+        owner.wallet=owner.wallet+req.body.wallet;
+
+        let newOwner=owner;
+
+        await BusinessOwnerRegistration.findByIdAndUpdate(ownerId,{$set:newOwner},{new:true});
+
+        await newOwner.save(); 
+
+        return res.status(StatusCodes.OK).json({message:`Wallet Updated successfully,new wallet is ${newOwner.wallet}`});
+
+        //return res.status(StatusCodes.OK).json({message:"Owner Wallet"});
+        }
+        catch(error){
+            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:"An Error Occurred While Updating Your Wallet"})
+        }
+}
+module.exports={updateBusinessOwnerDetails,OwnerWalletUpdate,ownerStatus,suspendBusinessOwner,deleteBusinessOwner,getAllBusinessOwners,getSingleBusinessOwner}

@@ -14,5 +14,6 @@ router.patch('/owner/delete/:id',deleteBusinessOwner)
 router.patch('/owner/suspend/:id',suspendBusinessOwner)
 //update business owner status
 router.patch('/owner/status/:id',ownerStatus)
+//update owner wallet
 
 module.exports=router

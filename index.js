@@ -24,6 +24,8 @@ const accountRouter=require('./routes/transactions')
 const searchRouter=require('./routes/search_route')
 const userProfile=require('./routes/user_profile')
 const otpRouter=require('./routes/optRoutes')
+const ownerProfile=require('./routes/owner_profile');
+
 //Database Connection
 const connectDB = require('./db/connect')
 //middleware
@@ -61,17 +63,23 @@ app.use('/api/slaschapp/cart',authenticateUser,cartRouter)
 app.use('/api/slaschapp/transaction/bait',accountRouter)
 app.use('/api/slaschapp/master',authenticateUser,searchRouter)
 app.use('/api/slaschapp/profile',authenticateUser,userProfile);
+app.use('/api/slaschapp/owner/profile',authenticateUser,ownerProfile)
 app.use('/api/slaschapp/verification',otpRouter);
 app.get('/',(req,res)=>{
     res.send('<h1>Business API</h1><a href="/api-docs">Documentation</a>');
 })
 //API DOCS SWAGGER-UI URL 
+
 app.use("/api-docs",swaggerUI.serve,swaggerUI.setup(swaggerDocument)) 
+
 // Error middleware
 app.use(notFoundMiddleWare)
+
 app.use(errorHandlerMiddleWare)
+
 const port=process.env.PORT||5000
 //Starting Database Connection
+
 const start=async()=>{
     try{
         await connectDB(process.env.MONGO_URL)
@@ -81,5 +89,6 @@ const start=async()=>{
         console.log(error)
     }
 }
+
 start()
 

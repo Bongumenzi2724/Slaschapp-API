@@ -57,6 +57,11 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
     gender:{
         type:String
     },
+    //owner wallet
+    wallet:{
+        type:Number,
+        required:[true,'Wallet Value Required']
+    },
     otp:{
         type:Number,
         expires:'5m',

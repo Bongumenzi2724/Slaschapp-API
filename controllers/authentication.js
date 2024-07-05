@@ -119,13 +119,17 @@ const UserRegistration=async(req,res)=>{
 }
 
 const registerBusinessOwner=async(req,res)=>{
+
     try{ 
-        if(req.body.firstname==false||req.body.secondname==false||req.body.surname==false||req.body.profilePicture==false||req.body.AcceptTermsAndConditions==false||req.body.phoneNumber==false||req.body.email==false||req.body.password==false||req.body.locationOrAddress==false||req.body.birthday==false||req.body.IdNumber==false||req.body.IdDocumentLink==false||req.body.gender==false||req.body.status==false){
+        if(req.body.firstname==false||req.body.secondname==false||req.body.surname==false||req.body.profilePicture==false||req.body.AcceptTermsAndConditions==false||req.body.phoneNumber==false||req.body.email==false||req.body.password==false||req.body.locationOrAddress==false||req.body.birthday==false||req.body.IdNumber==false||req.body.IdDocumentLink==false||req.body.gender==false||req.body.wallet==false||req.body.status==false){
+
             return res.status(StatusCodes.EXPECTATION_FAILED).json({message:"Please Provide All The Fields"})
         } 
+
         const otpCode=otpGenerator.generate(4, { upperCaseAlphabets: false,digits:true,specialChars: false,lowerCaseAlphabets:false });
         req.body.otp=otpCode;
         //send the otp to user
+
         const transporter=nodemailer.createTransport({
             service:'gmail',
             port:587,
@@ -135,12 +139,15 @@ const registerBusinessOwner=async(req,res)=>{
                 pass:'uoby xoot pebo fwrx'
             }
         });
+
         const mailOptions={
             from:'nuenginnovations@gmail.com',
             to:req.body.email,
             subject:'Verify Email',
             text:`Your OTP code is:${req.body.otp}`
         };
+
+        
         transporter.sendMail(mailOptions,(error,info)=>{
             if(error){
                 //console.log(error);
@@ -149,7 +156,8 @@ const registerBusinessOwner=async(req,res)=>{
             else{
                 console.log("OTP Sent Successfully");
             }
-        })
+        });
+
         const newOwner=new BusinessOwner({
             firstname:req.body.firstname,
             secondname:req.body.secondname,
@@ -164,14 +172,18 @@ const registerBusinessOwner=async(req,res)=>{
             IdNumber:req.body.IdNumber,
             IdDocumentLink:req.body.IdDocumentLink,
             gender:req.body.gender,
+            wallet:req.body.wallet,
             otp:req.body.otp,
             verified:false,
             resetToken:req.body.resetToken,
             resetTokenExpiration:req.body.resetTokenExpiration,
             status:req.body.status
         });
+
         newOwner.save();
+
         const token=newOwner.createJWT();
+
         return res.status(201).json({BusinessOwner:newOwner,token:token,message:"OTP Sent Successfully"});
     }catch(error){
         return res.status(500).status({status:false,message:error.message})
