@@ -34,7 +34,7 @@ const AuctionSchema = new mongoose.Schema({
     },
     languages:{
         type:String,
-        required:[true,"Please Provide Languages"]
+        required:[true,"Please Provide Languages Used"]
     },
     birthdays:{
         type:String,
