@@ -102,7 +102,7 @@ const UserRegistration=async(req,res)=>{
             subject:'Verify Email',
             text:`Your OTP code is:${req.body.otp}`
         };*/
-        transporter.sendMail(mailOptions,(error,info)=>{
+        /*transporter.sendMail(mailOptions,(error,info)=>{
             if(error){
                 //console.log(error);
                 return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:'Error Sending Email'})
@@ -111,6 +111,7 @@ const UserRegistration=async(req,res)=>{
                 console.log("OTP Sent Successfully");
             }
         })
+        */
         
         //create a new user
         const registeredUser=await User.create({...req.body});
@@ -175,7 +176,7 @@ const registerBusinessOwner=async(req,res)=>{
             IdDocumentLink:req.body.IdDocumentLink,
             gender:req.body.gender,
             wallet:req.body.wallet,
-            otp:req.body.otp,
+            //otp:req.body.otp,
             verified:false,
             resetToken:req.body.resetToken,
             resetTokenExpiration:req.body.resetTokenExpiration,
