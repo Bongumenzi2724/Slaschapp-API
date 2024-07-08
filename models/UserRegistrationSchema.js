@@ -74,11 +74,11 @@ const UserSchema = new mongoose.Schema({
         type:String,
         required:[false,'Please Provide the Expiration Time Of The Token']
     },
-    otp:{
+    /* otp:{
         type:Number,
         expires:'5m',
         required:[false,'OTP number Needs to be provided']
-    },
+    }, */
     verified:{
         type:Boolean,
         required:[false,'OTP verification confirmation'],

@@ -62,11 +62,11 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
         type:Number,
         required:[true,'Wallet Value Required']
     },
-    otp:{
+    /* otp:{
         type:Number,
         expires:'5m',
         required:[false,'OTP number Needs to be provided']
-    },
+    }, */
     verified:{
         type:Boolean,
         required:[false,'OTP verification confirmation'],
