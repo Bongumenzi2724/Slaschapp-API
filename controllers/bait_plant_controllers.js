@@ -64,6 +64,7 @@ const delete_bait_plant=async(req,res)=>{
        await Bait.findByIdAndUpdate(req.params.baitID,{$set:newBait},{new:true});
        await newBait.save();
        //find carts that contains this bait
+       const auctionID=123345;
        const carts=await Cart.aggregate([{$match:{auctionID:new mongoose.Types.ObjectId(auctionID)}}]);
 
        if(carts.length!==0){
