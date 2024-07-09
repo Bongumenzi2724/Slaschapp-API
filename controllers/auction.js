@@ -53,23 +53,18 @@ const getSingleAuction=async(req,res)=>{
 const deleteSingleAuction=async(req,res)=>{
 
     try{
-
     const auction= await Auction.findOne({_id:req.params.auctionId});
-
     if(!auction){
-        
         throw new NotFoundError(`No Auction with id ${req.params.auctionId}`)
     }
     //update the auction status
     auction.status='Revoked';
     let newAuction=auction;
-    await Auction.findByIdAndUpdate(req.params.auctionId,{$set:newAuction},{new:true});
+    await Auction.findByIdAndUpdate({_id:req.params.auctionId},{$set:newAuction},{new:true});
     await newAuction.save();
-    const auctionID=(auction[0]._id).toString();
-
     //find baits related to the auction
+    const auctionID=(auction._id).toString();
     const baits=await Bait.aggregate([{$match:{auctionID:new mongoose.Types.ObjectId(auctionID)}}]);
-
     if(baits.length!==0){
 
         //delete all the baits
@@ -81,7 +76,6 @@ const deleteSingleAuction=async(req,res)=>{
         }
         //call all the carts associated with baits
         const carts=await Cart.aggregate([{$match:{auctionID:new mongoose.Types.ObjectId(auctionID)}}]);
-        
         if(carts.length!==0){
             //delete all the related carts
             for(let k=0;k<=carts.length-1;k++){
@@ -90,15 +84,13 @@ const deleteSingleAuction=async(req,res)=>{
                 let newCart=carts[k];
                 await Cart.findByIdAndUpdate(newCartId,{$set:newCart},{new:true});
             }
-            return res.status(200).json({message:"Auctions,Baits And Carts Deleted Successfully"})
-
+            return res.status(200).json({message:"Auction,Baits And Carts Deleted Successfully"})
         }
         else{
-            return res.status(200).json({message:"Baits Deleted Successfully"})
+            return res.status(200).json({message:"Auction and Baits Deleted Successfully"})
         }
 
     }
-
     else{
 
         res.status(StatusCodes.OK).json({message:"Auctions Deleted Successfully"})
