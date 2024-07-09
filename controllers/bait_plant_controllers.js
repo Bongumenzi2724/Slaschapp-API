@@ -101,7 +101,8 @@ const single_bait_plant=async(req,res)=>{
 //read all bait plants
 const read_bait_plants=async(req,res)=>{
         try {
-           const bait = await Bait.find({auctionID:req.params.auctionID,createdBy:req.user.userId})
+            console.log(req.params.auctionID)
+           const bait = await Bait.find({auctionID:req.params.auctionID})
            return res.status(StatusCodes.OK).json(bait)
         } catch (error) {
             return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false,message:error.message})
