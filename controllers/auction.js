@@ -1,5 +1,6 @@
 const Auction=require('../models/AuctionSchema');
 const Bait = require('../models/BaitSchema');
+const Cart = require("../models/Cart");
 const {NotFoundError}=require('../errors');
 const {StatusCodes}=require('http-status-codes');
 const { default: mongoose } = require('mongoose');
@@ -50,12 +51,13 @@ const getSingleAuction=async(req,res)=>{
 }
 
 const deleteSingleAuction=async(req,res)=>{
+
     try{
 
-    
     const auction= await Auction.findOne({_id:req.params.auctionId});
 
     if(!auction){
+        
         throw new NotFoundError(`No Auction with id ${req.params.auctionId}`)
     }
     //update the auction status
@@ -63,7 +65,46 @@ const deleteSingleAuction=async(req,res)=>{
     let newAuction=auction;
     await Auction.findByIdAndUpdate(req.params.auctionId,{$set:newAuction},{new:true});
     await newAuction.save();
-    res.status(StatusCodes.OK).json({message:"Auction Deleted Successfully"})
+    const auctionID=(auction[0]._id).toString();
+
+    //find baits related to the auction
+    const baits=await Bait.aggregate([{$match:{auctionID:new mongoose.Types.ObjectId(auctionID)}}]);
+
+    if(baits.length!==0){
+
+        //delete all the baits
+        for(let i=0;i<=baits.length-1;i++){
+            let newBaitId=(baits[i]._id).toString();
+            baits[i].status="Revoked";
+            let newBait=baits[i];
+            await Bait.findByIdAndUpdate(newBaitId,{$set:newBait},{new:true});
+        }
+        //call all the carts associated with baits
+        const carts=await Cart.aggregate([{$match:{auctionID:new mongoose.Types.ObjectId(auctionID)}}]);
+        
+        if(carts.length!==0){
+            //delete all the related carts
+            for(let k=0;k<=carts.length-1;k++){
+                let newCartId=(carts[k]._id).toString();
+                carts[k].status="Revoked";
+                let newCart=carts[k];
+                await Cart.findByIdAndUpdate(newCartId,{$set:newCart},{new:true});
+            }
+            return res.status(200).json({message:"Auctions,Baits And Carts Deleted Successfully"})
+
+        }
+        else{
+            return res.status(200).json({message:"Baits Deleted Successfully"})
+        }
+
+    }
+
+    else{
+
+        res.status(StatusCodes.OK).json({message:"Auctions Deleted Successfully"})
+    }
+    //find cart related to the baits
+
     }catch(error){
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false,message:error.message});
     }

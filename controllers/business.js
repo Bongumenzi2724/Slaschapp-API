@@ -89,7 +89,9 @@ const{params:{id:businessId}}=req;
     const business=await Business.findById({_id:businessId});
 
     if(!business){
-        throw new NotFoundError(`No Business With id ${businessId}`)
+
+        throw new NotFoundError(`No Business With id ${businessId}`);
+
     }
 
     business.status='Revoked';
@@ -104,7 +106,7 @@ const{params:{id:businessId}}=req;
     if(auctions.length!==0){
 
         for(let j=0;j<=auctions.length-1;j++)
-            
+
             {
             let newAuctionId=(auctions[j]._id).toString();
             auctions[j].status="Revoked";
@@ -157,8 +159,10 @@ const{params:{id:businessId}}=req;
     }
 
 }catch(error){
+    
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false,message:error.message});
 }
+
 }
 //Suspending A business
 const suspendBusiness=async(req,res)=>{
