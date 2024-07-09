@@ -48,6 +48,10 @@ const AuctionSchema = new mongoose.Schema({
         type:String,
         required:[true,"Please Provide auction bid"]
     },
+    gender:{
+        type:String,
+        required:[true,"Please Provide Gender"]
+    },
     status:{
         type:String,
         required:[true,"Please Provide The Status For Your Campaign"]
