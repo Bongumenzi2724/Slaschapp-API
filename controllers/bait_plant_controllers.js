@@ -18,8 +18,7 @@ const create_bait_plant=async(req,res)=>{
             status:req.body.status,
             size:req.body.size,
             photos:req.body.photos,
-            auctionID:req.params.auctionID,
-            createdBy:req.body.createdBy
+            auctionID:req.params.auctionID
         });
         baitPlant.save();
         res.status(StatusCodes.CREATED).json({baitPlant});

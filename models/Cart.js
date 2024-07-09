@@ -5,18 +5,24 @@ const CartSchema=new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId, 
         ref: 'User' 
     },
+
     auctionName:{
         type:String
     },
+
     auctionId:{
-        type:String
+        type:String,
+        required:[true,"Please Provide The AuctionID"]
     },
+
     totalCartPrice:{
        type:Number
     },
+
     totalCartQuantity:{
         type:Number
     },
+
     baits:[{
         baitId:{type: mongoose.Schema.Types.ObjectId, ref: 'Bait' },
         baitName:String,
@@ -25,15 +31,19 @@ const CartSchema=new mongoose.Schema({
         size:String,
         color:String
     }],
+
     status:{
         type:String
     },
+
     code:{
         type:String
     },
+
     paymentMethod:{
         type:String
     },
+    
     expiryDate:{
         type:Date
     }

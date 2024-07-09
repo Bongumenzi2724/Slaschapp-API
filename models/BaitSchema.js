@@ -20,14 +20,16 @@ checkInStoreAvailability:{
     minlength:1
 },
 price:{
-    type:Number
+    type:Number,
+    required:[true,"Please Provide The Price For The Bait Plant"]
 },
 color:{
     type:String,
     required:[false,'Please Provide The Color For Your Bait Plant If Present']
 },
 status:{
-    type:String
+    type:String,
+    required:[true,"Please Provide The Bait Status"]
 },
 size:{
     type:String,
@@ -37,10 +39,6 @@ size:{
 },
 photos:{
     type:Array
-},
-createdBy:{
-    type:mongoose.Types.ObjectId,
-    ref:'Auction'
 },
 auctionID:{
     type:mongoose.Types.ObjectId,

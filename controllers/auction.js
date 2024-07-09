@@ -1,6 +1,8 @@
-const Auction=require('../models/AuctionSchema')
-const {NotFoundError}=require('../errors')
-const {StatusCodes}=require('http-status-codes')
+const Auction=require('../models/AuctionSchema');
+const Bait = require('../models/BaitSchema');
+const {NotFoundError}=require('../errors');
+const {StatusCodes}=require('http-status-codes');
+const { default: mongoose } = require('mongoose');
 
 
 const createAuction=async(req,res)=>{
@@ -30,9 +32,11 @@ const updateAuctions=async(req,res)=>{
 
 // Get all auctions who are 'active' 
 const getAllAuctions=async(req,res)=>{
-    const auctionData=await Auction.find({businessId:req.params.businessId})
+    const businessId=req.params.businessId;
+    const auctionData=await Auction.find({businessId:businessId});
     res.status(StatusCodes.OK).json({auctionData,count:auctionData.length});
 }
+
 
 const getSingleAuction=async(req,res)=>{
 

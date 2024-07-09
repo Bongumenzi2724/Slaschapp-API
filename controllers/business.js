@@ -1,6 +1,10 @@
-const { StatusCodes } = require("http-status-codes")
-const Business=require('../models/BusinessRegistrationSchema')
+const { StatusCodes } = require("http-status-codes");
+const Business=require('../models/BusinessRegistrationSchema');
+const Auction=require('../models/AuctionSchema');
+const Bait = require('../models/BaitSchema');
+const Cart = require("../models/Cart");
 const {BadRequestError,NotFoundError}=require('../errors')
+const { default: mongoose } = require('mongoose');
 
 //Create A Single Business
 const createBusiness=async(req,res)=>{
@@ -78,18 +82,80 @@ const updateBusinessDetails= async(req,res)=>{
 
 const deleteBusiness=async(req,res)=>{
 
-const{user:{userId},params:{id:businessId}}=req
+const{params:{id:businessId}}=req;
+
    try{
     //find the business by id
-    const business=await Business.findById({_id:businessId,createdBy:userId});
+    const business=await Business.findById({_id:businessId});
+
     if(!business){
         throw new NotFoundError(`No Business With id ${businessId}`)
     }
+
     business.status='Revoked';
     let newBusiness=business;
     await Business.findByIdAndUpdate(req.params.id,{$set:newBusiness},{new:true});
     await newBusiness.save();
-    return res.status(StatusCodes.OK).json({status:true,message:"Business Successfully Deleted"});
+
+    //find all auctions related to the business
+    const auctions=await Auction.aggregate([{$match:{businessId:new mongoose.Types.ObjectId(businessId)}}]);
+    //delete all the auctions,baits and carts related to the business
+
+    if(auctions.length!==0){
+
+        for(let j=0;j<=auctions.length-1;j++)
+            
+            {
+            let newAuctionId=(auctions[j]._id).toString();
+            auctions[j].status="Revoked";
+            let newAuction=auctions[j];
+            await Auction.findByIdAndUpdate(newAuctionId,{$set:newAuction},{new:true});
+            }
+        
+         //use auction id to find all the related baits
+        const auctionID=(auctions[0]._id).toString();
+        //find all baits related to auctions
+
+        const baits=await Bait.aggregate([{$match:{auctionID:new mongoose.Types.ObjectId(auctionID)}}]);
+        if(baits.length!==0){
+
+            for(let i=0;i<=baits.length-1;i++){
+                let newBaitId=(baits[i]._id).toString();
+                baits[i].status="Revoked";
+                let newBait=baits[i];
+                await Bait.findByIdAndUpdate(newBaitId,{$set:newBait},{new:true});
+            }
+
+            //find the cart related to the bait
+            const carts=await Cart.aggregate([{$match:{auctionId:new mongoose.Types.ObjectId(auctionID)}}]);
+            //if the cart(s) exist then delete the cart else return from the operation
+            if(carts.length!==0){
+
+                for(let k=0;k<=carts.length-1;k++){
+                    let newCartId=(carts[k]._id).toString();
+                    carts[k].status="Revoked";
+                    let newCart=carts[k];
+                    await Cart.findByIdAndUpdate(newCartId,{$set:newCart},{new:true});
+                }
+
+                return res.status(StatusCodes.OK).json({status:true,message:"Business,Auctions,Baits And Carts Successfully Deleted"});
+
+            }
+            else{
+
+                return res.status(StatusCodes.OK).json({status:true,message:"Business,Auctions And Baits Successfully Deleted"});
+            }
+        }
+
+        else{
+
+            return res.status(StatusCodes.OK).json({status:true,message:"Business And Auctions Successfully Deleted No Baits and Carts Exist"});
+        }
+    }
+    else{
+        return res.status(StatusCodes.OK).json({status:true,message:"Business Successfully Deleted And No Auctions,Baits or Carts Exist Under This Business"});
+    }
+
 }catch(error){
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false,message:error.message});
 }
