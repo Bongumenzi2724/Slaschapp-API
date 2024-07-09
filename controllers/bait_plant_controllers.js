@@ -1,5 +1,7 @@
 const BaitSchema = require('../models/BaitSchema');
 const Bait = require('../models/BaitSchema');
+const Cart = require("../models/Cart");
+
 const {StatusCodes}=require('http-status-codes');
 
 //create a bait plant
@@ -61,8 +63,25 @@ const delete_bait_plant=async(req,res)=>{
        let newBait=bait;
        await Bait.findByIdAndUpdate(req.params.baitID,{$set:newBait},{new:true});
        await newBait.save();
-       return res.status(StatusCodes.OK).json({status:true,message:"Bait Successfully Deleted"});
-    } catch (error) {
+       //find carts that contains this bait
+       const carts=await Cart.aggregate([{$match:{auctionID:new mongoose.Types.ObjectId(auctionID)}}]);
+
+       if(carts.length!==0){
+        //delete all the related carts
+        for(let k=0;k<=carts.length-1;k++){
+            let newCartId=(carts[k]._id).toString();
+            carts[k].status="Revoked";
+            let newCart=carts[k];
+            await Cart.findByIdAndUpdate(newCartId,{$set:newCart},{new:true});
+        }
+        return res.status(200).json({message:"Bait And Carts Deleted Successfully"})
+    }
+    else{
+        return res.status(200).json({message:"Bait Deleted Successfully"})
+    }
+
+    } 
+    catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false,message:error.message})
     }
 }
