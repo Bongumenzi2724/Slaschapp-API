@@ -43,7 +43,15 @@ const createBusiness=async(req,res)=>{
 //Get All Businesses Specific for A Single Business Owner Whose Status Is Active
 const getAllBusinesses =async(req,res) =>{
     let userId=req.user.userId;
-    const businesses=await Business.find({createdBy:userId})
+    const businesses=await Business.find({$and:[{createdBy:userId},{status:{$in:["Active"]}}]})
+
+    /*const auctionData=await Auction.find({
+        $and:[
+            {businessId:businessId},
+            {status:{$in:["Active","Pending"]}}
+        ]
+    });*/
+    
     return res.status(StatusCodes.OK).json({businesses,count:businesses.length})
 }
 

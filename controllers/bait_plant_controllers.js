@@ -1,10 +1,10 @@
-const BaitSchema = require('../models/BaitSchema');
 const Bait = require('../models/BaitSchema');
 const Cart = require("../models/Cart");
 
 const {StatusCodes}=require('http-status-codes');
 
 //create a bait plant
+
 const create_bait_plant=async(req,res)=>{
     try{ 
         req.body.createdBy=req.user.userId;
@@ -31,6 +31,7 @@ const create_bait_plant=async(req,res)=>{
 }
 
 //Update a bait plant
+
 const update_bait_plant=async(req,res)=>{
         //Find bait by id in the database
        try{
@@ -52,6 +53,7 @@ const update_bait_plant=async(req,res)=>{
 }
 
 //delete a bait plant
+
 const delete_bait_plant=async(req,res)=>{
     try {
         console.log(req.params)
@@ -88,6 +90,7 @@ const delete_bait_plant=async(req,res)=>{
 }
 
 //read a single bait plant
+
 const single_bait_plant=async(req,res)=>{
     try {
         //Find Bait by id and return the whole thing
@@ -99,11 +102,12 @@ const single_bait_plant=async(req,res)=>{
 }
 
 //read all bait plants
+
 const read_bait_plants=async(req,res)=>{
         try {
-            console.log(req.params.auctionID)
-           const bait = await Bait.find({auctionID:req.params.auctionID})
-           return res.status(StatusCodes.OK).json(bait)
+           //const bait = await Bait.find({auctionID:req.params.auctionID})
+           const baits = await Bait.find({$and:[{auctionID:req.params.auctionID},{status:{$in:["Active"]}}]})
+           return res.status(StatusCodes.OK).json(baits)
         } catch (error) {
             return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false,message:error.message})
         }
