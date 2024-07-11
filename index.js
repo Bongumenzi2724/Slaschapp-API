@@ -23,8 +23,9 @@ const cartRouter=require('./routes/cart_routes')
 const accountRouter=require('./routes/transactions')
 const searchRouter=require('./routes/search_route')
 const userProfile=require('./routes/user_profile')
-const otpRouter=require('./routes/optRoutes')
+const otpRouter=require('./routes/optRoutes');
 const ownerProfile=require('./routes/owner_profile');
+const verificationRouter=require('./routes/verification_routes');
 
 //Database Connection
 const connectDB = require('./db/connect')
@@ -64,7 +65,7 @@ app.use('/api/slaschapp/transaction/bait',accountRouter)
 app.use('/api/slaschapp/master',authenticateUser,searchRouter)
 app.use('/api/slaschapp/profile',authenticateUser,userProfile);
 app.use('/api/slaschapp/owner/profile',authenticateUser,ownerProfile)
-app.use('/api/slaschapp/verification',otpRouter);
+app.use('/api/slaschapp/verification',authenticateUser,verificationRouter);
 app.get('/',(req,res)=>{
     res.send('<h1>Business API</h1><a href="/api-docs">Documentation</a>');
 })

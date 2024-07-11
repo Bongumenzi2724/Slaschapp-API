@@ -8,6 +8,7 @@ const { default: mongoose } = require('mongoose');
 
 const createAuction=async(req,res)=>{
     req.body.businessId=req.params.businessId;
+    req.body.createdBy=req.user.userId;
     if(req.body.campaignName==false||req.body.campaignBudget==false||req.body.campaignDailyBudget==false||req.body.campaignDescription==false||req.body.campaignStartDate==false||req.body.interests==false||req.body.age==false||req.body.gender==false||req.body.location==false||req.body.birthdays==false||req.body.languages==false){
         return res.status(StatusCodes.EXPECTATION_FAILED).json({message:"Please Provide All The Fields"})
     } 

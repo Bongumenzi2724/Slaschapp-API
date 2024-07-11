@@ -52,6 +52,10 @@ const AuctionSchema = new mongoose.Schema({
         type:String,
         required:[true,"Please Provide Gender"]
     },
+    category:{
+        type:String,
+        required:[true,"Please Provide Gender"]
+    },
     status:{
         type:String,
         required:[true,"Please Provide The Status For Your Campaign"]
@@ -59,7 +63,14 @@ const AuctionSchema = new mongoose.Schema({
     businessId:{
         type:mongoose.Types.ObjectId,
         ref:'Business',
-        required:[true,'Please provide the business']
+        required:true
+    }
+    ,
+    createdBy:{
+        type:mongoose.Types.ObjectId,
+        ref:'User',
+        required:true
     }
 },{timestamps:true})
+
 module.exports=mongoose.model('Auction',AuctionSchema)
