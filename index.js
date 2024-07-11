@@ -55,7 +55,7 @@ app.use('/api/slaschapp/auth',authRouter);
 app.use('/api/slaschapp/business',authenticateUser,businessRouter);
 app.use('/api/slaschapp/search',authenticateUser,businessSearchRouter);
 app.use('/api/slaschapp/data',dataRouter);
-app.use('/api/slaschapp/bait',authenticateUser,baitRouter);
+app.use('/api/slaschapp/business',authenticateUser,baitRouter);
 app.use('/api/slaschapp/category',categoriesRouter)
 app.use('/api/slaschapp/feeds',authenticateUser,feedsRoute)
 app.use('/api/slaschapp/business/owner',authenticateUser,ownerRouter)
