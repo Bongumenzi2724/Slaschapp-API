@@ -15,6 +15,7 @@ const create_bait_plant=async(req,res)=>{
             baitPlantName:req.body.baitPlantName,
             baitPlantDescription:req.body.baitPlantDescription,
             checkInStoreAvailability:req.body.checkInStoreAvailability,
+
             price:req.body.price,
             color:req.body.color,
             status:req.body.status,
@@ -107,7 +108,7 @@ const read_bait_plants=async(req,res)=>{
         try {
            //const bait = await Bait.find({auctionID:req.params.auctionID})
            const baits = await Bait.find({$and:[{auctionID:req.params.auctionID},{status:{$in:["Active"]}}]})
-           return res.status(StatusCodes.OK).json(baits)
+           return res.status(StatusCodes.OK).json({baits:baits})
         } catch (error) {
             return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false,message:error.message})
         }
