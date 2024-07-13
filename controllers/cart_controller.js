@@ -18,6 +18,7 @@ const getCart=async(req,res)=>{
     }
 }
 
+
 const create_cart=async(req,res)=>{
    try {
     const auctionName=req.body.auctionName;
@@ -122,11 +123,19 @@ const getAllOrders=async(req,res)=>{
 }
 
 const searchBasedOnCode=async(req,res)=>{
-    const cart=await Cart.aggregate([{
-        $match:{code:req.params.code}
-    }])
-    
-    return res.status(200).json({message:"Cart Complete",cart:newCart})
+
+    try {
+        const newCart=await Cart.find({code:req.params.code});
+
+        console.log(newCart);
+        
+        if(newCart.length==0){
+            return res.status(404).json({status:false,messages:`Cart with code:${req.params.code} Does Not Exist`});
+        }
+        return res.status(200).json({message:"Cart",cart:newCart})
+    } catch (error) {
+        return res.status(500).json({status:false,message:error.message});
+    }
 }
 
 const update_cart=async(req,res)=>{
