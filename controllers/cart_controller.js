@@ -4,7 +4,9 @@ const {StatusCodes}=require('http-status-codes')
 const getCart=async(req,res)=>{
     
     try {
-    const cart=await Cart.findOne({userId:req.user.userId,_id:req.params.cartId});
+        //console.log(req.params.cartId);
+        //console.log(req.user.userId);
+    const cart=await Cart.findOne({_id:req.params.cartId});
     //check if the cart has expired
     if(!cart){
         return res.status(404).json({status:cart.status,messages:`The cart ${cart.status=="Expired"?"The Cart Has Expired":"The Cart Does Not Exist"}`})
