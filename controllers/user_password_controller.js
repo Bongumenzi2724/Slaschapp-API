@@ -17,6 +17,7 @@ const user_forgot_password=async(req,res)=>{
          //Generate Token
          resetToken=crypto.randomBytes(20).toString('hex');
          resetTokenExpiration=Date.now()+3600000;
+
         const user=await User.findOneAndUpdate({email:email},{resetToken:resetToken,resetTokenExpiration:resetTokenExpiration},{new:true,runValidators:true});
         if(!user){
             return res.status(400).json({error:"User not found"});
@@ -38,6 +39,8 @@ const user_password_reset=async(req,res)=>{
         const salt=await bcrypt.genSalt(10);
         const hashedPassword=await bcrypt.hash(newPassword,salt);
         //find the user with the matching reset token
+        
+        await User.findByIdAndUpdate({_id:(user._id).toString()},{$set:newUser},{new:true});
 
         /**
          * cart_user.rewards+=auction.acquisitionBid;
