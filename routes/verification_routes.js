@@ -8,6 +8,6 @@ router.post('/user/verify-otp',verify_otp);
 //owner verification
 router.post('/owner/verify-otp',verify_otp);
 //verify the if the auction exist and it belong to the business owner
-router.get('/auction/checkout',auctionVerification);
+router.post('/auction/checkout',auctionVerification);
 
 module.exports=router;
