@@ -1,18 +1,18 @@
 const Cart = require("../models/Cart");
 const {StatusCodes}=require('http-status-codes')
 
+
+
 const getCart=async(req,res)=>{
     
     try {
-        //console.log(req.params.cartId);
-        //console.log(req.user.userId);
-    const cart=await Cart.findOne({_id:req.params.cartId});
-    //check if the cart has expired
-    if(!cart){
-        return res.status(404).json({status:cart.status,messages:`The cart ${cart.status=="Expired"?"The Cart Has Expired":"The Cart Does Not Exist"}`})
-    }
-    //if the cart has expired return a new message
-    return res.status(200).json({status:cart.status,cart:cart});
+        const cart=await Cart.findOne({_id:req.params.cartId});
+        //check if the cart has expired
+        if(!cart){
+            return res.status(404).json({status:cart.status,messages:`The cart ${cart.status=="Expired"?"The Cart Has Expired":"The Cart Does Not Exist"}`})
+        }
+        //if the cart has expired return a new message
+        return res.status(200).json({status:cart.status,cart:cart});
     } catch (error) {
         return res.status(500).json({status:false,message:error.message});
     }
@@ -20,7 +20,9 @@ const getCart=async(req,res)=>{
 
 
 const create_cart=async(req,res)=>{
+
    try {
+
     const auctionName=req.body.auctionName;
     const auctionId=req.body.auctionId;
     const status=req.body.status;

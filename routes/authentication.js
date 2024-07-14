@@ -1,6 +1,6 @@
 const express=require('express')
 const router=express.Router()
-const {loginUser,registerBusinessOwner,UserRegistration,loginBusinessOwner}=require('../controllers/authentication');
+const {loginUser,registerUser,registerBusinessOwner,UserRegistration,loginBusinessOwner}=require('../controllers/authentication');
 
 
 const { owner_password_reset, owner_forgot_password} = require('../controllers/owner_password_controllers');
@@ -10,7 +10,7 @@ const { user_forgot_password, user_password_reset } = require('../controllers/us
 
 //register app user
 //router.post('/register/user',registerUser)
-router.post('/register/user',UserRegistration)
+router.post('/register/user',registerUser)
 //login app user
 router.post('/login/user',loginUser)
 

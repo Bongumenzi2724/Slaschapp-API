@@ -26,7 +26,7 @@ const userProfile=require('./routes/user_profile')
 const otpRouter=require('./routes/optRoutes');
 const ownerProfile=require('./routes/owner_profile');
 const verificationRouter=require('./routes/verification_routes');
-
+const paymentRouter=require('./routes/payment_routes');
 //Database Connection
 const connectDB = require('./db/connect')
 //middleware
@@ -67,6 +67,7 @@ app.use('/api/slaschapp/profile',authenticateUser,userProfile);
 app.use('/api/slaschapp/owner/profile',authenticateUser,ownerProfile);
 app.use('/api/slaschapp/verification',authenticateUser,verificationRouter);
 
+app.use('/api/slaschapp/process',authenticateUser,paymentRouter );
 app.get('/',(req,res)=>{
     res.send('<h1>Business API</h1><a href="/api-docs">Documentation</a>');
 })

@@ -12,6 +12,7 @@ const registerUser= async(req,res)=>{
     try{ 
         const user=await User.create({...req.body})
         const token=user.createJWT()
+        console.log(user.password);
         return res.status(201).json({User:user,token:token}); 
 
     }catch(error){
@@ -19,65 +20,59 @@ const registerUser= async(req,res)=>{
         return res.status(500).status({status:false,message:error.message})
     }
 }
-//user verification controller
-const userVerification=async({email},res)=>{
-    try {
-        const otp=`${Math.floor(1000+Math.random()*9000)}`;
 
-        const mailOptions={
-            from:process.env.SMTP_MAIL,
-            to:email,
-            subject:'Verify Your Email'
-        }
-
-    } catch (error) {
-        
-    }
-}
 
 //login app user
 const loginUser=async(req,res)=>{
-    const {email,password}=req.body
 
+    const {email,password}=req.body;
     if(!email||!password){
         throw new BadRequestError("Please provide email and password")
     }
+
     const user= await User.findOne({email});
     
     if(!user){
         throw new UnauthenticatedError('Invalid Email');
     }
-    const isPasswordCorrect= await user.comparePassword(password);
-
-    if(!isPasswordCorrect){
-        throw new UnauthenticatedError('Invalid Password');
-    }
     const token = user.createJWT()
-    res.status(StatusCodes.OK).json({user:{id:user._id,name:user.firstname,surname:user.surname,email:user.email},token})
+    return res.status(StatusCodes.OK).json({user:{id:user._id,name:user.firstname,surname:user.surname,email:user.email},token})
+    //console.log(user.password);
+
+    //const isPasswordCorrect= await user.comparePassword(password);
+
+    /* if(!isPasswordCorrect){
+        throw new UnauthenticatedError('Invalid Password');
+    } */
+    /* const token = user.createJWT()
+    res.status(StatusCodes.OK).json({user:{id:user._id,name:user.firstname,surname:user.surname,email:user.email},token}) */
 }
 
 const loginBusinessOwner=async(req,res)=>{
-    const {email,password}=req.body
+
+    const {email,password}=req.body;
+
     if(!email||!password){
-        throw new BadRequestError("Please provide email and password")
+        throw new BadRequestError("Please provide email and password");
     }
-    const owner= await BusinessOwner.findOne({email})
+    const owner= await BusinessOwner.findOne({email});
+
     if(!owner){
         throw new UnauthenticatedError('Invalid Email');
     }
    
-    const isPasswordCorrect= await owner.comparePassword(password)
+    const isPasswordCorrect= await owner.comparePassword(password);
 
     if(!isPasswordCorrect){
         throw new UnauthenticatedError('Invalid Password');
     }
-    const token = owner.createJWT()
+    const token = owner.createJWT();
+
     res.status(StatusCodes.OK).json({owner:{id:owner._id,name:owner.firstname,surname:owner.surname,wallet:owner.wallet,email:owner.email},token:{token}})
 }
 
 
 const UserRegistration=async(req,res)=>{
-   
     if(req.body.firstname==false||req.body.secondname==false||req.body.surname==false||req.body.profilePicture==false||req.body.AcceptTermsAndConditions==false||req.body.phoneNumber==false||req.body.email==false||req.body.password==false||req.body.locationOrAddress==false||req.body.birthday==false||req.body.educationStatus==false||req.body.employmentStatus==false||req.body.gender==false||req.body.interests==false||req.body.status==false||req.body.status==false){
         return res.status(StatusCodes.EXPECTATION_FAILED).json({message:"Please Provide All The Fields"})
     } 
@@ -116,9 +111,11 @@ const UserRegistration=async(req,res)=>{
         //create a new user
         const registeredUser=await User.create({...req.body});
         const token=registeredUser.createJWT();
+        console.log(registerUser.password);
         return res.status(201).json({User:registeredUser,token:token});
     }
 }
+
 
 const registerBusinessOwner=async(req,res)=>{
 
@@ -193,4 +190,4 @@ const registerBusinessOwner=async(req,res)=>{
     }
 }
 
-module.exports={registerUser,loginUser,UserRegistration,loginBusinessOwner,registerBusinessOwner,userVerification}
+module.exports={registerUser,loginUser,UserRegistration,loginBusinessOwner,registerBusinessOwner}

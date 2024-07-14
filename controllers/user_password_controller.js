@@ -38,11 +38,26 @@ const user_password_reset=async(req,res)=>{
         const salt=await bcrypt.genSalt(10);
         const hashedPassword=await bcrypt.hash(newPassword,salt);
         //find the user with the matching reset token
-        const user=await User.findOneAndUpdate({email,resetToken},{password:hashedPassword,resetToken:'',resetTokenExpiration:''},{new:true,runValidators:true});
-        const user1=await User.findOne({email});
+
+        /**
+         * cart_user.rewards+=auction.acquisitionBid;
+            let newUserCart=cart_user;
+            await User.findByIdAndUpdate({_id:userId},{$set:newUserCart},{new:true});
+            await newUserCart.save();
+         * 
+         */
+        //find user using email and resetToken
+
+        const user=await User.findOne({email:email,resetToken:resetToken});
         if(!user){
             return res.status(401).json({error:"Invalid or expired reset token"});
         }
+        user.password=hashedPassword;
+        user.resetToken="";
+        user.resetTokenExpiration="";
+        let newUser=user;
+        await User.findByIdAndUpdate({_id:(user._id).toString()},{$set:newUser},{new:true});
+        await newUser.save();
         return res.status(200).json({message:"Password Reset Successfully"});
     } catch (error) {
         res.status(500).json({error:"An error occurred while resetting the password"});

@@ -21,7 +21,7 @@ const verify_otp=async(req,res)=>{
 			otp_user.otp=null;
 			otp_user.status="Active";
     		let newUser=otp_user;
-    		await User.findOneAndUpdate({_id:otp_user._id},{$set:newUser},{new:true});
+    		await User.findByIdAndUpdate({_id:otp_user._id},{$set:newUser},{new:true});
     		await newUser.save();
 			return res.status(StatusCodes.OK).json({message:"Email Successfully Verified"})
 		}
