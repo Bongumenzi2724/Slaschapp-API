@@ -59,29 +59,30 @@ const loginUser=async(req,res)=>{
     if(!user){
         throw new UnauthenticatedError('Invalid Email');
     }
-    /* const token = user.createJWT();
+     const token = user.createJWT();
 
-    res.status(StatusCodes.OK).json({owner:{id:user._id,name:user.firstname,surname:user.surname,wallet:user.wallet,email:user.email},token:{token}}); */
-    const hashedPassword=await user.PasswordHash(password);
-    console.log("Login Password");
-    console.log();
-    console.log(hashedPassword)
+    res.status(StatusCodes.OK).json({owner:{id:user._id,name:user.firstname,surname:user.surname,wallet:user.wallet,email:user.email},token:{token}});
+    
+    //const hashedPassword=await user.PasswordHash(password);
+    //console.log("Login Password");
+    //console.log();
+    //console.log(hashedPassword)
     /* if(hassedPassword===user.password){
 
     } */
 
-    console.log("Exist Password");
-    console.log(user.password);
+    //console.log("Exist Password");
+    //console.log(user.password);
     
-    const isPasswordCorrect= await user.comparePassword(hashedPassword);
-
+    //const isPasswordCorrect= await user.comparePassword(hashedPassword);
+    /*
     if(!isPasswordCorrect){
         throw new UnauthenticatedError('Invalid Password');
     }
+    */
+    //const token = user.createJWT();
 
-    const token = user.createJWT();
-
-    res.status(StatusCodes.OK).json({owner:{id:user._id,name:user.firstname,surname:user.surname,wallet:user.wallet,email:user.email},token:{token}}) 
+    //res.status(StatusCodes.OK).json({owner:{id:user._id,name:user.firstname,surname:user.surname,wallet:user.wallet,email:user.email},token:{token}}) 
      
 }
 
