@@ -46,10 +46,12 @@ const payment_controller=async(req,res)=>{
         return res.status(404).json({message:"Business Owner No Longer Exist"});
     }
     // Add cart total to owner wallet
-    owner.wallet+=cart.totalCartPrice;
+
+    /* owner.wallet+=cart.totalCartPrice;
     let newOwner=owner;
     await BusinessOwnerRegistration.findByIdAndUpdate({_id:businessID},{$set:newOwner},{new:true});
-    await newOwner.save();
+    await newOwner.save(); */
+    
     return res.status(200).json({message:"Payment Processed Successfully"});
    }
 
