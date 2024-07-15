@@ -59,11 +59,21 @@ const loginUser=async(req,res)=>{
     if(!user){
         throw new UnauthenticatedError('Invalid Email');
     }
-    const token = user.createJWT();
+    /* const token = user.createJWT();
 
-    res.status(StatusCodes.OK).json({owner:{id:user._id,name:user.firstname,surname:user.surname,wallet:user.wallet,email:user.email},token:{token}});
+    res.status(StatusCodes.OK).json({owner:{id:user._id,name:user.firstname,surname:user.surname,wallet:user.wallet,email:user.email},token:{token}}); */
+    const hashedPassword=await user.PasswordHash(password);
+    console.log("Login Password");
+    console.log();
+    console.log(hashedPassword)
+    /* if(hassedPassword===user.password){
 
-    /* const isPasswordCorrect= await user.comparePassword(password);
+    } */
+
+    console.log("Exist Password");
+    console.log(user.password);
+    
+    const isPasswordCorrect= await user.comparePassword(hashedPassword);
 
     if(!isPasswordCorrect){
         throw new UnauthenticatedError('Invalid Password');
@@ -72,7 +82,7 @@ const loginUser=async(req,res)=>{
     const token = user.createJWT();
 
     res.status(StatusCodes.OK).json({owner:{id:user._id,name:user.firstname,surname:user.surname,wallet:user.wallet,email:user.email},token:{token}}) 
-     */
+     
 }
 
 const loginBusinessOwner=async(req,res)=>{
@@ -136,9 +146,17 @@ const UserRegistration=async(req,res)=>{
         */
         
         //create a new user
+        
+      
         const registeredUser=await User.create({...req.body});
         const token=registeredUser.createJWT();
-        return res.status(201).json({User:registeredUser,token:token});
+        const password=await registeredUser.PasswordHash(req.body.password);
+        registeredUser.password=password;
+        let newUser=registeredUser;
+        await User.findByIdAndUpdate({_id:(registeredUser._id).toString()},{$set:newUser},{new:true});
+        await newUser.save();
+        //console.log(newUser.password);
+        return res.status(201).json({User:newUser,token:token});
     }
 }
 
