@@ -101,11 +101,12 @@ UserSchema.pre('save',async function(){
     this.password = await bcrypt.hash(this.password,salt)
 });
 
-userSchema.methods.PasswordHash=async function(password){
+UserSchema.methods.PasswordHash=async function(password){
     const salt=await bcrypt.genSalt(10);
     const hashedPassword= await bcrypt.hash(password,salt);
     return hashedPassword;
 }
+
 UserSchema.methods.createJWT=function(){
     return jwt.sign({userId:this._id},process.env.JWT_SECRET,{expiresIn:process.env.JWT_LIFETIME})
 }
