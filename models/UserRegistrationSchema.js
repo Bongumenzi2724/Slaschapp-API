@@ -1,7 +1,9 @@
 const mongoose=require('mongoose');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken');
+
 const UserSchema = new mongoose.Schema({
+
     firstname:{
         type:String,
         required:[true,'Please Provide Your First Name']
@@ -20,6 +22,7 @@ const UserSchema = new mongoose.Schema({
     phoneNumber:{
         type:String,
         required:[false,"Please Provide Your Phone Number"],
+        unique:true
     },
     email:{
         type:String,
@@ -51,10 +54,12 @@ const UserSchema = new mongoose.Schema({
         required:[true,'Please Provide Your Education Status']
     },
     employmentStatus:{
-        type:String
+        type:String,
+        required:[true,'Please Provide Your Employment Status']
     },
     gender:{
-        type:String
+        type:String,
+        required:[true,'Please Provide Your Gender']
     },
     wallet:{
         type:Number
@@ -85,28 +90,29 @@ const UserSchema = new mongoose.Schema({
         default:false
     },
     status:{
-        type:String
+        type:String,
+        
     }
     
 },{timestamps:true});
 
 UserSchema.pre('save',async function(){
     const salt = await bcrypt.genSalt(10);
-    this.password=await bcrypt.hash(this.password,salt);
-})
+    this.password = await bcrypt.hash(this.password,salt)
+});
 
+userSchema.methods.PasswordHash=async function(password){
+    const salt=await bcrypt.genSalt(10);
+    const hashedPassword= await bcrypt.hash(password,salt);
+    return hashedPassword;
+}
 UserSchema.methods.createJWT=function(){
     return jwt.sign({userId:this._id},process.env.JWT_SECRET,{expiresIn:process.env.JWT_LIFETIME})
 }
 
 UserSchema.methods.comparePassword = async function(candidatePassword){
-    //const isMatch=bcrypt.compareSync(candidatePassword,this.password)
-    const isMatch =await bcrypt.compare(candidatePassword,this.password);
+    const isMatch = await bcrypt.compare(candidatePassword,this.password);
     return isMatch
-    //console.log(candidatePassword);
-    //return bcrypt.compareSync(candidatePassword,this.password);
-
 } 
-
 
 module.exports=mongoose.model('User',UserSchema)

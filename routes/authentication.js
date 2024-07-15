@@ -10,7 +10,7 @@ const { user_forgot_password, user_password_reset } = require('../controllers/us
 
 //register app user
 //router.post('/register/user',registerUser)
-router.post('/register/user',registerUser)
+router.post('/register/user',UserRegistration);
 //login app user
 router.post('/login/user',loginUser)
 

@@ -39,9 +39,6 @@ const user_password_reset=async(req,res)=>{
         const salt=await bcrypt.genSalt(10);
         const hashedPassword=await bcrypt.hash(newPassword,salt);
         //find the user with the matching reset token
-        
-        await User.findByIdAndUpdate({_id:(user._id).toString()},{$set:newUser},{new:true});
-
         /**
          * cart_user.rewards+=auction.acquisitionBid;
             let newUserCart=cart_user;

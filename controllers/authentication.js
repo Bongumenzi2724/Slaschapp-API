@@ -4,16 +4,41 @@ const {StatusCodes}=require('http-status-codes')
 const BusinessOwner=require('../models/BusinessOwnerRegistration')
 const nodemailer=require('nodemailer');
 const otpGenerator=require('otp-generator');
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcrypt')
 
 //register app user
 const registerUser= async(req,res)=>{
     
     try{ 
-        const user=await User.create({...req.body})
-        const token=user.createJWT()
-        console.log(user.password);
-        return res.status(201).json({User:user,token:token}); 
+        const newUser=new User({
+            firstname:req.body.firstname,
+            secondname:req.body.secondname,
+            surname:req.body.surname,
+            profilePicture:req.body.profilePicture,
+            phoneNumber:req.body.phoneNumber,
+            email:req.body.email,
+            password:req.body.password,
+            AcceptTermsAndConditions:req.body.AcceptTermsAndConditions,
+            locationOrAddress:req.body.locationOrAddress,
+            birthday:req.body.birthday,
+            IdNumber:req.body.IdNumber,
+            IdDocumentLink:req.body.IdDocumentLink,
+            gender:req.body.gender,
+            wallet:req.body.wallet,
+            //otp:req.body.otp,
+            verified:false,
+            resetToken:req.body.resetToken,
+            resetTokenExpiration:req.body.resetTokenExpiration,
+            status:req.body.status
+        });
+
+        newUser.save();
+
+        const token=newUser.createJWT();
+        return res.status(201).json({User:user,token:token});
+       /*  const user=await User.create({...req.body})
+        const token=user.createJWT();
+        return res.status(201).json({User:user,token:token});  */
 
     }catch(error){
         console.log(req.body)
@@ -27,25 +52,22 @@ const loginUser=async(req,res)=>{
 
     const {email,password}=req.body;
     if(!email||!password){
-        throw new BadRequestError("Please provide email and password")
+        throw new BadRequestError("Please provide email and password");
     }
+    const user= await User.findOne({email:email});
 
-    const user= await User.findOne({email});
-    
     if(!user){
         throw new UnauthenticatedError('Invalid Email');
     }
-    const token = user.createJWT()
-    return res.status(StatusCodes.OK).json({user:{id:user._id,name:user.firstname,surname:user.surname,email:user.email},token})
-    //console.log(user.password);
+    const isPasswordCorrect= await user.comparePassword(password);
 
-    //const isPasswordCorrect= await user.comparePassword(password);
-
-    /* if(!isPasswordCorrect){
+    if(!isPasswordCorrect){
         throw new UnauthenticatedError('Invalid Password');
-    } */
-    /* const token = user.createJWT()
-    res.status(StatusCodes.OK).json({user:{id:user._id,name:user.firstname,surname:user.surname,email:user.email},token}) */
+    }
+
+    const token = user.createJWT();
+
+    res.status(StatusCodes.OK).json({owner:{id:user._id,name:user.firstname,surname:user.surname,wallet:user.wallet,email:user.email},token:{token}}) 
 }
 
 const loginBusinessOwner=async(req,res)=>{
@@ -111,7 +133,6 @@ const UserRegistration=async(req,res)=>{
         //create a new user
         const registeredUser=await User.create({...req.body});
         const token=registeredUser.createJWT();
-        console.log(registerUser.password);
         return res.status(201).json({User:registeredUser,token:token});
     }
 }
@@ -158,7 +179,7 @@ const registerBusinessOwner=async(req,res)=>{
             }
         });*/
 
-        const newOwner=new BusinessOwner({
+     /*   const newOwner=new BusinessOwner({
             firstname:req.body.firstname,
             secondname:req.body.secondname,
             surname:req.body.surname,
@@ -183,8 +204,12 @@ const registerBusinessOwner=async(req,res)=>{
         newOwner.save();
 
         const token=newOwner.createJWT();
+        */
 
+        const newOwner=await BusinessOwner.create({...req.body})
+        const token=newOwner.createJWT();
         return res.status(201).json({BusinessOwner:newOwner,token:token});
+
     }catch(error){
         return res.status(500).status({status:false,message:error.message})
     }

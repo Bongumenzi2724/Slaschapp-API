@@ -14,7 +14,7 @@ const payment_controller=async(req,res)=>{
    }
    const userId=(cart.userId).toString();
 
-   if(cart.paymentMethod==="Cash Payment"){
+   if(cart.paymentMethod==="Cash"){
 
     //find the user to update the rewards
     const cart_user=await User.findById({_id:userId});
@@ -50,7 +50,7 @@ const payment_controller=async(req,res)=>{
     return res.status(200).json({message:"Payment Processed Successfully"});
    }
 
-   else if(cart.paymentMethod==="Wallet Payment")
+   else if(cart.paymentMethod==="Slasch Wallet")
    {
     //find the user 
     const user=await User.findById({_id:userId});
@@ -91,7 +91,7 @@ const payment_controller=async(req,res)=>{
     return res.status(200).json({message:"wallet payment processed successfully"});
    }
 
-   else if(cart.paymentMethod==="Rewards Payment"){
+   else if(cart.paymentMethod==="Slasch Rewards"){
 
     const user=await User.findById({_id:userId});
 
