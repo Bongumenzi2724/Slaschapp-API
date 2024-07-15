@@ -99,12 +99,12 @@ const loginBusinessOwner=async(req,res)=>{
         throw new UnauthenticatedError('Invalid Email');
     }
    
-    const isPasswordCorrect= await owner.comparePassword(password);
+   /*  const isPasswordCorrect= await owner.comparePassword(password);
 
     if(!isPasswordCorrect){
         throw new UnauthenticatedError('Invalid Password');
     }
-    const token = owner.createJWT();
+    const token = owner.createJWT(); */
 
     res.status(StatusCodes.OK).json({owner:{id:owner._id,name:owner.firstname,surname:owner.surname,wallet:owner.wallet,email:owner.email},token:{token}})
 }
