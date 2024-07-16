@@ -36,7 +36,7 @@ const UserSchema = new mongoose.Schema({
     password:{
         type:String,
         required:[true,"Please Provide Your Password"],
-        unique:true
+        unique:[true,"Please Choose Another Password"]
     },
     AcceptTermsAndConditions:{
         type:String,
