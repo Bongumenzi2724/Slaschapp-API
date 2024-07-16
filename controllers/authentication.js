@@ -58,14 +58,14 @@ const loginUser=async(req,res)=>{
     const user= await User.findOne({email:email1});
 
     if(!user){
-        throw new UnauthenticatedError('Invalid Email');
+        throw new UnauthenticatedError('Invalid Email or Password');
     }
     const hashedPassword=user.password;
 
     const isPasswordCorrect= await user.comparePassword(password,hashedPassword);
 
     if(!isPasswordCorrect){
-        throw new UnauthenticatedError('Invalid Password');
+        throw new UnauthenticatedError('Invalid Email or Password');
     }
 
     const token = user.createJWT();
@@ -80,7 +80,7 @@ const loginBusinessOwner=async(req,res)=>{
     const {email,password}=req.body;
 
     const email1=email.toLowerCase();
-    
+
     if(!email||!password){
         throw new BadRequestError("Please provide email and password");
     }
