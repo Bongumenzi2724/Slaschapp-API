@@ -145,7 +145,7 @@ const UserRegistration=async(req,res)=>{
         const registeredUser=await User.create({...req.body});
         const token=registeredUser.createJWT();
         const userId=(registeredUser._id).toString()
-        const returnedUser=await User.aggregate([{$match:{_id:new mongoose.Types.ObjectId(userId)}},{$project:{password:0}}]);
+        const returnedUser=await User.aggregate([{$match:{_id:new mongoose.Types.ObjectId(userId)}},{$project:{password:0,__v:0}}]);
         return res.status(201).json({User:returnedUser,token:token});
     }
 }
@@ -217,10 +217,10 @@ const registerBusinessOwner=async(req,res)=>{
 
         const token=newOwner.createJWT();
         */
-        const newOwner=await BusinessOwner.create({...req.body})
+        const newOwner=await BusinessOwner.create({...req.body});
         const token=newOwner.createJWT();
-        const userId=(newOwner._id).toString()
-        const returnedOwner=await BusinessOwner.aggregate([{$match:{_id:new mongoose.Types.ObjectId(userId)}},{$project:{password:0}}]);
+        const ownerId=(newOwner._id).toString();
+        const returnedOwner=await BusinessOwner.aggregate([{$match:{_id:new mongoose.Types.ObjectId(ownerId)}},{$project:{password:0}}]);
         return res.status(201).json({BusinessOwner:returnedOwner,token:token});
 
     }catch(error){
