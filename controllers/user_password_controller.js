@@ -1,10 +1,7 @@
 const User=require('../models/UserRegistrationSchema')
-const crypto=require('crypto');
-const bcrypt = require('bcryptjs');
 const nodemailer=require('nodemailer');
 const OTP = require('../models/OTPSchema');
 const otpGenerator=require('otp-generator');
-//mail options
 
 //Forgot Password Functionality
 const user_forgot_password=async(req,res)=>{
@@ -39,9 +36,6 @@ const user_forgot_password=async(req,res)=>{
             if(error){
                 //console.log(error);
                 return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:'Error Sending Email'})
-            }
-            else{
-                console.log("OTP Sent Successfully");
             }
         })
 
