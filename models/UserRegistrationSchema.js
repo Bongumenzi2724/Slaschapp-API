@@ -62,7 +62,8 @@ const UserSchema = new mongoose.Schema({
         type:Number
     },
     rewards:{
-        type:Number
+        type:Number,
+        default:0
     },
     interests:{
         type:String,
