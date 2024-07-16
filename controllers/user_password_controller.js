@@ -53,7 +53,7 @@ const user_forgot_password=async(req,res)=>{
             return res.status(400).json({error:"User not found"});
         }
         
-        res.status(200).json({message:`Password token ${resetToken} to ${email}`});
+        res.status(200).json({message:`Password token ${resetToken} to ${email}`,resetToken:resetToken});
 
     } catch (error) {
         res.status(500).json({error:"An error occurred while generating a reset token"});
