@@ -4,7 +4,8 @@ const {StatusCodes}=require('http-status-codes')
 const BusinessOwner=require('../models/BusinessOwnerRegistration')
 const nodemailer=require('nodemailer');
 const otpGenerator=require('otp-generator');
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
+const { default: mongoose } = require('mongoose');
 
 //register app user
 const registerUser= async(req,res)=>{
@@ -143,8 +144,9 @@ const UserRegistration=async(req,res)=>{
         //create a new user
         const registeredUser=await User.create({...req.body});
         const token=registeredUser.createJWT();
-        console.log(registeredUser.password);
-        return res.status(201).json({User:registeredUser,token:token});
+        const userId=(registeredUser._id).toString()
+        const returnedUser=await User.aggregate([{$match:{_id:new mongoose.Types.ObjectId(userId)}},{$project:{password:0}}]);
+        return res.status(201).json({User:returnedUser,token:token});
     }
 }
 
@@ -215,10 +217,11 @@ const registerBusinessOwner=async(req,res)=>{
 
         const token=newOwner.createJWT();
         */
-
         const newOwner=await BusinessOwner.create({...req.body})
         const token=newOwner.createJWT();
-        return res.status(201).json({BusinessOwner:newOwner,token:token});
+        const userId=(newOwner._id).toString()
+        const returnedOwner=await BusinessOwner.aggregate([{$match:{_id:new mongoose.Types.ObjectId(userId)}},{$project:{password:0}}]);
+        return res.status(201).json({BusinessOwner:returnedOwner,token:token});
 
     }catch(error){
         return res.status(500).status({status:false,message:error.message})
