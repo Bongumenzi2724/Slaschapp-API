@@ -104,19 +104,27 @@ UserSchema.pre('save',async function(){
 });
 
 
-UserSchema.methods.PasswordHash=async function(password){
+/* UserSchema.methods.PasswordHash=async function(password){
     const salt=await bcrypt.genSalt(10);
     const hashedPassword= await bcrypt.hash(password,salt);
     return hashedPassword;
-}
+} */
 
 UserSchema.methods.createJWT=function(){
     return jwt.sign({userId:this._id},process.env.JWT_SECRET,{expiresIn:process.env.JWT_LIFETIME})
 }
 
-UserSchema.methods.comparePassword = async function(candidatePassword){
-    const isMatch = await bcrypt.compare(candidatePassword,this.password);
-    return isMatch
+UserSchema.methods.comparePassword=function(candidatePassword,hashedPassword){
+
+    let isMatch=false;
+    if(candidatePassword===hashedPassword){
+        isMatch=true;
+        return isMatch
+    }
+    else{
+        isMatch=false;
+        return isMatch
+    }
 } 
 
 module.exports=mongoose.model('User',UserSchema)

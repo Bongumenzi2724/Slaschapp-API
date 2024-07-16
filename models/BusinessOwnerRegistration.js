@@ -88,16 +88,27 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
 })
 
 BusinessOwnerRegistrationSchema.pre('save',async function(){
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password,salt)
+    //const salt = await bcrypt.genSalt(10);
+    //this.password = await bcrypt.hash(this.password,salt)
 })
 
 BusinessOwnerRegistrationSchema.methods.createJWT=function(){
     return jwt.sign({userId:this._id},process.env.JWT_SECRET,{expiresIn:process.env.JWT_LIFETIME})
 }
 
-BusinessOwnerRegistrationSchema.methods.comparePassword = async function(candidatePassword){
+BusinessOwnerRegistrationSchema.methods.comparePassword=function(candidatePassword,hashedPassword){
+    let isMatch=false;
+    if(candidatePassword===hashedPassword){
+        isMatch=true;
+        return isMatch
+    }
+    else{
+        isMatch=false;
+        return isMatch
+    }
+} 
+/* BusinessOwnerRegistrationSchema.methods.comparePassword = async function(candidatePassword){
     const isMatch = await bcrypt.compare(candidatePassword,this.password);
     return isMatch
-} 
+}  */
 module.exports=mongoose.model('BusinessOwner',BusinessOwnerRegistrationSchema)

@@ -46,7 +46,6 @@ const registerUser= async(req,res)=>{
     }
 }
 
-
 //login app user
 const loginUser=async(req,res)=>{
 
@@ -59,31 +58,19 @@ const loginUser=async(req,res)=>{
     if(!user){
         throw new UnauthenticatedError('Invalid Email');
     }
-     const token = user.createJWT();
+    const hashedPassword=user.password;
 
-    return res.status(StatusCodes.OK).json({user:{id:user._id,name:user.firstname,surname:user.surname,wallet:user.wallet,email:user.email},token:{token}});
-    
-    //const hashedPassword=await user.PasswordHash(password);
-    //console.log("Login Password");
-    //console.log();
-    //console.log(hashedPassword)
-    /* if(hassedPassword===user.password){
+    const isPasswordCorrect= await user.comparePassword(password,hashedPassword);
 
-    } */
-
-    //console.log("Exist Password");
-    //console.log(user.password);
-    
-    //const isPasswordCorrect= await user.comparePassword(hashedPassword);
-    /*
     if(!isPasswordCorrect){
         throw new UnauthenticatedError('Invalid Password');
     }
-    */
-    //const token = user.createJWT();
+
+    const token = user.createJWT();
 
     //res.status(StatusCodes.OK).json({owner:{id:user._id,name:user.firstname,surname:user.surname,wallet:user.wallet,email:user.email},token:{token}}) 
-     
+    return res.status(StatusCodes.OK).json({user:{id:user._id,name:user.firstname,surname:user.surname,wallet:user.wallet,email:user.email},token:{token}});
+
 }
 
 const loginBusinessOwner=async(req,res)=>{
@@ -98,13 +85,15 @@ const loginBusinessOwner=async(req,res)=>{
     if(!owner){
         throw new UnauthenticatedError('Invalid Email');
     }
-   
-   /*  const isPasswordCorrect= await owner.comparePassword(password);
+
+   const hashedPassword=owner.password;
+
+   const isPasswordCorrect= await owner.comparePassword(hashedPassword,password);
 
     if(!isPasswordCorrect){
         throw new UnauthenticatedError('Invalid Password');
     }
-    */
+
     const token = owner.createJWT();
 
     res.status(StatusCodes.OK).json({owner:{id:owner._id,name:owner.firstname,surname:owner.surname,wallet:owner.wallet,email:owner.email},token:{token}})
@@ -112,6 +101,7 @@ const loginBusinessOwner=async(req,res)=>{
 
 
 const UserRegistration=async(req,res)=>{
+
     if(req.body.firstname==false||req.body.secondname==false||req.body.surname==false||req.body.profilePicture==false||req.body.AcceptTermsAndConditions==false||req.body.phoneNumber==false||req.body.email==false||req.body.password==false||req.body.locationOrAddress==false||req.body.birthday==false||req.body.educationStatus==false||req.body.employmentStatus==false||req.body.gender==false||req.body.interests==false||req.body.status==false||req.body.status==false){
         return res.status(StatusCodes.EXPECTATION_FAILED).json({message:"Please Provide All The Fields"})
     } 
@@ -148,17 +138,10 @@ const UserRegistration=async(req,res)=>{
         */
         
         //create a new user
-        
-      
         const registeredUser=await User.create({...req.body});
         const token=registeredUser.createJWT();
-        const password=await registeredUser.PasswordHash(req.body.password);
-        registeredUser.password=password;
-        let newUser=registeredUser;
-        await User.findByIdAndUpdate({_id:(registeredUser._id).toString()},{$set:newUser},{new:true});
-        await newUser.save();
-        //console.log(newUser.password);
-        return res.status(201).json({User:newUser,token:token});
+        console.log(registeredUser.password);
+        return res.status(201).json({User:registeredUser,token:token});
     }
 }
 
