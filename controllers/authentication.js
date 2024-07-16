@@ -50,10 +50,12 @@ const registerUser= async(req,res)=>{
 const loginUser=async(req,res)=>{
 
     const {email,password}=req.body;
+
+    const email1=email.toLowerCase();
     if(!email||!password){
         throw new BadRequestError("Please provide email and password");
     }
-    const user= await User.findOne({email:email});
+    const user= await User.findOne({email:email1});
 
     if(!user){
         throw new UnauthenticatedError('Invalid Email');
@@ -77,10 +79,12 @@ const loginBusinessOwner=async(req,res)=>{
 
     const {email,password}=req.body;
 
+    const email1=email.toLowerCase();
+    
     if(!email||!password){
         throw new BadRequestError("Please provide email and password");
     }
-    const owner= await BusinessOwner.findOne({email});
+    const owner= await BusinessOwner.findOne({email:email1});
 
     if(!owner){
         throw new UnauthenticatedError('Invalid Email');
