@@ -87,7 +87,7 @@ const loginBusinessOwner=async(req,res)=>{
     const owner= await BusinessOwner.findOne({email:email1});
 
     if(!owner){
-        throw new UnauthenticatedError('Invalid Email');
+        throw new UnauthenticatedError('Invalid Email or Password');
     }
 
    const hashedPassword=owner.password;
@@ -95,14 +95,13 @@ const loginBusinessOwner=async(req,res)=>{
    const isPasswordCorrect= await owner.comparePassword(hashedPassword,password);
 
     if(!isPasswordCorrect){
-        throw new UnauthenticatedError('Invalid Password');
+        throw new UnauthenticatedError('Invalid Email or Password');
     }
 
     const token = owner.createJWT();
 
     res.status(StatusCodes.OK).json({owner:{id:owner._id,name:owner.firstname,surname:owner.surname,wallet:owner.wallet,email:owner.email},token:{token}})
 }
-
 
 const UserRegistration=async(req,res)=>{
 
@@ -148,7 +147,6 @@ const UserRegistration=async(req,res)=>{
         return res.status(201).json({User:registeredUser,token:token});
     }
 }
-
 
 const registerBusinessOwner=async(req,res)=>{
 
