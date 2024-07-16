@@ -2,12 +2,8 @@ const User=require('../models/UserRegistrationSchema')
 const crypto=require('crypto');
 const bcrypt = require('bcryptjs');
 const nodemailer=require('nodemailer');
-const mail=require('../utils/mail');
-
 const OTP = require('../models/OTPSchema');
-
-
-
+const otpGenerator=require('otp-generator');
 //mail options
 
 //Forgot Password Functionality
@@ -15,49 +11,84 @@ const user_forgot_password=async(req,res)=>{
     try {
         const {email}=req.body;
          //Generate Token
-         resetToken=crypto.randomBytes(20).toString('hex');
+
+         resetToken=otpGenerator.generate(6, { upperCaseAlphabets: false,digits:true,specialChars: false,lowerCaseAlphabets:false });;
+
          resetTokenExpiration=Date.now()+3600000;
 
-        const user=await User.findOneAndUpdate({email:email},{resetToken:resetToken,resetTokenExpiration:resetTokenExpiration},{new:true,runValidators:true});
+         //Send the reset token to user via email
+
+         const transporter=nodemailer.createTransport({
+            service:'gmail',
+            port:587,
+            secure:false,
+            auth:{
+                user:'nuenginnovations@gmail.com',
+                pass:'uoby xoot pebo fwrx'
+            }
+        });
+
+        const mailOptions={
+            from:'nuenginnovations@gmail.com',
+            to:req.body.email,
+            subject:'Verify Email',
+            text:`Your reset token code is:${resetToken}`
+        };
+
+        transporter.sendMail(mailOptions,(error,info)=>{
+            if(error){
+                //console.log(error);
+                return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:'Error Sending Email'})
+            }
+            else{
+                console.log("OTP Sent Successfully");
+            }
+        })
+
+        const update={$set:{resetToken:resetToken,resetTokenExpiration:resetTokenExpiration}};
+
+        const query={email:email};
+
+        const options={new:true,runValidators:true};
+
+        const user=await User.findOneAndUpdate(query,update,options);
+
+        await user.save();
+
         if(!user){
             return res.status(400).json({error:"User not found"});
         }
-        const user1=await User.findOne({email});
-        await user.save();
-        res.status(200).json({message:"Password reset token sent",token:user1.resetToken});
+        
+        res.status(200).json({message:`Password token ${resetToken} to ${email}`});
 
     } catch (error) {
-        console.error('Error Generating Token',error);
         res.status(500).json({error:"An error occurred while generating a reset token"});
     }
 }
 
 //Reset Password Functionality
 const user_password_reset=async(req,res)=>{
-    try {
-        const {newPassword,email,resetToken}=req.body;
-        const salt=await bcrypt.genSalt(10);
-        const hashedPassword=await bcrypt.hash(newPassword,salt);
-        //find the user with the matching reset token
-        /**
-         * cart_user.rewards+=auction.acquisitionBid;
-            let newUserCart=cart_user;
-            await User.findByIdAndUpdate({_id:userId},{$set:newUserCart},{new:true});
-            await newUserCart.save();
-         * 
-         */
-        //find user using email and resetToken
 
-        const user=await User.findOne({email:email,resetToken:resetToken});
+    try {
+        const {password,resetToken}=req.body;
+        const user=await User.findOne({resetToken:resetToken});
         if(!user){
             return res.status(401).json({error:"Invalid or expired reset token"});
         }
-        user.password=hashedPassword;
-        user.resetToken="";
-        user.resetTokenExpiration="";
-        let newUser=user;
-        await User.findByIdAndUpdate({_id:(user._id).toString()},{$set:newUser},{new:true});
-        await newUser.save();
+        const resetToken2="";
+
+        const resetTokenExpiration="";
+
+        const update={$set:{password:password,resetToken:resetToken2,resetTokenExpiration:resetTokenExpiration}};
+
+        const options={new:true,runValidators:true};
+
+        const query={email:user.email};
+
+        console.log(query.email);
+
+        await User.findOneAndUpdate(query,update,options);
+        await user.save(); 
         return res.status(200).json({message:"Password Reset Successfully"});
     } catch (error) {
         res.status(500).json({error:"An error occurred while resetting the password"});

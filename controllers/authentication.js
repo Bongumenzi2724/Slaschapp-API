@@ -73,7 +73,6 @@ const loginUser=async(req,res)=>{
 
     //res.status(StatusCodes.OK).json({owner:{id:user._id,name:user.firstname,surname:user.surname,wallet:user.wallet,email:user.email},token:{token}}) 
     return res.status(StatusCodes.OK).json({user:{id:user._id,name:user.firstname,surname:user.surname,wallet:user.wallet,email:user.email,rewards:user.rewards},token:{token}});
-
 }
 
 const loginBusinessOwner=async(req,res)=>{

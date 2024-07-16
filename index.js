@@ -23,7 +23,7 @@ const cartRouter=require('./routes/cart_routes')
 const accountRouter=require('./routes/transactions')
 const searchRouter=require('./routes/search_route')
 const userProfile=require('./routes/user_profile')
-const otpRouter=require('./routes/optRoutes');
+const passwordsRouter=require('./routes/passwords')
 const ownerProfile=require('./routes/owner_profile');
 const verificationRouter=require('./routes/verification_routes');
 const paymentRouter=require('./routes/payment_routes');
@@ -51,23 +51,41 @@ const swaggerDocument=YAML.load('./swagger.yaml')
 
 //Routes
 app.use('/api/slaschapp/admin',adminRouter);
+
 app.use('/api/slaschapp/business/auction',authenticateUser,businessRouter);
+
 app.use('/api/slaschapp/auth',authRouter);
+
 app.use('/api/slaschapp/business',authenticateUser,businessRouter);
+
 app.use('/api/slaschapp/search',authenticateUser,businessSearchRouter);
+
 app.use('/api/slaschapp/data',dataRouter);
+
 app.use('/api/slaschapp/business',authenticateUser,baitRouter);
-app.use('/api/slaschapp/category',categoriesRouter)
-app.use('/api/slaschapp/feeds',authenticateUser,feedsRoute)
-app.use('/api/slaschapp/business/owner',authenticateUser,ownerRouter)
-app.use('/api/slaschapp/cart',authenticateUser,cartRouter)
-app.use('/api/slaschapp/transaction/bait',accountRouter)
+
+app.use('/api/slaschapp/category',categoriesRouter);
+
+app.use('/api/slaschapp/feeds',authenticateUser,feedsRoute);
+
+app.use('/api/slaschapp/business/owner',authenticateUser,ownerRouter);
+
+app.use('/api/slaschapp/cart',authenticateUser,cartRouter);
+
+app.use('/api/slaschapp/transaction/bait',accountRouter);
+
 app.use('/api/slaschapp/master',authenticateUser,searchRouter);
+
 app.use('/api/slaschapp/profile',authenticateUser,userProfile);
+
 app.use('/api/slaschapp/owner/profile',authenticateUser,ownerProfile);
+
 app.use('/api/slaschapp/verification',authenticateUser,verificationRouter);
 
 app.use('/api/slaschapp/process',authenticateUser,paymentRouter );
+
+app.use('/api/slaschapp/password',passwordsRouter);
+
 app.get('/',(req,res)=>{
     res.send('<h1>Business API</h1><a href="/api-docs">Documentation</a>');
 })
