@@ -54,10 +54,6 @@ const UserSchema = new mongoose.Schema({
         type:String,
         required:[true,'Please Provide Your Education Status']
     },
-    employmentStatus:{
-        type:String,
-        required:[true,'Please Provide Your Employment Status']
-    },
     gender:{
         type:String,
         required:[true,'Please Provide Your Gender']
