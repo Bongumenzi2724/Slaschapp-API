@@ -188,7 +188,8 @@ const registerBusinessOwner=async(req,res)=>{
             }
         });*/
 
-     /*   const newOwner=new BusinessOwner({
+     const newOwner=new BusinessOwner({
+
             firstname:req.body.firstname,
             secondname:req.body.secondname,
             surname:req.body.surname,
@@ -201,27 +202,29 @@ const registerBusinessOwner=async(req,res)=>{
             birthday:req.body.birthday,
             IdNumber:req.body.IdNumber,
             IdDocumentLink:req.body.IdDocumentLink,
-            gender:req.body.gender,
-            wallet:req.body.wallet,
-            //otp:req.body.otp,
-            verified:false,
-            resetToken:req.body.resetToken,
-            resetTokenExpiration:req.body.resetTokenExpiration,
-            status:req.body.status
+            gender:req.body.gender
+
         });
 
         newOwner.save();
 
         const token=newOwner.createJWT();
-        */
-        console.log("Owner Registration")
+        /* console.log("Owner Registration")
         console.log(req.body);
         const newOwner=await BusinessOwner.create({...req.body});
         console.log("Registered Owner");
         console.log(newOwner);
-        const token=newOwner.createJWT();
+        const token=newOwner.createJWT(); */
+
+        console.log("Business Owner");
+        console.log(newOwner);
         const ownerId=(newOwner._id).toString();
-        const returnedOwner=await BusinessOwner.aggregate([{$match:{_id:new mongoose.Types.ObjectId(ownerId)}},{$project:{password:0}}]);
+        console.log(`Owner ID:${ownerId}`);
+        const returnedOwner=await BusinessOwner.aggregate([{$match:{_id:ownerId}},{$project:{password:0}}]);
+
+        console.log("Returned Owner");
+        console.log(returnedOwner);
+        
         return res.status(201).json({BusinessOwner:returnedOwner,token:token});
 
     }catch(error){

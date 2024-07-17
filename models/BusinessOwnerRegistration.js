@@ -1,7 +1,7 @@
 const mongoose=require('mongoose')
-const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const BusinessOwnerRegistrationSchema = new mongoose.Schema({
+
     firstname:{
         type:String,
         required:[true,'Please Provide Your First Name']
@@ -62,13 +62,13 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
     wallet:{
         type:Number,
         required:[true,'Wallet Value Required'],
-        default:0
+        default:1000
     },
-    /* otp:{
+     otp:{
         type:Number,
         expires:'5m',
         required:[false,'OTP number Needs to be provided']
-    }, */
+    },
     verified:{
         type:Boolean,
         required:[false,'OTP verification confirmation'],
