@@ -4,6 +4,7 @@ const Auction=require('../models/AuctionSchema');
 const auctionVerification=async(req,res)=>{
     try {
         const{auctionID,userId}=req.body;
+        
         const auction=await Auction.findOne({_id:auctionID});
         if(!auction){
             throw new NotFoundError(`No auction with id ${req.params.auctionId}`)

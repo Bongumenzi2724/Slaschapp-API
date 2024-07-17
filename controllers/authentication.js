@@ -22,28 +22,44 @@ const registerUser= async(req,res)=>{
             AcceptTermsAndConditions:req.body.AcceptTermsAndConditions,
             locationOrAddress:req.body.locationOrAddress,
             birthday:req.body.birthday,
-            IdNumber:req.body.IdNumber,
-            IdDocumentLink:req.body.IdDocumentLink,
+            educationStatus:req.body.educationStatus,
             gender:req.body.gender,
             wallet:req.body.wallet,
-            //otp:req.body.otp,
+            rewards:req.body.rewards,
+            interests:req.body.interests,
             verified:false,
             resetToken:req.body.resetToken,
             resetTokenExpiration:req.body.resetTokenExpiration,
             status:req.body.status
         });
 
-        newUser.save();
-
+        const result=await newUser.save();
         const token=newUser.createJWT();
-        return res.status(201).json({User:user,token:token});
+
+        return res.status(201).json({User:result,token:token});
        /*  const user=await User.create({...req.body})
         const token=user.createJWT();
         return res.status(201).json({User:user,token:token});  */
 
     }catch(error){
-        console.log(req.body)
-        return res.status(500).status({status:false,message:error.message})
+        if(error instanceof MongoServerError && error.code===11000){
+
+            //console.log(error.errorResponse);
+            //return res.status(409).json({message:`An Error occurred,email ${error.errorResponse.keyValue.email} already exist`});
+            let errorMessage='';
+            if(error.errorResponse.keyValue.email==(req.body.email).toString()){
+               
+                errorMessage=`An error occurred email ${error.errorResponse.keyValue.email} already exist`;
+            }
+            else{
+                errorMessage=`An error occurred choose another password`;
+            }
+            return res.status(409).json({message:errorMessage})
+        }
+
+        else{
+            return res.status(500).status({status:false,message:error.message});
+        }
     }
 }
 
@@ -243,12 +259,20 @@ const registerBusinessOwner=async(req,res)=>{
 
     }catch(error){
         //console.log(error);
+
         if(error instanceof MongoServerError && error.code===11000){
-            return res.status(409).json({message:`An Error occurred,email ${error.errorResponse.keyValue.email} already exist`})
+            let errorMessage='';
+            if(error.errorResponse.keyValue.email==(req.body.email).toString()){
+               
+                errorMessage=`An error occurred email ${error.errorResponse.keyValue.email} already exist`;
+            }
+            else{
+                errorMessage=`An error occurred password already exist`;
+            }
+            return res.status(409).json({message:errorMessage})
         }
 
         else{
-
             //console.error(error);
             return res.status(500).status({status:false,message:error})
         }

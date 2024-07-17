@@ -1,5 +1,4 @@
 const mongoose=require('mongoose');
-const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken');
 
 const UserSchema = new mongoose.Schema({
@@ -59,7 +58,8 @@ const UserSchema = new mongoose.Schema({
         required:[true,'Please Provide Your Gender']
     },
     wallet:{
-        type:Number
+        type:Number,
+        default:0
     },
     rewards:{
         type:Number,
@@ -89,7 +89,7 @@ const UserSchema = new mongoose.Schema({
     },
     status:{
         type:String,
-        
+        default:"Active"
     }
     
 },{timestamps:true});
