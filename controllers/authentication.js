@@ -43,22 +43,20 @@ const registerUser= async(req,res)=>{
 
     }catch(error){
         if(error instanceof MongoServerError && error.code===11000){
-
-            //console.log(error.errorResponse);
-            //return res.status(409).json({message:`An Error occurred,email ${error.errorResponse.keyValue.email} already exist`});
             let errorMessage='';
             if(error.errorResponse.keyValue.email==(req.body.email).toString()){
                
                 errorMessage=`An error occurred email ${error.errorResponse.keyValue.email} already exist`;
             }
             else{
-                errorMessage=`An error occurred choose another password`;
+                errorMessage=`An error occurred password already exist`;
             }
             return res.status(409).json({message:errorMessage})
         }
 
         else{
-            return res.status(500).status({status:false,message:error.message});
+            //console.error(error);
+            return res.status(500).status({status:false,message:error})
         }
     }
 }
