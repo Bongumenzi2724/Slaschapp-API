@@ -216,16 +216,14 @@ const registerBusinessOwner=async(req,res)=>{
         console.log(newOwner);
         const token=newOwner.createJWT(); */
 
-        console.log("Business Owner");
-        console.log(newOwner);
         const ownerId=(newOwner._id).toString();
-        console.log(`Owner ID:${ownerId}`);
-        const returnedOwner=await BusinessOwner.aggregate([{$match:{_id:ownerId}},{$project:{password:0}}]);
-
-        console.log("Search Owner");
-        console.log(returnedOwner);
-
-        return res.status(201).json({BusinessOwner:returnedOwner,token:token});
+        //const returnedOwner=newOwner.select('-passowrd');
+        //console.log(newOwner);
+        //console.log("Search Owner");
+        //console.log(newOwner._id);
+        //const returnedOwner=await BusinessOwner.findById({_id:ownerId});
+        //console.log(returnedOwner);
+        return res.status(201).json({BusinessOwner:newOwner,token:token});
 
     }catch(error){
         return res.status(500).status({status:false,message:error.message})
