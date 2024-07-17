@@ -1,5 +1,6 @@
 const mongoose=require('mongoose')
 const jwt = require('jsonwebtoken')
+
 const BusinessOwnerRegistrationSchema = new mongoose.Schema({
 
     firstname:{
@@ -93,7 +94,7 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
 BusinessOwnerRegistrationSchema.pre('save',async function(){
     //const salt = await bcrypt.genSalt(10);
     //this.password = await bcrypt.hash(this.password,salt)
-    
+
 })
 
 BusinessOwnerRegistrationSchema.methods.createJWT=function(){

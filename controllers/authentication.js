@@ -5,6 +5,7 @@ const BusinessOwner=require('../models/BusinessOwnerRegistration')
 const nodemailer=require('nodemailer');
 const otpGenerator=require('otp-generator');
 const { default: mongoose } = require('mongoose');
+const { MongoServerError } = require('mongodb');
 
 //register app user
 const registerUser= async(req,res)=>{
@@ -104,46 +105,64 @@ const loginBusinessOwner=async(req,res)=>{
 
 const UserRegistration=async(req,res)=>{
 
-    if(req.body.firstname==false||req.body.secondname==false||req.body.surname==false||req.body.profilePicture==false||req.body.AcceptTermsAndConditions==false||req.body.phoneNumber==false||req.body.email==false||req.body.password==false||req.body.locationOrAddress==false||req.body.birthday==false||req.body.educationStatus==false||req.body.employmentStatus==false||req.body.gender==false||req.body.interests==false||req.body.status==false||req.body.status==false){
-        return res.status(StatusCodes.EXPECTATION_FAILED).json({message:"Please Provide All The Fields"})
-    } 
+    try {
+        if(req.body.firstname==false||req.body.secondname==false||req.body.surname==false||req.body.profilePicture==false||req.body.AcceptTermsAndConditions==false||req.body.phoneNumber==false||req.body.email==false||req.body.password==false||req.body.locationOrAddress==false||req.body.birthday==false||req.body.educationStatus==false||req.body.employmentStatus==false||req.body.gender==false||req.body.interests==false||req.body.status==false||req.body.status==false){
+            return res.status(StatusCodes.EXPECTATION_FAILED).json({message:"Please Provide All The Fields"})
+        } 
+    
+        else{
+            //generate the otp 
+            const otpCode=otpGenerator.generate(4, { upperCaseAlphabets: false,digits:true,specialChars: false,lowerCaseAlphabets:false });
+            req.body.otp=otpCode;
+            //send the otp to user
+            const transporter=nodemailer.createTransport({
+                service:'gmail',
+                port:587,
+                secure:false,
+                auth:{
+                    user:'nuenginnovations@gmail.com',
+                    pass:'uoby xoot pebo fwrx'
+                }
+            });
+            const mailOptions={
+                from:'nuenginnovations@gmail.com',
+                to:req.body.email,
+                subject:'Verify Email',
+                text:`Your OTP code is:${req.body.otp}`
+            };
+            transporter.sendMail(mailOptions,(error,info)=>{
+                if(error){
+                    //console.log(error);
+                    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:'Error Sending Email'})
+                }
+                else{
+                    console.log("OTP Sent Successfully");
+                }
+            })
+            
+            //create a new user
+            const registeredUser=(await User.create({...req.body})).validate((err)=>{
+                if(err){
+                    console.error(err);
+                    return res.status(500).json({message:err});
+                }
+                else{
+                    console.log("Validation Successfully");
+                }
+            });
+            const token=registeredUser.createJWT();
+            const userId=(registeredUser._id).toString()
+            const returnedUser=await User.aggregate([{$match:{_id:new mongoose.Types.ObjectId(userId)}},{$project:{password:0,__v:0}}]);
+            return res.status(201).json({User:returnedUser,token:token});
+        }
+    } catch (error) {
 
-    else{
-        //generate the otp 
-        const otpCode=otpGenerator.generate(4, { upperCaseAlphabets: false,digits:true,specialChars: false,lowerCaseAlphabets:false });
-        req.body.otp=otpCode;
-        //send the otp to user
-        const transporter=nodemailer.createTransport({
-            service:'gmail',
-            port:587,
-            secure:false,
-            auth:{
-                user:'nuenginnovations@gmail.com',
-                pass:'uoby xoot pebo fwrx'
-            }
-        });
-        const mailOptions={
-            from:'nuenginnovations@gmail.com',
-            to:req.body.email,
-            subject:'Verify Email',
-            text:`Your OTP code is:${req.body.otp}`
-        };
-        transporter.sendMail(mailOptions,(error,info)=>{
-            if(error){
-                //console.log(error);
-                return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:'Error Sending Email'})
-            }
-            else{
-                console.log("OTP Sent Successfully");
-            }
-        })
-        
-        //create a new user
-        const registeredUser=await User.create({...req.body});
-        const token=registeredUser.createJWT();
-        const userId=(registeredUser._id).toString()
-        const returnedUser=await User.aggregate([{$match:{_id:new mongoose.Types.ObjectId(userId)}},{$project:{password:0,__v:0}}]);
-        return res.status(201).json({User:returnedUser,token:token});
+        if(error instanceof MongoServerError && error.code===11000){
+
+            return res.status(11000).json({message:"Duplicate Email Found"});
+        }else{
+
+        }
     }
 }
 
@@ -205,28 +224,34 @@ const registerBusinessOwner=async(req,res)=>{
             gender:req.body.gender
 
         });
-
-        newOwner.save();
-
-        const token=newOwner.createJWT();
+        result=await newOwner.save();
+        const token=result.createJWT();
         /* console.log("Owner Registration")
         console.log(req.body);
         const newOwner=await BusinessOwner.create({...req.body});
         console.log("Registered Owner");
         console.log(newOwner);
         const token=newOwner.createJWT(); */
-
-        const ownerId=(newOwner._id).toString();
+        //const ownerId=(newOwner._id).toString();
         //const returnedOwner=newOwner.select('-passowrd');
         //console.log(newOwner);
         //console.log("Search Owner");
         //console.log(newOwner._id);
         //const returnedOwner=await BusinessOwner.findById({_id:ownerId});
         //console.log(returnedOwner);
-        return res.status(201).json({BusinessOwner:newOwner,token:token});
+        return res.status(201).json({BusinessOwner:result,token:token});
 
     }catch(error){
-        return res.status(500).status({status:false,message:error.message})
+        //console.log(error);
+        if(error instanceof MongoServerError && error.code===11000){
+            return res.status(409).json({message:`An Error occurred,email ${error.errorResponse.keyValue.email} already exist`})
+        }
+
+        else{
+
+            //console.error(error);
+            return res.status(500).status({status:false,message:error})
+        }
     }
 }
 
