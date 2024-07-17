@@ -222,9 +222,9 @@ const registerBusinessOwner=async(req,res)=>{
         console.log(`Owner ID:${ownerId}`);
         const returnedOwner=await BusinessOwner.aggregate([{$match:{_id:ownerId}},{$project:{password:0}}]);
 
-        console.log("Returned Owner");
+        console.log("Search Owner");
         console.log(returnedOwner);
-        
+
         return res.status(201).json({BusinessOwner:returnedOwner,token:token});
 
     }catch(error){
