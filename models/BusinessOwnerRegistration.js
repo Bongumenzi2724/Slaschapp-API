@@ -86,7 +86,7 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
     },
     status:{
         type:String,
-        default:"Pending"
+        default:"Active"
     }
 })
 
