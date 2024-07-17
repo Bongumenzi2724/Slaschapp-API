@@ -24,8 +24,10 @@ const accountRouter=require('./routes/transactions')
 const searchRouter=require('./routes/search_route')
 const userProfile=require('./routes/user_profile')
 const passwordsRouter=require('./routes/passwords')
-const ownerProfile=require('./routes/owner_profile');
+const ownerProfile=require('./routes/owner_profile')
+
 const verificationRouter=require('./routes/verification_routes');
+
 const paymentRouter=require('./routes/payment_routes');
 //Database Connection
 const connectDB = require('./db/connect')

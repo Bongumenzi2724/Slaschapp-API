@@ -4,7 +4,6 @@ const {StatusCodes}=require('http-status-codes')
 const BusinessOwner=require('../models/BusinessOwnerRegistration')
 const nodemailer=require('nodemailer');
 const otpGenerator=require('otp-generator');
-const bcrypt = require('bcrypt');
 const { default: mongoose } = require('mongoose');
 
 //register app user
@@ -111,10 +110,10 @@ const UserRegistration=async(req,res)=>{
 
     else{
         //generate the otp 
-       // const otpCode=otpGenerator.generate(4, { upperCaseAlphabets: false,digits:true,specialChars: false,lowerCaseAlphabets:false });
-        //req.body.otp=otpCode;
+        const otpCode=otpGenerator.generate(4, { upperCaseAlphabets: false,digits:true,specialChars: false,lowerCaseAlphabets:false });
+        req.body.otp=otpCode;
         //send the otp to user
-        /*const transporter=nodemailer.createTransport({
+        const transporter=nodemailer.createTransport({
             service:'gmail',
             port:587,
             secure:false,
@@ -122,14 +121,14 @@ const UserRegistration=async(req,res)=>{
                 user:'nuenginnovations@gmail.com',
                 pass:'uoby xoot pebo fwrx'
             }
-        });*/
-        /*const mailOptions={
+        });
+        const mailOptions={
             from:'nuenginnovations@gmail.com',
             to:req.body.email,
             subject:'Verify Email',
             text:`Your OTP code is:${req.body.otp}`
-        };*/
-        /*transporter.sendMail(mailOptions,(error,info)=>{
+        };
+        transporter.sendMail(mailOptions,(error,info)=>{
             if(error){
                 //console.log(error);
                 return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:'Error Sending Email'})
@@ -138,7 +137,6 @@ const UserRegistration=async(req,res)=>{
                 console.log("OTP Sent Successfully");
             }
         })
-        */
         
         //create a new user
         const registeredUser=await User.create({...req.body});
@@ -216,7 +214,10 @@ const registerBusinessOwner=async(req,res)=>{
 
         const token=newOwner.createJWT();
         */
+        
+        console.log(req.body);
         const newOwner=await BusinessOwner.create({...req.body});
+
         const token=newOwner.createJWT();
         const ownerId=(newOwner._id).toString();
         const returnedOwner=await BusinessOwner.aggregate([{$match:{_id:new mongoose.Types.ObjectId(ownerId)}},{$project:{password:0}}]);

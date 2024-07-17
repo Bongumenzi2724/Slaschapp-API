@@ -1,9 +1,6 @@
 const BusinessOwnerRegistration = require('../models/BusinessOwnerRegistration');
-const crypto=require('crypto');
-const bcrypt = require('bcryptjs');
 const otpGenerator=require('otp-generator');
 const nodemailer=require('nodemailer');
-
 //Forgot Password Functionality
 
 const owner_forgot_password=async(req,res)=>{
@@ -85,60 +82,5 @@ const owner_password_reset=async(req,res)=>{
     }
 }
 
-//send the otp, otp is important for registration
-const owner_send_otp=async(req,res)=>{
-    try {
-        const owner=await BusinessOwnerRegistration.findOne({email:req.body.email})
-        if(!owner){
-            return res.status(404).json({message:"User does not exist please check your email or register"})
-        }
-        const otp=owner.otp;
-        const mailOptions={
-            from:'"Adlinc OTP:"<bongumenzinzama@gmail.com>',
-            to:user.email,
-            subject:"Password Reset OTP",
-            text:`Your OTP is ${otp}`
-        };
-        nodemailer.sendMail(mailOptions,(err,info)=>{
-            if(err){
-                console.log(err);
-                return res.status(500).json({message:"An error occured while sending mail"})
-            }
-            else{
-                console.log("OTP sent successfully");
-                console.log(info)
-                return res.status(200).json({message:"OTP sent successfully"});
-            }
-        })
-    } catch (error) {
-      return res.status(500).json({message:error.message});  
-    }
-}
-//verify otp, otp is important for registration
-const owner_verify_otp=async(req,res)=>{
-    try {
-        const owner=await BusinessOwnerRegistration.findOne({otp:req.body.otp});
-        if(!owner){
-            return res.status(404).json({message:"The specified user does not exist"});
-        }
-        res.status(200).json({message:"OTP verification is successfully"});
-        next();
-    } catch (error) {
-        return res.status(500).json({message:error.message});
-    }
-}
-//verify token, token is important for password reset
-const owner_verify_token=async(req,res)=>{
-    try {
-        const owner=await BusinessOwnerRegistration.findOne({resetToken:req.body.resetToken});
-        if(!owner){
-            return res.status(404).json({message:"User not found,Invalid reset token"});
-        }
-        res.json({message:"Reset Token is Valid"});
-        next();
-    } catch (error) {
-        return res.status(500).json({message:error.message}); 
-    }
-}
-module.exports={owner_forgot_password,owner_password_reset,owner_send_otp,owner_verify_otp,owner_verify_token}
+module.exports={owner_forgot_password,owner_password_reset}
 
