@@ -9,7 +9,7 @@ const auctionVerification=async(req,res)=>{
             throw new NotFoundError(`No auction with id ${req.params.auctionId}`)
         }
 
-        if(req.user.userId===userId && auctionID===(auction._id).toString()){
+        if(req.user.userId===userId){
             return res.status(200).json({message:"Authorized to checkout",status:true});
         }else{
             return res.status(404).json({message:"Not Authorized To checkout",status:false});
