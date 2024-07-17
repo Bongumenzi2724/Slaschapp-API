@@ -214,10 +214,11 @@ const registerBusinessOwner=async(req,res)=>{
 
         const token=newOwner.createJWT();
         */
-        
+        console.log("Owner Registration")
         console.log(req.body);
         const newOwner=await BusinessOwner.create({...req.body});
-
+        console.log("Registered Owner");
+        console.log(newOwner);
         const token=newOwner.createJWT();
         const ownerId=(newOwner._id).toString();
         const returnedOwner=await BusinessOwner.aggregate([{$match:{_id:new mongoose.Types.ObjectId(ownerId)}},{$project:{password:0}}]);

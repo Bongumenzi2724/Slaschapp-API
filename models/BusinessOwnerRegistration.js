@@ -61,7 +61,8 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
     //owner wallet
     wallet:{
         type:Number,
-        required:[true,'Wallet Value Required']
+        required:[true,'Wallet Value Required'],
+        default:0
     },
     /* otp:{
         type:Number,
@@ -84,7 +85,8 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
         default:''
     },
     status:{
-        type:String
+        type:String,
+        default:"Pending"
     }
 })
 
