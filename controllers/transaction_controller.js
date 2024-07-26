@@ -127,4 +127,24 @@ const admin_get_all_requests=async(req,res)=>{
         return res.status(500).json({message:error.message,status:false});
     }
 }
-module.exports={create_bank_account,get_all_owner_accounts,create_cash_out_requests, get_all_requests}
+
+//Change Cash Request Status
+const change_cash_request_status=async(req,res)=>{
+    try {
+        const {status}=req.body.status;
+        const {request_id}=req.params;
+        const request=await Cash_Out.findById({_id:request_id});
+        if(!request){
+            return res.status(404).json({message:"The request does not exits"});
+        }
+        request.Status=status;
+        let newRequest=request;
+        await Cash_Out.findByIdAndUpdate({_id:request_id},{$set:newRequest},{new:true});
+        await newRequest.save();
+        return res.status(200).json({message:`Status updated successfully to ${newRequest.Status}`})
+    } catch (error) {
+        return res.status(500).json({message:error.message})
+
+    }
+}
+module.exports={create_bank_account,get_all_owner_accounts,create_cash_out_requests, get_all_requests,change_cash_request_status}
