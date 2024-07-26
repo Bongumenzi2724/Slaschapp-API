@@ -22,9 +22,12 @@ const getAllUsersProfiles=async(req,res)=>{
 };
 //get all auctions feed
 const getAllAuctions=async(req,res)=>{
-    //const AllUsers=await User.find({}).sort('createdAt')
-    const AllAuction=await AuctionSchema.aggregate([{$project:{updatedAt:0,createdAt:0,__v:0}},{$match:{status:"Active"}}]);
-    return res.status(StatusCodes.OK).json({auctionFeed:AllAuction,count:AllAuction.length});
+    //i. Filter all auctions based on the aucquisition bid
+    //ii.The highest acquisition bid is placed highest on the user feed
+
+    const AllAuctions=await AuctionSchema.aggregate([{$sort:{acquisitionBid:-1}},{$project:{updatedAt:0}}]);
+    //const AllAuction=await AuctionSchema.aggregate([{$project:{updatedAt:0,createdAt:0,__v:0}},{$match:{status:"Active"}}]);
+    return res.status(StatusCodes.OK).json({auctionFeed:AllAuctions,count:AllAuctions.length});
 };
 
 //only active owners feed
@@ -40,12 +43,14 @@ const getAllBaits=async(req,res)=>{
 }
 
 const getAllBaitsForUsers=async(req,res)=>{
+
     const baitsFeed=await Bait.find({auctionID:req.params.auctionID});
     return res.status(StatusCodes.OK).json({baitsFeed,count:baitsFeed.length});
 }
 
 //Get all active businesses 
 const activeBusinessFeeds=async(req,res)=>{
+
      const activeBusinesses=await Business.aggregate([{$match:{status:'Active'}}]);
     if(!activeBusinesses){
         return res.status(StatusCodes.NOT_FOUND).json({message:"Businesses Not Found"});

@@ -1,4 +1,5 @@
 const mongoose=require('mongoose')  
+
 const AuctionSchema = new mongoose.Schema({
     campaignName:{
         type:String,
@@ -10,11 +11,7 @@ const AuctionSchema = new mongoose.Schema({
     },
     campaignBudget:{
         type:Number,
-        required:[true,'Please Provide Budget For Your Campaign']
-    },
-    campaignDailyBudget:{
-        type:Number,
-        required:[true,'Please Provide The Campaign Daily Budget']
+        required:[false,'Please Provide Budget For Your Campaign']
     },
     campaignStartDate:{
         type:String,
@@ -56,12 +53,10 @@ const AuctionSchema = new mongoose.Schema({
         type:String,
         required:[true,"Please Provide Gender"]
     },
-
     status:{
         type:String,
         required:[true,"Please Provide The Status For Your Campaign"]
     },
-
     businessId:{
         type:mongoose.Types.ObjectId,
         ref:'Business',

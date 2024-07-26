@@ -1,4 +1,5 @@
 const mongoose=require('mongoose');
+
 const BusinessRegistrationSchema = new mongoose.Schema({
     
     BusinessName:{
@@ -54,6 +55,6 @@ const BusinessRegistrationSchema = new mongoose.Schema({
         ref:'BusinessOwner',
         required:[true,'Please provide the business owner']
     }
-},{timestamps:true})
+},{timestamps:true});
 
 module.exports=mongoose.model('Business',BusinessRegistrationSchema)

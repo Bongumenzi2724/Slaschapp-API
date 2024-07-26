@@ -1,53 +1,27 @@
 const User=require('../models/UserRegistrationSchema')
-const nodemailer=require('nodemailer');
-const otpGenerator=require('otp-generator');
+//const nodemailer=require('nodemailer');
 
+//const otpGenerator=require('otp-generator');
+const generateOTP = require('../utils/generateOtp');
+const sendEmail=require('../utils/sendEmail');
+//import { generateOTP } from "../utils/generateOTP";
+//import { sendEmail } from "../utils/sendEmail";
 //Forgot Password Functionality
 const user_forgot_password=async(req,res)=>{
+
     try {
         const {email}=req.body;
          //Generate Token
          //Call the function to generate the otp
-         resetToken=otpGenerator.generate(6, { upperCaseAlphabets: false,digits:true,specialChars: false,lowerCaseAlphabets:false });;
-
+         resetToken=generateOTP();
          resetTokenExpiration=Date.now()+3600000;
-
          //Send the reset token to user via email
-         //call the function to send the email
-         const transporter=nodemailer.createTransport({
-            service:'gmail',
-            port:587,
-            secure:false,
-            auth:{
-                user:'nuenginnovations@gmail.com',
-                pass:'uoby xoot pebo fwrx'
-            }
-        });
-
-        const mailOptions={
-            from:'nuenginnovations@gmail.com',
-            to:req.body.email,
-            subject:'Verify Email',
-            text:`Your reset token code is:${resetToken}`
-        };
-
-        transporter.sendMail(mailOptions,(error,info)=>{
-            if(error){
-                //console.log(error);
-                return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:'Error Sending Email'})
-            }
-        })
-
+        await sendEmail(email,resetToken);
         const update={$set:{resetToken:resetToken,resetTokenExpiration:resetTokenExpiration}};
-
         const query={email:email};
-
         const options={new:true,runValidators:true};
-
         const user=await User.findOneAndUpdate(query,update,options);
-
         await user.save();
-
         if(!user){
             return res.status(400).json({error:"User not found"});
         }

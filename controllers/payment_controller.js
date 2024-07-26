@@ -1,14 +1,17 @@
 const User = require("../models/UserRegistrationSchema");
 const BusinessOwnerRegistration = require('../models/BusinessOwnerRegistration');
 const Cart = require("../models/Cart");
-const AuctionSchema = require("../models/AuctionSchema");
+const Admin = require("../models/AdminSchema");
 
 
 //payment controller
 const payment_controller=async(req,res)=>{
    // find the cart being processed
+   const admin=await Admin.find({});
    const {cart_id}=req.params;
+   
    const cart=await Cart.findOne({_id:cart_id});
+ 
    if(!cart){
     return res.status(404).json({message:`The Cart with ${cart_id} does not exist`})
    }
@@ -25,15 +28,23 @@ const payment_controller=async(req,res)=>{
 
     //find the auction
     const auctionID=(cart.auctionId).toString();
+
     const auction=await AuctionSchema.findById({_id:auctionID});
+
     if(!auction){
         return res.status(404).json({message:"Auction does not exist"});
     }
     //Add Acquisition Bid to user rewards
     cart.status="Completed";
     let newCart=cart;
-    cart_user.rewards+=auction.acquisitionBid;
+    cart_user.rewards+=auction.acquisitionBid*0.60;
+    admin.wallet+=auction.acquisitionBid*0.40;
+    let newAdmin=admin;
     let newUserCart=cart_user;
+    //update the admin
+    await Admin.findOneAndUpdate({email:admin.email},{$set:newAdmin},{new:true});
+    await newAdmin.save();
+    //update the cart
     await User.findByIdAndUpdate({_id:userId},{$set:newUserCart},{new:true});
     await newUserCart.save();
     //update the cart status
@@ -46,7 +57,11 @@ const payment_controller=async(req,res)=>{
         return res.status(404).json({message:"Business Owner No Longer Exist"});
     }
     // Add cart total to owner wallet
-
+    owner.wallet+=auction.acquisitionBid;
+    let newOwner=owner;
+    const ownerID=(owner._id).toString();
+    await BusinessOwnerRegistration.findByIdAndUpdate({_id:ownerID},{$set:newOwner},{new:true});
+    owner.save();
     /* owner.wallet+=cart.totalCartPrice;
     let newOwner=owner;
     await BusinessOwnerRegistration.findByIdAndUpdate({_id:businessID},{$set:newOwner},{new:true});
@@ -74,7 +89,13 @@ const payment_controller=async(req,res)=>{
     // 1.Add acquisition bid to user rewards
     // find auction 
     const auction=cart.auctionId;
-    user.rewards+=auction.acquisitionBid;
+    user.rewards+=auction.acquisitionBid*0.60;
+    admin.wallet+=auction.acquisitionBid*0.40;
+    let newAdmin=admin;
+    //update admin wallet
+    await Admin.findOneAndUpdate({email:admin.email},{$set:newAdmin},{new:true});
+    await newAdmin.save();
+    //update user
     let newUserReward=user;
     await User.findByIdAndUpdate({_id:userId},{$set:newUserReward},{new:true});
     await newUserReward.save();
@@ -92,6 +113,7 @@ const payment_controller=async(req,res)=>{
         return res.status(404).json({message:"business owner does not exist"});
     }
     owner.wallet+=cart.totalCartPrice;
+    owner.wallet-=auction.acquisitionBid;
 
     let newOwner=owner;
 
@@ -116,9 +138,18 @@ const payment_controller=async(req,res)=>{
     }
     user.rewards-=cart.totalCartQuantity;
     let newUser=user;
+    user.rewards+=auction.acquisitionBid*0.60;
+    admin.wallet+=auction.acquisitionBid*0.40;
+    let newAdmin=admin;
+    //update admin wallet
+    await Admin.findOneAndUpdate({email:admin.email},{$set:newAdmin},{new:true});
+    await newAdmin.save();
+    //update user with rewards
     await User.findByIdAndUpdate({_id:userId},{$set:newUser},{new:true});
     await newUser.save();
+
     //Add cart total to business owner wallet
+
     //1.find the business owner;
     const auctionID=(cart.auctionId).toString();
     //find the auction 
@@ -139,7 +170,6 @@ const payment_controller=async(req,res)=>{
     let newOwner=owner;
     await BusinessOwnerRegistration.findByIdAndUpdate({_id:businessID},{$set:newOwner},{new:true});
     await newOwner.save();
-
     //Update Cart
     cart.status="Completed";
     let newCart=cart;

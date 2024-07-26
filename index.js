@@ -1,32 +1,55 @@
 const express= require('express')
+
 require('dotenv').config()
+
 require('express-async-errors')
+
 const app = express()
 //extra security packages
 const helmet=require('helmet')
+
 const cors=require('cors')
+
 const bodyParser=require('body-parser');
+
 //const xss=require('xss-clean')
 const rateLimiter=require('express-rate-limit')
 
 //routers
 const authRouter=require('./routes/authentication')
+
 const adminRouter=require('./routes/admin_routes')
+
 const businessRouter=require('./routes/business')
+
+
 const businessSearchRouter=require('./routes/search')
+
 const dataRouter=require('./routes/dataRoutes')
+
 const baitRouter=require('./routes/bait_plant')
+
 const ownerRouter=require('./routes/owner')
+
 const categoriesRouter=require('./routes/categories')
+
 const feedsRoute=require('./routes/feeds')
+
 const cartRouter=require('./routes/cart_routes')
+
 const accountRouter=require('./routes/transactions')
+
 const searchRouter=require('./routes/search_route')
+
 const userProfile=require('./routes/user_profile')
+
 const passwordsRouter=require('./routes/passwords')
+
 const ownerProfile=require('./routes/owner_profile')
 
-const verificationRouter=require('./routes/verification_routes');
+const subscriptionRouter=require('./routes/subscription_route')
+
+const verificationRouter=require('./routes/verification_routes')
 
 const paymentRouter=require('./routes/payment_routes');
 //Database Connection
@@ -68,11 +91,14 @@ app.use('/api/slaschapp/business',authenticateUser,baitRouter);
 
 app.use('/api/slaschapp/category',categoriesRouter);
 
-app.use('/api/slaschapp/feeds',authenticateUser,feedsRoute);
+//authenticate the feeds 
+app.use('/api/slaschapp/feeds',feedsRoute);
 
 app.use('/api/slaschapp/business/owner',authenticateUser,ownerRouter);
 
 app.use('/api/slaschapp/cart',authenticateUser,cartRouter);
+
+app.use('/api/slaschapp/subscription',subscriptionRouter);
 
 app.use('/api/slaschapp/transaction/bait',accountRouter);
 
@@ -82,9 +108,10 @@ app.use('/api/slaschapp/profile',authenticateUser,userProfile);
 
 app.use('/api/slaschapp/owner/profile',authenticateUser,ownerProfile);
 
+
 app.use('/api/slaschapp/verification',authenticateUser,verificationRouter);
 
-app.use('/api/slaschapp/process',authenticateUser,paymentRouter );
+app.use('/api/slaschapp/process',paymentRouter);
 
 app.use('/api/slaschapp/password',passwordsRouter);
 

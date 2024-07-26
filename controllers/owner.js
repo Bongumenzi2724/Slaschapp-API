@@ -1,6 +1,10 @@
 const { StatusCodes } = require("http-status-codes")
 const {BadRequestError,NotFoundError}=require('../errors');
 const BusinessOwnerRegistration = require("../models/BusinessOwnerRegistration");
+const sendEmail = require("../utils/sendEmail");
+const generateOTP = require('../utils/generateOtp');
+const Cart = require("../models/Cart");
+
 //update business owner details
 const updateBusinessOwnerDetails=async(req,res)=>{
     try{
@@ -105,7 +109,10 @@ const OwnerWalletUpdate=async(req,res)=>{
         await BusinessOwnerRegistration.findByIdAndUpdate(ownerId,{$set:newOwner},{new:true});
 
         await newOwner.save(); 
-
+        
+        const otp=generateOTP();
+        await sendEmail(owner.email,otp);
+        
         return res.status(StatusCodes.OK).json({message:`Wallet Updated successfully,new wallet is ${newOwner.wallet}`});
 
         //return res.status(StatusCodes.OK).json({message:"Owner Wallet"});
@@ -114,4 +121,18 @@ const OwnerWalletUpdate=async(req,res)=>{
             return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:"An Error Occurred While Updating Your Wallet"})
         }
 }
-module.exports={updateBusinessOwnerDetails,OwnerWalletUpdate,ownerStatus,suspendBusinessOwner,deleteBusinessOwner,getAllBusinessOwners,getSingleBusinessOwner}
+const completed_cart_under_auction=async(req,res)=>{
+    try {
+        const {auctionId}=req.params;
+        //search cart under this auction and which are completed
+        const carts=await Cart.aggregate([{$match:{status:'completed',auctionId:auctionId}}]);
+        if(!carts){
+            return res.status(500).json({message:"No Carts Exist For This Condition"});
+        }
+        return res.status(200).json({carts:carts});
+        
+    } catch (error) {
+        return res.status(500).json({message:error.message});
+    }
+}
+module.exports={updateBusinessOwnerDetails,completed_cart_under_auction,OwnerWalletUpdate,ownerStatus,suspendBusinessOwner,deleteBusinessOwner,getAllBusinessOwners,getSingleBusinessOwner}

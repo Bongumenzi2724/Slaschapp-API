@@ -18,7 +18,6 @@ const getCart=async(req,res)=>{
     }
 }
 
-
 const create_cart=async(req,res)=>{
 
    try {
@@ -47,7 +46,7 @@ const create_cart=async(req,res)=>{
         totalCartPrice:totalCartPrice,
         totalCartQuantity:totalCartQuantity,
         baits:baits,
-        status:status,
+        status:status.toLowerCase(),
         code:code,
         paymentMethod:paymentMethod,
         expiryDate:expiryDate1

@@ -2,15 +2,23 @@ const {BadRequestError,UnauthenticatedError} = require('../errors')
 const User=require('../models/UserRegistrationSchema')
 const {StatusCodes}=require('http-status-codes')
 const BusinessOwner=require('../models/BusinessOwnerRegistration')
-const nodemailer=require('nodemailer');
-const otpGenerator=require('otp-generator');
 const { default: mongoose } = require('mongoose');
 const { MongoServerError } = require('mongodb');
+const generateOtp=require('../utils/generateOtp');
+const sendEmail=require('../utils/sendEmail');
 
 //register app user
+
 const registerUser= async(req,res)=>{
-    
+
     try{ 
+        //generate the otp to send to the user
+        const userOtp=generateOtp();
+
+        //send the otp to the user email
+
+        await sendEmail(req.body.email,userOtp);
+
         const newUser=new User({
             firstname:req.body.firstname,
             secondname:req.body.secondname,
@@ -28,18 +36,17 @@ const registerUser= async(req,res)=>{
             rewards:req.body.rewards,
             interests:req.body.interests,
             verified:false,
+            otp:userOtp,
             resetToken:req.body.resetToken,
             resetTokenExpiration:req.body.resetTokenExpiration,
             status:req.body.status
         });
 
         const result=await newUser.save();
+
         const token=newUser.createJWT();
 
-        return res.status(201).json({User:result,token:token});
-       /*  const user=await User.create({...req.body})
-        const token=user.createJWT();
-        return res.status(201).json({User:user,token:token});  */
+        return res.status(201).json({User:result,token:token,message:`email sent to ${result.email} with OTP ${userOtp} for verification`});
 
     }catch(error){
         if(error instanceof MongoServerError && error.code===11000){
@@ -49,7 +56,7 @@ const registerUser= async(req,res)=>{
                 errorMessage=`An error occurred email ${error.errorResponse.keyValue.email} already exist`;
             }
             else{
-                errorMessage=`An error occurred password already exist`;
+                errorMessage=`choose password already exist`;
             }
             return res.status(409).json({message:errorMessage})
         }
@@ -188,41 +195,9 @@ const registerBusinessOwner=async(req,res)=>{
             return res.status(StatusCodes.EXPECTATION_FAILED).json({message:"Please Provide All The Fields"})
         } 
 
-       // const otpCode=otpGenerator.generate(4, { upperCaseAlphabets: false,digits:true,specialChars: false,lowerCaseAlphabets:false });
-        
-       //req.body.otp=otpCode;
-        //send the otp to user
-
-        /*const transporter=nodemailer.createTransport({
-            service:'gmail',
-            port:587,
-            secure:false,
-            auth:{
-                user:'nuenginnovations@gmail.com',
-                pass:'uoby xoot pebo fwrx'
-            }
-        });*/
-        
-        /*const mailOptions={
-            from:'nuenginnovations@gmail.com',
-            to:req.body.email,
-            subject:'Verify Email',
-            text:`Your OTP code is:${req.body.otp}`
-        };*/
-
-        
-       /* transporter.sendMail(mailOptions,(error,info)=>{
-            if(error){
-                //console.log(error);
-                return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:'Error Sending Email'})
-            }
-            else{
-                //console.log("OTP Sent Successfully");
-            }
-        });*/
-
-     const newOwner=new BusinessOwner({
-
+        const ownerOtp=generateOtp();
+        await sendEmail(req.body.email,ownerOtp);
+        const newOwner=new BusinessOwner({
             firstname:req.body.firstname,
             secondname:req.body.secondname,
             surname:req.body.surname,
@@ -235,25 +210,14 @@ const registerBusinessOwner=async(req,res)=>{
             birthday:req.body.birthday,
             IdNumber:req.body.IdNumber,
             IdDocumentLink:req.body.IdDocumentLink,
-            gender:req.body.gender
-
+            gender:req.body.gender,
+            otp:ownerOtp
         });
+
         result=await newOwner.save();
         const token=result.createJWT();
-        /* console.log("Owner Registration")
-        console.log(req.body);
-        const newOwner=await BusinessOwner.create({...req.body});
-        console.log("Registered Owner");
-        console.log(newOwner);
-        const token=newOwner.createJWT(); */
-        //const ownerId=(newOwner._id).toString();
-        //const returnedOwner=newOwner.select('-passowrd');
-        //console.log(newOwner);
-        //console.log("Search Owner");
-        //console.log(newOwner._id);
-        //const returnedOwner=await BusinessOwner.findById({_id:ownerId});
-        //console.log(returnedOwner);
-        return res.status(201).json({BusinessOwner:result,token:token});
+
+        return res.status(201).json({BusinessOwner:result,token:token,message:`email sent to ${result.email} with OTP ${ownerOtp} for verification`});
 
     }catch(error){
         //console.log(error);

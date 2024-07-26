@@ -4,60 +4,94 @@ const Cart = require("../models/Cart");
 const {NotFoundError}=require('../errors');
 const {StatusCodes}=require('http-status-codes');
 const { default: mongoose } = require('mongoose');
+const BusinessRegistrationSchema = require('../models/BusinessRegistrationSchema');
+const Subscription=require('../models/SubscriptionSchema');
+const sendEmail = require('../utils/sendEmail');
+const generateOTP = require('../utils/generateOtp');
 
-
+//create auction
 const createAuction=async(req,res)=>{
-    req.body.businessId=req.params.businessId;
-    req.body.createdBy=req.user.userId;
-    if(req.body.campaignName==false||req.body.campaignBudget==false||req.body.campaignDailyBudget==false||req.body.campaignDescription==false||req.body.campaignStartDate==false||req.body.interests==false||req.body.age==false||req.body.gender==false||req.body.location==false||req.body.birthdays==false||req.body.languages==false){
-        return res.status(StatusCodes.EXPECTATION_FAILED).json({message:"Please Provide All The Fields"})
+    try {
+        req.body.businessId=req.params.businessId;
+        req.body.createdBy=req.user.userId;
+        //check if there is an existing subscription
+        const subscription=await Subscription.findOne({createdBy:req.body.createdBy});
+        if(subscription.subscriptionStatus.toLowerCase()==='inactive'){
+            return res.status(409).json({message:"Outstanding subscription,please pay your subscription"});
+        }
+        if(req.body.campaignName==false||req.body.campaignBudget==false||req.body.campaignDailyBudget==false||req.body.campaignDescription==false||req.body.campaignStartDate==false||req.body.interests==false||req.body.age==false||req.body.gender==false||req.body.location==false||req.body.birthdays==false||req.body.languages==false){
+        
+            return res.status(StatusCodes.EXPECTATION_FAILED).json({message:"Please Provide All The Fields"})
+        } 
+        else{
+            const newAuction=await Auction.create({...req.body});
+            const Business=await BusinessRegistrationSchema.findById({_id:req.params.businessId});
+            if(!Business){
+                return res.status(404).json({message:"Business Not Found"});
+            }
+            const ownerOtp=generateOTP();
+            await sendEmail(Business.email,ownerOtp);
+            return res.status(StatusCodes.CREATED).json({newAuction});
     } 
-    else{
-        const newAuction=await Auction.create({...req.body});
-        return res.status(StatusCodes.CREATED).json({newAuction});
-    } 
+    } catch (error) {
+        return res.status(StatusCodes.NOT_FOUND).json({message:error.message});
+    }
 }
 
+//update auction
 const updateAuctions=async(req,res)=>{
+    try {
+        req.body.createdBy=req.user.userId;
+        const subscription=await Subscription.findOne({createdBy:req.body.createdBy});
+        if(subscription.subscriptionStatus.toLowerCase()==='inactive'){
+            return res.status(409).json({message:"Outstanding subscription,please pay your subscription"});
+        }
+        const{body:{campaignBudget,campaignDailyBudget,status},params:{auctionId:auctionId,businessId:businessId}}=req
+        if(campaignBudget==""||campaignDailyBudget==""||campaignStartDate==""||status==""||age==""||location==""||languages==""){
 
-   const{body:{campaignBudget,campaignDailyBudget,status},params:{auctionId:auctionId,businessId:businessId}}=req
-   if(campaignBudget==""||campaignDailyBudget==""||campaignStartDate==""||status==""||age==""||location==""||languages==""){
-
-    throw new BadRequestError("Fields cannot be empty please fill everything")
+            throw new BadRequestError("Fields cannot be empty please fill everything")
+            }
+        const auctionData=await Auction.findOneAndUpdate({_id:auctionId},req.body,{new:true,runValidators:true})
+        if(!auctionData){
+            throw new NotFoundError(`No Auction with id ${auctionId}`)
+        }
+        res.status(StatusCodes.OK).json({auctionData}) 
+    } catch (error) {
+        return res.status(StatusCodes.NOT_FOUND).json({message:error.message});
     }
-    const auctionData=await Auction.findOneAndUpdate({_id:auctionId},req.body,{new:true,runValidators:true})
-    if(!auctionData){
-        throw new NotFoundError(`No Auction with id ${auctionId}`)
-    }
-    res.status(StatusCodes.OK).json({auctionData}) 
 }
 
 // Get all auctions who are 'active' 
 const getAllAuctions=async(req,res)=>{
-    const businessId=req.params.businessId;
-
-    const auctionData=await Auction.find({
-        $and:[
-            {businessId:businessId},
-            {status:{$in:["Active"]}}
-        ]
-    });
-
-    res.status(StatusCodes.OK).json({auctionData,count:auctionData.length});
+    try {
+        const businessId=req.params.businessId;
+        const auctionData=await Auction.find({
+            $and:[
+                {businessId:businessId},
+                {status:{$in:["Active"]}}
+            ]
+        });
+       return res.status(StatusCodes.OK).json({auctionData,count:auctionData.length});
+    } catch (error) {
+        return res.status(StatusCodes.NOT_FOUND).json({message:error.message});
+    }
 }
-
-
+//Get single auction
 const getSingleAuction=async(req,res)=>{
-
+    try {
+            
     const auctionData= await Auction.findOne({_id:req.params.auctionId})
 
     if(!auctionData){
         throw new NotFoundError(`No auction with id ${req.params.auctionId}`)
     }
     
-    res.status(StatusCodes.OK).json({auctionData})
+    return res.status(StatusCodes.OK).json({auctionData})
+    } catch (error) {
+        return res.status(StatusCodes.NOT_FOUND).json({message:error.message});
+    }
 }
-
+//Get auction
 const deleteSingleAuction=async(req,res)=>{
 
     try{
@@ -130,8 +164,12 @@ const suspendAuction=async(req,res)=>{
 }
 
 const getAllAuctionMaterial=async(req,res)=>{
-    const auctionData=await Auction.find({businessId:req.params.businessId}).sort('createdAt')
-    res.status(StatusCodes.OK).json({auctionData,count:auctionData.length});
+    try {
+        const auctionData=await Auction.find({businessId:req.params.businessId}).sort('createdAt')
+        return res.status(StatusCodes.OK).json({auctionData,count:auctionData.length});
+    } catch (error) {
+        return res.status(StatusCodes.NOT_FOUND).json({message:error.message});
+    }
 }
 
 //activate auction

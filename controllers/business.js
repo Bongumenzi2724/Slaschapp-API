@@ -1,20 +1,25 @@
 const { StatusCodes } = require("http-status-codes");
+const BusinessOwner=require('../models/BusinessOwnerRegistration');
 const Business=require('../models/BusinessRegistrationSchema');
 const Auction=require('../models/AuctionSchema');
 const Bait = require('../models/BaitSchema');
 const Cart = require("../models/Cart");
 const {BadRequestError,NotFoundError}=require('../errors')
 const { default: mongoose } = require('mongoose');
+const generateOtp=require('../utils/generateOtp');
+const sendEmail=require('../utils/sendEmail');
 
 //Create A Single Business
 const createBusiness=async(req,res)=>{
     try{ 
-        req.body.createdBy=req.user.userId;; 
+        req.body.createdBy=req.user.userId;
+         
         if(req.body.BusinessName==false||req.body.PhoneNumber==false||req.body.BusinessEmail==false||req.body.AcceptTermsAndConditions==false||req.body.BusinessCategory==false||req.body.BusinessLocation==false||req.body.BusinessHours==false||req.body.BusinessLogo==false||req.body.BusinessType==false||req.body.BusinessBio==false||req.body.verificationDoc==false||req.body.status==false||req.body.socials==false){
             return res.status(StatusCodes.EXPECTATION_FAILED).json({message:"Please Provide All The Fields"})
         } 
         else{
-        const business=new Business({
+
+        const newBusiness=new Business({
             BusinessName:req.body.BusinessName,
             PhoneNumber:req.body.PhoneNumber,
             BusinessEmail:req.body.BusinessEmail,
@@ -30,10 +35,21 @@ const createBusiness=async(req,res)=>{
             socials:req.body.socials,
             createdBy:req.user.userId
         });
-       
-        business.save(); 
-        //const business=await Business.create({...req.body})
-        return res.status(StatusCodes.CREATED).json({business});
+
+        const business = await newBusiness.save(); 
+
+        const owner=await BusinessOwner.findById({_id:newBusiness.createdBy});
+
+        if(!owner){
+            return res.status(404).json({message:"Business Owner Not Found"});
+        }
+
+        const ownerOtp=generateOtp();
+
+        await sendEmail(owner.email,ownerOtp);
+
+        return res.status(StatusCodes.CREATED).json({business:business,message:`email sent to ${result.email} with OTP ${ownerOtp} for verification`});
+        
     }
     }catch(error){
         return res.status(500).status({status:false,message:error.message})

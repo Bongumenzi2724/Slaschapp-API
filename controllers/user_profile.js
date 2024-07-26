@@ -1,8 +1,9 @@
 const Cart = require("../models/Cart");
 const User = require("../models/UserRegistrationSchema");
 const mongoose=require('mongoose');
-
-const { StatusCodes } = require("http-status-codes")
+const generateOTP = require('../utils/generateOtp');
+const { StatusCodes } = require("http-status-codes");
+const sendEmail = require("../utils/sendEmail");
 
 const getAllPastOrders=async(req,res)=>{
     try {    
@@ -99,7 +100,7 @@ const activateUserProfile=async(req,res)=>{
     }
 }
 
-const walletUpdate=async(req,res)=>{
+const userWalletUpdate=async(req,res)=>{
     
     try{
     //use this user id to search for the user to has his/her wallet
@@ -111,6 +112,8 @@ const walletUpdate=async(req,res)=>{
         let newUser=user;
         await User.findByIdAndUpdate(req.user.userId,{$set:newUser},{new:true});
         await newUser.save();
+        const otp=generateOTP();
+        await sendEmail(user.email,otp);
         return res.status(StatusCodes.OK).json({message:`Wallet Updated successfully,new wallet is ${newUser.wallet}`});
     }catch(error){
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:"An Error Occurred While Updating Your Wallet"})
@@ -118,5 +121,25 @@ const walletUpdate=async(req,res)=>{
     
 
 }
-module.exports={getAllPastOrders,updateUserProfile,activateUserProfile,get_user_profile,deleteUserProfile,suspendUserProfile,walletUpdate}
+
+const user_completed_cart=async(req,res)=>{
+    try {
+        //get all user completed cart 
+        //const orders=await Cart.find({userId:req.user.userId});
+
+        let userId=(req.user.userId).toString();
+
+        const completed_orders=await Cart.aggregate([{$match:{status:'completed',userId:userId}}]);
+        
+        if(!completed_orders){
+
+            return res.status(StatusCodes.NOT_FOUND).json({message:"This user has no purchase history"})
+        }
+        return res.status(StatusCodes.OK).json({message:"All Past Orders Retrieved",completed_orders:completed_orders})
+    } catch (error) {
+        return res.status(500).json({message:error.message});
+    }
+}
+
+module.exports={getAllPastOrders,user_completed_cart,updateUserProfile,activateUserProfile,get_user_profile,deleteUserProfile,suspendUserProfile,userWalletUpdate}
 

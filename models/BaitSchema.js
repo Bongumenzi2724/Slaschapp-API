@@ -1,5 +1,6 @@
 const mongoose=require('mongoose')  
 const BaitSchema = new mongoose.Schema({
+    
 baitPlantName:{
     type:String,
     required:[true,'Please Provide The Name For Your Bait Plant'],
