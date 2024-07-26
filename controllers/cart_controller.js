@@ -1,8 +1,6 @@
 const Cart = require("../models/Cart");
 const {StatusCodes}=require('http-status-codes')
 
-
-
 const getCart=async(req,res)=>{
     
     try {

@@ -1,9 +1,14 @@
 const express=require('express')
-const { add_bank_account,transfer_funds } = require('../controllers/transaction_controller')
+const { create_bank_account,get_all_owner_accounts,create_cash_out_requests, get_all_requests } = require('../controllers/transaction_controller')
 const { userWalletUpdate } = require('../controllers/user_profile')
 const router=express.Router()
-
-router.post('/wallet',userWalletUpdate)
-router.post('/transfer',transfer_funds)
+//create account for owner
+router.post('/create/account/:owner_id',create_bank_account)
+//get all owner accounts
+router.get('/accounts/:owner_id',get_all_owner_accounts)
+//create cash outs
+router.post('/account/:account_id/create/request/:owner_id',create_cash_out_requests);
+//get all requests
+router.get('/owner/requests/:owner_id',get_all_requests);
 
 module.exports=router

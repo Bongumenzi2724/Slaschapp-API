@@ -1,15 +1,130 @@
 //The ability to link/add a bank account/card/payment method
+const Accounts=require('../models/AccountSchema');
+const Cash_Out=require('../models/CashOutRequests');
+const BusinessOwner=require('../models/BusinessOwnerRegistration');
 
-const add_bank_account=async(req,res)=>{
-    console.log("Add Bank Account");
-    res.status(201).json({message:"Add Bank Account/Card"});
+const create_bank_account=async(req,res)=>{
+    try {
+        const accountName=req.body.accountName;
+        const bankName=req.body.bankName;
+        const accountType=req.body.accountType;
+        const accountNumber=req.body.accountNumber;
+        const branchCode=req.body.branchCode;
+        const ownerId=req.params.owner_id;
+
+        const account=new Accounts({
+            accountName,
+            bankName,
+            accountType,
+            accountNumber,
+            branchCode,
+            owner:ownerId
+        });
+        await account.save();
+        return res.status(201).json({message:"Account Details Added Successfully"});
+
+    } catch (error) {
+        return res.status(201).json({message:error.message});
+
+    }
 }
 
-//The ability to transfer funds from the user bank account to the users in app wallet
+//pull bank accounts
+const get_all_owner_accounts=async(req,res)=>{
 
-const transfer_funds=async(req,res)=>{
-    console.log("Transfer Funds");
-    res.status(200).json({message:"Transfer Funds"});
+    try {
+        const bank_accounts=await Accounts.find({owner:req.params.owner_id});
+        if(!bank_accounts){
+            return res.status(404).json({message:"Owner does not have account records",status:false})
+        }
+
+        return res.status(200).json({bank_accounts:bank_accounts,status:true});
+    } catch (error) {
+        return res.status(500).json({message:error.message,status:false})
+    }
+}
+//Add Cash Out Requests
+const create_cash_out_requests=async(req,res)=>{
+    try {
+        const amount=req.body.amount;
+        const ownerId=req.params.owner_id;
+        const account_id=req.params.account_id;
+        const account=await Accounts.findById({_id:account_id});
+        if(!account){
+            return res.status(404).json({message:"account does not exist"});
+        }
+        const owner=await BusinessOwner.findById({_id:ownerId});
+        if(!owner){
+            return res.status(404).json({message:"owner does not exist"});
+        }
+        if(owner.wallet>=amount){
+            // create cash out
+            const status="Active".toLowerCase();
+            const cash_out=new Cash_Out({
+                amount,
+                status,
+                ownerId,
+                account_id
+            });
+            await cash_out.save();
+            return res.status(200).json({message:"Request Completed"});
+        }
+        else if(owner.wallet<amount){
+            const status="Declined".toLowerCase();
+            const cash_out=new Cash_Out({
+                amount,
+                status,
+                ownerId,
+                account_id
+            });
+            await cash_out.save();
+            return res.status(200).json({message:"Request Declined,Wallet Does Not Have Enough Funds"});
+        }
+        else{
+            const status="Completed".toLowerCase();
+            const cash_out=new Cash_Out({
+                amount,
+                status,
+                ownerId,
+                account_id
+            });
+            await cash_out.save();
+            return res.status(200).json({message:"Request Completed"});
+        }  
+    } catch (error) {
+        return res.status(500).json({message:"Add Cash Out Requests"})
+    }
 }
 
-module.exports={add_bank_account,transfer_funds}
+//pull cash out requests by owner
+const get_all_requests=async(req,res)=>{
+    try {
+        const requests=await Cash_Out.find({owner:req.params.owner_id});
+        if(!requests){
+            return res.status(404).json({message:"No requests exist for this owner"});
+        }
+        else{
+        return res.status(200).json({requests:requests});
+        }
+    } catch (error) {
+        return res.status(500).json({message:error.message,status:false});
+    }
+}
+
+//get all requests (will be used by admin)
+
+const admin_get_all_requests=async(req,res)=>{
+    try {
+        const requests=await Cash_Out.find({});
+
+        if(!requests){
+            return res.status(404).json({message:"No requests exist for this owner"});
+        }
+        else{
+        return res.status(200).json({requests:requests});
+        }
+    } catch (error) {
+        return res.status(500).json({message:error.message,status:false});
+    }
+}
+module.exports={create_bank_account,get_all_owner_accounts,create_cash_out_requests, get_all_requests}

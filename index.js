@@ -92,15 +92,17 @@ app.use('/api/slaschapp/business',authenticateUser,baitRouter);
 app.use('/api/slaschapp/category',categoriesRouter);
 
 //authenticate the feeds 
-app.use('/api/slaschapp/feeds',feedsRoute);
+app.use('/api/slaschapp/feeds',authenticateUser,feedsRoute);
 
 app.use('/api/slaschapp/business/owner',authenticateUser,ownerRouter);
 
 app.use('/api/slaschapp/cart',authenticateUser,cartRouter);
 
-app.use('/api/slaschapp/subscription',subscriptionRouter);
+//subscription main route
+app.use('/api/slaschapp/subscription',authenticateUser,subscriptionRouter);
 
-app.use('/api/slaschapp/transaction/bait',accountRouter);
+//accounts main route
+app.use('/api/slaschapp/transaction',authenticateUser,accountRouter);
 
 app.use('/api/slaschapp/master',authenticateUser,searchRouter);
 
