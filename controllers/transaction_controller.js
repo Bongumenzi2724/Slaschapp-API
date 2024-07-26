@@ -13,11 +13,11 @@ const create_bank_account=async(req,res)=>{
         const ownerId=req.params.owner_id;
 
         const account=new Accounts({
-            accountName,
-            bankName,
-            accountType,
-            accountNumber,
-            branchCode,
+            accountName:accountName,
+            bankName:bankName,
+            accountType:accountType,
+            accountNumber:accountNumber,
+            branchCode:branchCode,
             owner:ownerId
         });
         await account.save();
@@ -61,35 +61,35 @@ const create_cash_out_requests=async(req,res)=>{
             // create cash out
             const status="Active".toLowerCase();
             const cash_out=new Cash_Out({
-                amount,
-                status,
-                ownerId,
-                account_id
+                Account_ID:account_id,
+                Amount:amount,
+                Status:status,
+                Owner:ownerId
             });
             await cash_out.save();
-            return res.status(200).json({message:"Request Completed"});
+            return res.status(200).json({message:"Request Active",request:cash_out});
         }
         else if(owner.wallet<amount){
             const status="Declined".toLowerCase();
             const cash_out=new Cash_Out({
-                amount,
-                status,
-                ownerId,
-                account_id
+                Account_ID:account_id,
+                Amount:amount,
+                Status:status,
+                Owner:ownerId
             });
             await cash_out.save();
-            return res.status(200).json({message:"Request Declined,Wallet Does Not Have Enough Funds"});
+            return res.status(200).json({message:"Request Declined,Wallet Does Not Have Enough Funds",request:cash_out});
         }
         else{
             const status="Completed".toLowerCase();
             const cash_out=new Cash_Out({
-                amount,
-                status,
-                ownerId,
-                account_id
+                Account_ID:account_id,
+                Amount:amount,
+                Status:status,
+                Owner:ownerId
             });
             await cash_out.save();
-            return res.status(200).json({message:"Request Completed"});
+            return res.status(200).json({message:"Request Completed",request:cash_out});
         }  
     } catch (error) {
         return res.status(500).json({message:"Add Cash Out Requests"})
