@@ -72,8 +72,8 @@ const registerUser= async(req,res)=>{
 const loginUser=async(req,res)=>{
 
     const {email,password}=req.body;
-
     const email1=email.toLowerCase();
+
     if(!email||!password){
         throw new BadRequestError("Please provide email and password");
     }
@@ -82,9 +82,9 @@ const loginUser=async(req,res)=>{
     if(!user){
         throw new UnauthenticatedError('Invalid Email or Password');
     }
-    const hashedPassword=user.password;
+    const existingPassword=user.password;
 
-    const isPasswordCorrect= await user.comparePassword(password,hashedPassword);
+    const isPasswordCorrect= await user.comparePassword(password,existingPassword);
 
     if(!isPasswordCorrect){
         throw new UnauthenticatedError('Invalid Email or Password');

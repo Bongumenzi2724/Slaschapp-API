@@ -111,16 +111,16 @@ UserSchema.methods.createJWT=function(){
     return jwt.sign({userId:this._id},process.env.JWT_SECRET,{expiresIn:process.env.JWT_LIFETIME})
 }
 
-UserSchema.methods.comparePassword=function(candidatePassword,hashedPassword){
+UserSchema.methods.comparePassword=function(password,existingPassword){
 
     let isMatch=false;
-    if(candidatePassword===hashedPassword){
+    if(password===existingPassword){
         isMatch=true;
-        return isMatch
+        return isMatch;
     }
     else{
         isMatch=false;
-        return isMatch
+        return isMatch;
     }
 } 
 
