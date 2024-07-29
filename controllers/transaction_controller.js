@@ -5,6 +5,7 @@ const BusinessOwner=require('../models/BusinessOwnerRegistration');
 const create_bank_account=async(req,res)=>{
     try {
         const accountName=req.body.accountName;
+        const amount=req.body.amount;
         const bankName=req.body.bankName;
         const accountType=req.body.accountType;
         const accountNumber=req.body.accountNumber;
@@ -15,12 +16,14 @@ const create_bank_account=async(req,res)=>{
             accountName:accountName,
             bankName:bankName,
             accountType:accountType,
+            Amount:amount,
             accountNumber:accountNumber,
             branchCode:branchCode,
             owner:ownerId
         });
+
         await account.save();
-        return res.status(201).json({message:"Account Details Added Successfully"});
+        return res.status(201).json({message:"Account Details Added Successfully",account:account});
 
     } catch (error) {
         return res.status(201).json({message:error.message});

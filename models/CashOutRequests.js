@@ -7,7 +7,8 @@ const CashOutRequestSchema=new mongoose.Schema({
         ref:'Accounts'
     },
     Amount:{
-        type:Number
+        type:Number,
+        required:true
     },
     Status:{
         type:String

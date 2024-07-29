@@ -36,4 +36,5 @@ router.patch('/owner/cash-out/request/:request_id',admin_get_status_requests);
 
 //get all cash out requests
 router.get('/owner/cash-out/requests',admin_get_all_requests)
+
 module.exports=router
