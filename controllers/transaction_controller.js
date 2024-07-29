@@ -57,7 +57,17 @@ const create_cash_out_requests=async(req,res)=>{
         if(!owner){
             return res.status(404).json({message:"owner does not exist"});
         }
-        if(owner.wallet>=amount){
+        const status="Pending".toLowerCase();
+            const cash_out=new Cash_Out({
+                Account_ID:account_id,
+                Amount:amount,
+                Status:status,
+                Owner:ownerId
+            });
+        await cash_out.save();
+        return res.status(200).json({message:"Request Completed",request:cash_out});
+
+       /*  if(owner.wallet>=amount){
             // create cash out
             const status="Active".toLowerCase();
             const cash_out=new Cash_Out({
@@ -69,8 +79,10 @@ const create_cash_out_requests=async(req,res)=>{
             await cash_out.save();
             return res.status(200).json({message:"Request Active",request:cash_out});
         }
+
         else if(owner.wallet<amount){
             const status="Declined".toLowerCase();
+
             const cash_out=new Cash_Out({
                 Account_ID:account_id,
                 Amount:amount,
@@ -80,6 +92,7 @@ const create_cash_out_requests=async(req,res)=>{
             await cash_out.save();
             return res.status(200).json({message:"Request Declined,Wallet Does Not Have Enough Funds",request:cash_out});
         }
+
         else{
             const status="Completed".toLowerCase();
             const cash_out=new Cash_Out({
@@ -90,8 +103,10 @@ const create_cash_out_requests=async(req,res)=>{
             });
             await cash_out.save();
             return res.status(200).json({message:"Request Completed",request:cash_out});
-        }  
-    } catch (error) {
+        }   */
+    
+
+        } catch (error) {
         return res.status(500).json({message:"Add Cash Out Requests"})
     }
 }
