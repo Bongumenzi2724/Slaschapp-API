@@ -20,8 +20,7 @@ const UserSchema = new mongoose.Schema({
     },
     phoneNumber:{
         type:String,
-        required:[false,"Please Provide Your Phone Number"],
-        unique:true
+        required:[false,"Please Provide Your Phone Number"]
     },
     email:{
         type:String,

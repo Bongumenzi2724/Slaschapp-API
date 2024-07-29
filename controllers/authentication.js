@@ -49,6 +49,7 @@ const registerUser= async(req,res)=>{
         return res.status(201).json({User:result,token:token,message:`email sent to ${result.email} with OTP ${userOtp} for verification`});
 
     }catch(error){
+        console.log(error);
         if(error instanceof MongoServerError && error.code===11000){
             let errorMessage='';
             if(error.errorResponse.keyValue.email==(req.body.email).toString()){
