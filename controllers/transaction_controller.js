@@ -57,13 +57,18 @@ const create_cash_out_requests=async(req,res)=>{
         if(!owner){
             return res.status(404).json({message:"owner does not exist"});
         }
+        //console.log(owner);
         //const status="Pending".toLowerCase();
+
             const cash_out=new Cash_Out({
                 Account_ID:account_id,
                 Amount:req.body.amount,
                 Status:(req.body.Status).toString(),
                 Owner:ownerId
             });
+            
+            //console.log("Testing");
+            //console.log(cash_out);
         await cash_out.save();
         return res.status(200).json({message:"Request Pending",request:cash_out});
 
