@@ -5,7 +5,6 @@ const BusinessOwner=require('../models/BusinessOwnerRegistration');
 const create_bank_account=async(req,res)=>{
     try {
         const accountName=req.body.accountName;
-        const amount=req.body.amount;
         const bankName=req.body.bankName;
         const accountType=req.body.accountType;
         const accountNumber=req.body.accountNumber;
@@ -16,7 +15,6 @@ const create_bank_account=async(req,res)=>{
             accountName:accountName,
             bankName:bankName,
             accountType:accountType,
-            Amount:amount,
             accountNumber:accountNumber,
             branchCode:branchCode,
             owner:ownerId
@@ -48,7 +46,7 @@ const get_all_owner_accounts=async(req,res)=>{
 //Add Cash Out Requests
 const create_cash_out_requests=async(req,res)=>{
     try {
-        const amount=req.body.amount;
+        //const amount=req.body.amount;
         const ownerId=req.params.owner_id;
         const account_id=req.params.account_id;
         const account=await Accounts.findById({_id:account_id});
@@ -62,7 +60,7 @@ const create_cash_out_requests=async(req,res)=>{
         const status="Pending".toLowerCase();
             const cash_out=new Cash_Out({
                 Account_ID:account_id,
-                Amount:amount,
+                Amount:req.body.amount,
                 Status:status,
                 Owner:ownerId
             });
