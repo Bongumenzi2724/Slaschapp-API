@@ -1,4 +1,3 @@
-//The ability to link/add a bank account/card/payment method
 const Accounts=require('../models/AccountSchema');
 const Cash_Out=require('../models/CashOutRequests');
 const BusinessOwner=require('../models/BusinessOwnerRegistration');
@@ -114,12 +113,15 @@ const create_cash_out_requests=async(req,res)=>{
 //pull cash out requests by owner
 const get_all_requests=async(req,res)=>{
     try {
-        const requests=await Cash_Out.find({owner:req.params.owner_id});
+
+        const requests=await Cash_Out.find({Owner:req.params.owner_id});
+      
         if(!requests){
             return res.status(404).json({message:"No requests exist for this owner"});
         }
         else{
         return res.status(200).json({requests:requests});
+
         }
     } catch (error) {
         return res.status(500).json({message:error.message,status:false});
@@ -142,6 +144,24 @@ const admin_get_all_requests=async(req,res)=>{
         return res.status(500).json({message:error.message,status:false});
     }
 }
+//Change the status of the cash out request
+
+const admin_get_status_requests=async(req,res)=>{
+    const {status}=req.body;
+    const {request_id}=req.params;
+    const request=await Cash_Out.findById({_id:request_id});
+    if(!request){
+        return res.status(404).json({message:`Request with id ${request_id} does not exist`});
+    }
+
+    request.Status=status;
+    let newRequest=request;
+    await Cash_Out.findByIdAndUpdate({_id:request_id},{$set:newRequest},{new:true});
+    await newRequest.save();
+
+    return res.status(200).json({message:`Status successfully updated to ${newRequest.Status}`});
+
+}
 
 //Change Cash Request Status
 const change_cash_request_status=async(req,res)=>{
@@ -158,8 +178,7 @@ const change_cash_request_status=async(req,res)=>{
         await newRequest.save();
         return res.status(200).json({message:`Status updated successfully to ${newRequest.Status}`})
     } catch (error) {
-        return res.status(500).json({message:error.message})
-
+        return res.status(500).json({message:error.message});
     }
 }
-module.exports={create_bank_account,get_all_owner_accounts,create_cash_out_requests, get_all_requests,change_cash_request_status}
+module.exports={create_bank_account,admin_get_status_requests,admin_get_all_requests,get_all_owner_accounts,create_cash_out_requests, get_all_requests,change_cash_request_status}
