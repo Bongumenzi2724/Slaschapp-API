@@ -65,7 +65,7 @@ const create_cash_out_requests=async(req,res)=>{
                 Owner:ownerId
             });
         await cash_out.save();
-        return res.status(200).json({message:"Request Completed",request:cash_out});
+        return res.status(200).json({message:"Request Pending",request:cash_out});
 
        /*  if(owner.wallet>=amount){
             // create cash out
