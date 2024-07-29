@@ -44,6 +44,7 @@ const get_all_owner_accounts=async(req,res)=>{
     }
 }
 //Add Cash Out Requests
+
 const create_cash_out_requests=async(req,res)=>{
     try {
         //const amount=req.body.amount;
@@ -178,11 +179,11 @@ const change_cash_request_status=async(req,res)=>{
         if(!request){
             return res.status(404).json({message:"The request does not exits"});
         }
-        request.Status=status;
+        request.status=status;
         let newRequest=request;
         await Cash_Out.findByIdAndUpdate({_id:request_id},{$set:newRequest},{new:true});
         await newRequest.save();
-        return res.status(200).json({message:`Status updated successfully to ${newRequest.Status}`})
+        return res.status(200).json({message:`Status updated successfully to ${newRequest.status}`})
     } catch (error) {
         return res.status(500).json({message:error.message});
     }
