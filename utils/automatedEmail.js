@@ -1,5 +1,5 @@
 const nodemailer=require('nodemailer');
-
+const {StatusCodes}=require('http-status-codes');
 const automatedEmail=async(email,message)=>{
     //call the generate otp method
     let userEmail='';
@@ -17,7 +17,7 @@ const automatedEmail=async(email,message)=>{
         from:'nuenginnovations@gmail.com',
         to:email,
         subject:'Verify Email',
-        text:`Subscription status:${message}`
+        text:`Subscription status: ${message}`
         };
 
         transporter.sendMail(mailOptions,(error,info)=>{

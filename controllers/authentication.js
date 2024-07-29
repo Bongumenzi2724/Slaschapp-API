@@ -241,4 +241,11 @@ const registerBusinessOwner=async(req,res)=>{
     }
 }
 
+const registerAdmin=async(req,res)=>{
+
+}
+
+const loginAdmin=async(req,res)=>{
+
+}
 module.exports={registerUser,loginUser,UserRegistration,loginBusinessOwner,registerBusinessOwner}
