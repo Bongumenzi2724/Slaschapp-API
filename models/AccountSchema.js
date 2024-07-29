@@ -1,11 +1,9 @@
 const mongoose=require('mongoose');
 
 const AccountsSchema=new mongoose.Schema({
-
     accountName:{
         type:String,
         required:[true,'please provide the account name']
-
     },
     bankName:{
         type:String,

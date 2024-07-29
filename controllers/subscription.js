@@ -59,7 +59,6 @@ const cancel_subscription=async(req,res)=>{
 }
 
 const pay_subscription=async(req,res)=>{
-
   try {
       //find the subscription
       const {subscriptionFee,ownerId}=req.body;
@@ -70,6 +69,7 @@ const pay_subscription=async(req,res)=>{
           return res.status(404).json({message:`Subscription does not exist please create a new one`});
       }
       const owner=await Owners.findById({_id:subscription.createdBy.toString()});
+
       if(!owner){
         return res.status(404).json({message:"Owner Does Not Exist"});
       }

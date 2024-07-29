@@ -2,7 +2,7 @@ const Subscription=require('../../models/SubscriptionSchema');
 const Owner=require('../../models/BusinessOwnerRegistration');
 const Auction=require('../../models/AuctionSchema');
 const Admin=require('../../models/AdminSchema');
-const sendEmail=require('../../utils/sendEmail');
+const automatedEmail=require('../../utils/automatedEmail');
 const cron=require('node-cron');
 
 //run this script on the first of every month at 00:00 am to check for paid and unpaid subscription deactivate all auctions
@@ -41,7 +41,7 @@ cron.schedule('0 0 1 * *',async()=>{
             //save the new subscription details
             await newSubscription.save();
             //notify the owner of the unpaid subscription via email
-            sendEmail(owners[i].email,'Unpaid Subscription');
+            automatedEmail(owners[i].email,'Unpaid Subscription Auctions Will Be Deactivated');
 
             //deactivate all the auctions 
            /*  for(let i=0;i<=auctions.length-1;i++){
@@ -83,7 +83,7 @@ cron.schedule('0 0 1 * *',async()=>{
             await Subscription.findByIdAndUpdate({_id:(subscription._id).toString()},{$set:newSubscription},{new:true});
             await newSubscription.save();
             //notify owner of the paid subscription via email
-            sendEmail(owners.email,'Subscription Paid');
+            automatedEmail(owners.email,'Subscription Paid');
             //ensure that all owner's auctions are active 
             //const auctions=await Auction.find({createdBy:owner_id});
             //update all the auctions's statuses to active
@@ -112,6 +112,6 @@ cron.schedule('0 0 * * *',async()=>{
     for(const subscription of subscriptions){
         const owner=await Owner.find({_id:(subscription.createdBy).toString()});
         //send email remainder to pay subscription
-        sendEmail(owner.email,'Subscription Due At The End Of the Month');
+        automatedEmail(owner.email,'Subscription Due At The End Of the Month');
     }
 });
