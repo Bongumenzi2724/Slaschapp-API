@@ -10,7 +10,7 @@ const CashOutRequestSchema=new mongoose.Schema({
         type:Number,
         required:true
     },
-    Status:{
+    status:{
         type:String
     },
     Owner:{
