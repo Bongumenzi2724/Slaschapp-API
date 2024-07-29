@@ -2,6 +2,7 @@ const Accounts=require('../models/AccountSchema');
 const Cash_Out=require('../models/CashOutRequests');
 const BusinessOwner=require('../models/BusinessOwnerRegistration');
 
+//create bank accounts
 const create_bank_account=async(req,res)=>{
     try {
         const accountName=req.body.accountName;
@@ -28,7 +29,6 @@ const create_bank_account=async(req,res)=>{
 
     }
 }
-
 //pull bank accounts
 const get_all_owner_accounts=async(req,res)=>{
 
@@ -44,7 +44,6 @@ const get_all_owner_accounts=async(req,res)=>{
     }
 }
 //Add Cash Out Requests
-
 const create_cash_out_requests=async(req,res)=>{
     try {
         //const amount=req.body.amount;
