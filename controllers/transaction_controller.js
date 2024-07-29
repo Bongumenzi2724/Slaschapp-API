@@ -63,7 +63,7 @@ const create_cash_out_requests=async(req,res)=>{
             const cash_out=new Cash_Out({
                 Account_ID:account_id,
                 Amount:req.body.amount,
-                status:(req.body.Status).toString(),
+                status:(req.body.status).toString(),
                 Owner:ownerId
             });
 
