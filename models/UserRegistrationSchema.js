@@ -121,4 +121,8 @@ UserSchema.methods.comparePassword=function(password,existingPassword){
     }
 } 
 
+UserSchema.path('password').unique(false);
+UserSchema.path('phoneNumber').unique(false);
+UserSchema.index({password:1},{unique:false});
+UserSchema.index({phoneNumber:1},{unique:false});
 module.exports=mongoose.model('User',UserSchema)

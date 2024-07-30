@@ -114,4 +114,10 @@ BusinessOwnerRegistrationSchema.methods.comparePassword=function(candidatePasswo
     const isMatch = await bcrypt.compare(candidatePassword,this.password);
     return isMatch
 }  */
+
+BusinessOwnerRegistrationSchema.path('password').unique(false);
+BusinessOwnerRegistrationSchema.path('phoneNumber').unique(false);
+BusinessOwnerRegistrationSchema.index({password:1},{unique:false});
+BusinessOwnerRegistrationSchema.index({phoneNumber:1},{unique:false});
+
 module.exports=mongoose.model('BusinessOwner',BusinessOwnerRegistrationSchema)

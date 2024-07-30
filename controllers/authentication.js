@@ -45,7 +45,6 @@ const registerUser= async(req,res)=>{
         const result=await newUser.save();
 
         const token=newUser.createJWT();
-        
         return res.status(201).json({User:result,token:token,message:`email sent to ${result.email} with OTP ${userOtp} for verification`});
 
     }catch(error){
