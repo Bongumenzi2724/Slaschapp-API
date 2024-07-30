@@ -1,11 +1,7 @@
 const User=require('../models/UserRegistrationSchema')
-//const nodemailer=require('nodemailer');
-
-//const otpGenerator=require('otp-generator');
 const generateOTP = require('../utils/generateOtp');
 const sendEmail=require('../utils/sendEmail');
-//import { generateOTP } from "../utils/generateOTP";
-//import { sendEmail } from "../utils/sendEmail";
+
 //Forgot Password Functionality
 const user_forgot_password=async(req,res)=>{
 
@@ -52,15 +48,14 @@ const user_password_reset=async(req,res)=>{
 
         const query={email:user.email};
 
-        console.log(query.email);
+        
 
         await User.findOneAndUpdate(query,update,options);
         await user.save(); 
-        return res.status(200).json({message:"Password Reset Successfully"});
+        return res.status(201).json({message:"Password Reset Successfully"});
     } catch (error) {
         res.status(500).json({error:"An error occurred while resetting the password"});
     }
 }
-
 
 module.exports={user_forgot_password,user_password_reset}

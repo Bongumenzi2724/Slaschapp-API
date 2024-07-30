@@ -102,7 +102,7 @@ app.use('/api/slaschapp/cart',authenticateUser,cartRouter);
 app.use('/api/slaschapp/subscription',authenticateUser,subscriptionRouter);
 
 //accounts main route
-app.use('/api/slaschapp/transaction',accountRouter);
+app.use('/api/slaschapp/transaction',authenticateUser,accountRouter);
 
 app.use('/api/slaschapp/master',authenticateUser,searchRouter);
 
@@ -113,7 +113,7 @@ app.use('/api/slaschapp/owner/profile',authenticateUser,ownerProfile);
 
 app.use('/api/slaschapp/verification',authenticateUser,verificationRouter);
 
-app.use('/api/slaschapp/process',paymentRouter);
+app.use('/api/slaschapp/process',authenticateUser,paymentRouter);
 
 app.use('/api/slaschapp/password',passwordsRouter);
 

@@ -28,7 +28,8 @@ const UserSchema = new mongoose.Schema({
         match: [
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
             'Please provide a valid email',],
-        unique:true
+        unique:true,
+        lowecase:true
     },
     password:{
         type:String,
@@ -121,8 +122,5 @@ UserSchema.methods.comparePassword=function(password,existingPassword){
     }
 } 
 
-UserSchema.path('password').unique(false);
-UserSchema.path('phoneNumber').unique(false);
-UserSchema.index({password:1},{unique:false});
-UserSchema.index({phoneNumber:1},{unique:false});
+
 module.exports=mongoose.model('User',UserSchema)

@@ -10,6 +10,7 @@ const { getAllUsersProfiles,getUserProfile } = require('./feeds')
 
 const { update_bait_plant } = require('./bait_plant_controllers');
 const { admin_get_all_requests, admin_get_status_requests } = require('./transaction_controller');
+
 //get all users
 const AllUsers=async(req,res)=>{
     const AllUsers=await User.aggregate([{$project:{password:0,resetToken:0,resetTokenExpiration:0,__v:0,wallet:0,AcceptTermsAndConditions:0,updatedAt:0}}])
@@ -72,7 +73,7 @@ const suspendAuction=async(req,res)=>{
         throw new NotFoundError(`No Auction with id ${req.params.auctionId}`)
     }
     //update the auction status
-    auction.status='Suspended';
+    auction.status='Revoked';
     let newAuction=auction;
     await Auction.findByIdAndUpdate(req.params.id,{$set:newAuction},{new:true});
     await newAuction.save();
@@ -148,6 +149,7 @@ const activateBusiness=async(req,res)=>{
      return res.status(StatusCodes.OK).json({status:false,message:error.message});
  }
  }
+
 //activate user
 const activateUserProfile=async(req,res)=>{
     try {

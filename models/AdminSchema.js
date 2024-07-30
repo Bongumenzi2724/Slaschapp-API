@@ -20,15 +20,25 @@ const AdminSchema=new mongoose.Schema({
         unique:true,
         lowercase:true
     },
-    password:{
-        type:String,
-        required:[true,"Please Provide Your Password"],
-        unique:true
-    },
     wallet:{
-        type:Number
+        type:Number,
+        required:false,
+        default:0
     }
-
 });
+
+
+AdminSchema.methods.comparePassword=function(password,existingPassword){
+
+    let isMatch=false;
+    if(password===existingPassword){
+        isMatch=true;
+        return isMatch;
+    }
+    else{
+        isMatch=false;
+        return isMatch;
+    }
+} 
 
 module.exports=mongoose.model('Admin',AdminSchema);

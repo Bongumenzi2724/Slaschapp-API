@@ -6,6 +6,7 @@ const { default: mongoose } = require('mongoose');
 const { MongoServerError } = require('mongodb');
 const generateOtp=require('../utils/generateOtp');
 const sendEmail=require('../utils/sendEmail');
+const Admin=require('../models/AdminSchema');
 
 //register app user
 const registerUser= async(req,res)=>{
@@ -13,37 +14,9 @@ const registerUser= async(req,res)=>{
         //generate the otp to send to the user
         const userOtp=generateOtp();
         await sendEmail(req.body.email,userOtp);
-
-       /*  const newUser=new User({
-            firstname:req.body.firstname,
-            secondname:req.body.secondname,
-            surname:req.body.surname,
-            profilePicture:req.body.profilePicture,
-            phoneNumber:req.body.phoneNumber,
-            email:req.body.email,
-            password:req.body.password,
-            AcceptTermsAndConditions:req.body.AcceptTermsAndConditions,
-            locationOrAddress:req.body.locationOrAddress,
-            birthday:req.body.birthday,
-            educationStatus:req.body.educationStatus,
-            gender:req.body.gender,
-            wallet:req.body.wallet,
-            rewards:req.body.rewards,
-            interests:req.body.interests,
-            verified:false,
-            otp:userOtp,
-            resetToken:req.body.resetToken,
-            resetTokenExpiration:req.body.resetTokenExpiration,
-            status:req.body.status
-        }); */
-
-        
         req.body.otp=userOtp;
-
         const newUser=await User.create({...req.body});
-
         const result=await newUser.save();
-
         const token=newUser.createJWT();
         return res.status(201).json({User:result,token:token,message:`email sent to ${result.email} with OTP ${userOtp} for verification`});
 
@@ -53,26 +26,30 @@ const registerUser= async(req,res)=>{
 }
 //login app user
 const loginUser=async(req,res)=>{
-    const {email,password}=req.body;
-    const email1=email.toLowerCase();
-    if(!email||!password){
-        throw new BadRequestError("Please provide email and password");
-    }
-    const user= await User.findOne({email:email1});
+    try {
+        const {email,password}=req.body;
+        const email1=email.toLowerCase();
+        if(!email||!password){
+            throw new BadRequestError("Please provide email and password");
+        }
+        const user= await User.findOne({email:email1});
 
-    if(!user){
-        throw new UnauthenticatedError('Invalid Email or Password');
-    }
-    const existingPassword=user.password;
+        if(!user){
+            throw new UnauthenticatedError('Invalid Email or Password');
+        }
+        const existingPassword=user.password;
 
-    const isPasswordCorrect= await user.comparePassword(password,existingPassword);
+        const isPasswordCorrect= await user.comparePassword(password,existingPassword);
 
-    if(!isPasswordCorrect){
-        throw new UnauthenticatedError('Invalid Email or Password');
+        if(!isPasswordCorrect){
+            throw new UnauthenticatedError('Invalid Email or Password');
+        }
+        const token = user.createJWT();
+        
+        return res.status(StatusCodes.OK).json({user:{id:user._id,name:user.firstname,surname:user.surname,wallet:user.wallet,email:user.email,rewards:user.rewards},token:{token}});
+    } catch (error) {
+        return res.status(500).json({message:error.message});
     }
-    const token = user.createJWT();
-    //res.status(StatusCodes.OK).json({owner:{id:user._id,name:user.firstname,surname:user.surname,wallet:user.wallet,email:user.email},token:{token}}) 
-    return res.status(StatusCodes.OK).json({user:{id:user._id,name:user.firstname,surname:user.surname,wallet:user.wallet,email:user.email,rewards:user.rewards},token:{token}});
 }
 //login business owner
 const loginBusinessOwner=async(req,res)=>{
@@ -223,11 +200,51 @@ const registerBusinessOwner=async(req,res)=>{
 }
 
 const registerAdmin=async(req,res)=>{
-
+    try {
+        const adminOtp=generateOtp();
+        req.body.otp=adminOtp;
+        await sendEmail(req.body.email,adminOtp);
+        const admin=await Admin.create({...req.body});
+        const result=await admin.save();
+        const token=admin.createJWT();
+        return res.status(201).json({admin:result,token:token,message:`email sent to ${admin.email} with OTP ${adminOtp} for verification`});
+        
+    } catch (error) {
+        return res.status(500).status({status:false,message:error})
+    }
 }
 
 const loginAdmin=async(req,res)=>{
 
+    try {
+        const {email,password}=req.body;
+        password=password.toLowerCase();
+        email=email.toLowerCase();
+
+        if(!email||!password){
+            throw new BadRequestError("Please provide email and password");
+        }
+
+        const admin= await Admin.findOne({email:email});
+    
+        if(!admin){
+            throw new UnauthenticatedError('Invalid Email or Password');
+        }
+
+        const existingPassword=admin.password;
+    
+        const isPasswordCorrect= await admin.comparePassword(password,existingPassword);
+    
+        if(!isPasswordCorrect){
+            throw new UnauthenticatedError('Invalid Email or Password');
+        }
+        const token = admin.createJWT();
+        
+        return res.status(StatusCodes.OK).json({admin:{id:admin._id,name:admin.name,email:admin.email,wallet:admin.wallet},token:token});
+    }
+     catch (error) {
+        return res.status(500).json({status:false,message:error.message});
+    }
 }
 
-module.exports={registerUser,loginUser,UserRegistration,loginBusinessOwner,registerBusinessOwner}
+module.exports={registerUser,registerAdmin,loginAdmin,loginUser,UserRegistration,loginBusinessOwner,registerBusinessOwner}
