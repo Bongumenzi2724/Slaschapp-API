@@ -28,13 +28,11 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
         match: [
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
             'Please provide a valid email',],
-        unique:true,
-        lowercase:true
+        unique:true
     },
     password:{
         type:String,
-        required:[true,"Please Provide Your Password"],
-        unique:true   
+        required:[true,"Please Provide Your Password"] 
     },
     AcceptTermsAndConditions:{
         type:String,
@@ -62,8 +60,8 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
     //owner wallet
     wallet:{
         type:Number,
-        required:[true,'Wallet Value Required'],
-        default:1000
+        required:[false,'Wallet Value Required'],
+        default:0
     },
      otp:{
         type:Number,

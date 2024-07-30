@@ -20,7 +20,7 @@ const UserSchema = new mongoose.Schema({
     },
     phoneNumber:{
         type:String,
-        required:[false,"Please Provide Your Phone Number"]
+        required:[true,'Please Provide Your Phone Number']
     },
     email:{
         type:String,
@@ -28,13 +28,11 @@ const UserSchema = new mongoose.Schema({
         match: [
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
             'Please provide a valid email',],
-        unique:true,
-        lowercase:true
+        unique:true
     },
     password:{
         type:String,
-        required:[true,"Please Provide Your Password"]
-        //unique:true
+        required:[true,'Please Provide Your Password']
     },
     AcceptTermsAndConditions:{
         type:String,

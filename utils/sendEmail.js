@@ -1,7 +1,6 @@
 const nodemailer=require('nodemailer');
 
 const sendEmail=async(email,resetToken)=>{
-    //call the generate otp method
     let userEmail='';
     try {
         const transporter=nodemailer.createTransport({
@@ -27,9 +26,6 @@ const sendEmail=async(email,resetToken)=>{
         }
         else{
             //console.log("OTP Sent Successfully");
-            userEmail=info.accepted[0]
-
-            console.log(userEmail);
         }
         })
 

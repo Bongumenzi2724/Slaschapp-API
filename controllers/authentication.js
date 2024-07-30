@@ -8,18 +8,13 @@ const generateOtp=require('../utils/generateOtp');
 const sendEmail=require('../utils/sendEmail');
 
 //register app user
-
 const registerUser= async(req,res)=>{
-
-    try{ 
+    try{  
         //generate the otp to send to the user
         const userOtp=generateOtp();
-
-        //send the otp to the user email
-
         await sendEmail(req.body.email,userOtp);
 
-        const newUser=new User({
+       /*  const newUser=new User({
             firstname:req.body.firstname,
             secondname:req.body.secondname,
             surname:req.body.surname,
@@ -40,41 +35,27 @@ const registerUser= async(req,res)=>{
             resetToken:req.body.resetToken,
             resetTokenExpiration:req.body.resetTokenExpiration,
             status:req.body.status
-        });
+        }); */
+
+        
+        req.body.otp=userOtp;
+
+        const newUser=await User.create({...req.body});
 
         const result=await newUser.save();
 
         const token=newUser.createJWT();
-
+        
         return res.status(201).json({User:result,token:token,message:`email sent to ${result.email} with OTP ${userOtp} for verification`});
 
     }catch(error){
-        console.log(error);
-        if(error instanceof MongoServerError && error.code===11000){
-            let errorMessage='';
-            if(error.errorResponse.keyValue.email==(req.body.email).toString()){
-               
-                errorMessage=`An error occurred email ${error.errorResponse.keyValue.email} already exist`;
-            }
-            else{
-                errorMessage=`choose password already exist`;
-            }
-            return res.status(409).json({message:errorMessage})
-        }
-
-        else{
-            //console.error(error);
-            return res.status(500).status({status:false,message:error})
-        }
+        return res.status(500).status({status:false,message:error})
     }
 }
-
 //login app user
 const loginUser=async(req,res)=>{
-
     const {email,password}=req.body;
     const email1=email.toLowerCase();
-
     if(!email||!password){
         throw new BadRequestError("Please provide email and password");
     }
@@ -90,13 +71,11 @@ const loginUser=async(req,res)=>{
     if(!isPasswordCorrect){
         throw new UnauthenticatedError('Invalid Email or Password');
     }
-
     const token = user.createJWT();
-
     //res.status(StatusCodes.OK).json({owner:{id:user._id,name:user.firstname,surname:user.surname,wallet:user.wallet,email:user.email},token:{token}}) 
     return res.status(StatusCodes.OK).json({user:{id:user._id,name:user.firstname,surname:user.surname,wallet:user.wallet,email:user.email,rewards:user.rewards},token:{token}});
 }
-
+//login business owner
 const loginBusinessOwner=async(req,res)=>{
 
     const {email,password}=req.body;
@@ -124,7 +103,7 @@ const loginBusinessOwner=async(req,res)=>{
 
     res.status(StatusCodes.OK).json({owner:{id:owner._id,name:owner.firstname,surname:owner.surname,wallet:owner.wallet,email:owner.email},token:{token}})
 }
-
+//register app user
 const UserRegistration=async(req,res)=>{
 
     try {
@@ -187,7 +166,7 @@ const UserRegistration=async(req,res)=>{
         }
     }
 }
-
+//register business owner
 const registerBusinessOwner=async(req,res)=>{
 
     try{ 
@@ -198,7 +177,8 @@ const registerBusinessOwner=async(req,res)=>{
 
         const ownerOtp=generateOtp();
         await sendEmail(req.body.email,ownerOtp);
-        const newOwner=new BusinessOwner({
+
+      /*   const newOwner=new BusinessOwner({
             firstname:req.body.firstname,
             secondname:req.body.secondname,
             surname:req.body.surname,
@@ -213,10 +193,11 @@ const registerBusinessOwner=async(req,res)=>{
             IdDocumentLink:req.body.IdDocumentLink,
             gender:req.body.gender,
             otp:ownerOtp
-        });
-
+        }); */
+        req.body.otp=ownerOtp;
+        const newOwner=await BusinessOwner.create({...req.body});
         result=await newOwner.save();
-        const token=result.createJWT();
+        const token=newOwner.createJWT();
 
         return res.status(201).json({BusinessOwner:result,token:token,message:`email sent to ${result.email} with OTP ${ownerOtp} for verification`});
 
@@ -249,4 +230,5 @@ const registerAdmin=async(req,res)=>{
 const loginAdmin=async(req,res)=>{
 
 }
+
 module.exports={registerUser,loginUser,UserRegistration,loginBusinessOwner,registerBusinessOwner}

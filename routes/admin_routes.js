@@ -13,8 +13,12 @@ router.get('/businesses',AllBusiness)
 router.get('/owners',AllBusinessOwners)
 router.get('/orders',AllCarts)
 router.get('/category',get_all_categories)
+
 router.post('/category',create_category)
+//update bait plant
 router.patch('/bait/:id',update_bait_plant)
+//get all past orders
+router.get('/orders/:user_id',getAllPastOrders);
 
 //suspend auction
 router.patch('/suspend/auction/:auctionId',suspendAuction)

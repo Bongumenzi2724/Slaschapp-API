@@ -153,6 +153,7 @@ const admin_get_all_requests=async(req,res)=>{
 //Change the status of the cash out request
 
 const admin_get_status_requests=async(req,res)=>{
+    
     const {status}=req.body;
     const {request_id}=req.params;
     const request=await Cash_Out.findById({_id:request_id});
@@ -160,13 +161,11 @@ const admin_get_status_requests=async(req,res)=>{
         return res.status(404).json({message:`Request with id ${request_id} does not exist`});
     }
 
-    request.Status=status;
+    request.status=status;
     let newRequest=request;
     await Cash_Out.findByIdAndUpdate({_id:request_id},{$set:newRequest},{new:true});
     await newRequest.save();
-
-    return res.status(200).json({message:`Status successfully updated to ${newRequest.Status}`});
-
+    return res.status(200).json({message:`status successfully updated to ${newRequest.status}`});
 }
 
 //Change Cash Request Status

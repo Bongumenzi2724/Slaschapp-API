@@ -6,7 +6,6 @@ const CartSchema=new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId, 
         ref: 'User' 
     },
-
     auctionName:{
         type:String
     },
@@ -48,5 +47,6 @@ const CartSchema=new mongoose.Schema({
     expiryDate:{
         type:Date
     }
-},{timestamps:true})
+},{timestamps:true});
+
 module.exports=mongoose.model('Cart',CartSchema)
