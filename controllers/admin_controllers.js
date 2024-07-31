@@ -13,18 +13,39 @@ const { admin_get_all_requests, admin_get_status_requests } = require('./transac
 
 //get all users
 const AllUsers=async(req,res)=>{
-    const AllUsers=await User.aggregate([{$project:{password:0,resetToken:0,resetTokenExpiration:0,__v:0,wallet:0,AcceptTermsAndConditions:0,updatedAt:0}}])
-    res.status(StatusCodes.OK).json({AllUsers:AllUsers,count:AllUsers.length});
+    try {
+        const AllUsers=await User.aggregate([{$project:{password:0,resetToken:0,resetTokenExpiration:0,__v:0,wallet:0,AcceptTermsAndConditions:0,updatedAt:0}}]);
+        if(AllUsers.length===0){
+            return res.status(200).json({message:"No users is registered"});
+        }
+        res.status(StatusCodes.OK).json({AllUsers:AllUsers,count:AllUsers.length});
+    } catch (error) {
+        return res.status(500).json({message:error.message});
+    }
 }
 //get all business owners
 const AllBusinessOwners=async(req,res)=>{
-    const BusinessOwnersData=await BusinessOwner.aggregate([{$project:{password:0,__v:0,resetToken:0,resetTokenExpiration:0,IdDocumentLink:0,IdNumber:0,AcceptTermsAndConditions:0,updatedAt:0}}])
-    res.status(StatusCodes.OK).json({BusinessOwnersData,count:BusinessOwnersData.length});
+    try {
+        const BusinessOwnersData=await BusinessOwner.aggregate([{$project:{password:0,__v:0,resetToken:0,resetTokenExpiration:0,IdDocumentLink:0,IdNumber:0,AcceptTermsAndConditions:0,updatedAt:0}}]);
+        if(BusinessOwnersData.length===0){
+            return res.status(200).json({message:"No business owner is registered"})
+        }
+        res.status(StatusCodes.OK).json({BusinessOwnersData,count:BusinessOwnersData.length});
+    } catch (error) {
+        return res.status(500).json({message:error.message});
+    }
 }
 //get all business
 const AllBusiness=async(req,res)=>{
-    const businesses=await Business.find({}).sort('createdAt')
-    res.status(StatusCodes.OK).json({businesses,count:businesses.length});
+    try {
+        const businesses=await Business.find({}).sort('createdAt')
+        if(businesses.length===0){
+            return res.status(200).json({status:true,message:"No business is registered"})
+        }
+        res.status(StatusCodes.OK).json({businesses,count:businesses.length});
+    } catch (error) {
+        return res.status(500).json({message:error.message});
+    }
 }
 //get all auctions
 const AllAuctions=async(req,res)=>{
