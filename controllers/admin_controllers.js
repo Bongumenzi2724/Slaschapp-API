@@ -186,7 +186,7 @@ const activateOwnerProfile=async(req,res)=>{
         let newOwner=owner;
         await BusinessOwner.findByIdAndUpdate(req.params.owner_id,{$set:newOwner},{new:true});
         await newOwner.save();
-        return res.status(StatusCodes.OK).json({message:"owner profile activated"})
+        return res.status(StatusCodes.OK).json({status:true,message:"Your Business Owner Account Has Been Activated"})
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:error.message})
     }
