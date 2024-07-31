@@ -22,6 +22,7 @@ const adminRouter=require('./routes/admin_routes')
 
 const businessRouter=require('./routes/business')
 
+const adminLoginRouter=require('./routes/admin_route_credentials');
 
 const businessSearchRouter=require('./routes/search')
 
@@ -78,8 +79,11 @@ const swaggerDocument=YAML.load('./swagger.yaml')
 app.use('/api/slaschapp/admin',authenticateUser,adminRouter);
 
 app.use('/api/slaschapp/business/auction',authenticateUser,businessRouter);
-
+//authentication router
 app.use('/api/slaschapp/auth',authRouter);
+
+//admin login router
+app.use('/api/slaschapp/credentials/admin',adminLoginRouter)
 
 app.use('/api/slaschapp/business',authenticateUser,businessRouter);
 
@@ -109,7 +113,6 @@ app.use('/api/slaschapp/master',authenticateUser,searchRouter);
 app.use('/api/slaschapp/profile',authenticateUser,userProfile);
 
 app.use('/api/slaschapp/owner/profile',authenticateUser,ownerProfile);
-
 
 app.use('/api/slaschapp/verification',authenticateUser,verificationRouter);
 

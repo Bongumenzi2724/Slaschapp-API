@@ -1,4 +1,5 @@
 const mongoose=require('mongoose') 
+const jwt = require('jsonwebtoken')
 
 const AdminSchema=new mongoose.Schema({
 
@@ -33,7 +34,6 @@ const AdminSchema=new mongoose.Schema({
 
 });
 
-
 AdminSchema.methods.comparePassword=function(password,existingPassword){
 
     let isMatch=false;
@@ -47,4 +47,7 @@ AdminSchema.methods.comparePassword=function(password,existingPassword){
     }
 } 
 
+AdminSchema.methods.createJWT=function(){
+    return jwt.sign({userId:this._id},process.env.JWT_SECRET,{expiresIn:process.env.JWT_LIFETIME})
+}
 module.exports=mongoose.model('Admin',AdminSchema);

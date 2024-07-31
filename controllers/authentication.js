@@ -214,19 +214,15 @@ const registerAdmin=async(req,res)=>{
     }
 }
 
+
 const loginAdmin=async(req,res)=>{
 
     try {
         const {email,password}=req.body;
-        password=password.toLowerCase();
-        email=email.toLowerCase();
-
         if(!email||!password){
             throw new BadRequestError("Please provide email and password");
         }
-
         const admin= await Admin.findOne({email:email});
-    
         if(!admin){
             throw new UnauthenticatedError('Invalid Email or Password');
         }
@@ -238,9 +234,11 @@ const loginAdmin=async(req,res)=>{
         if(!isPasswordCorrect){
             throw new UnauthenticatedError('Invalid Email or Password');
         }
+
         const token = admin.createJWT();
         
         return res.status(StatusCodes.OK).json({admin:{id:admin._id,name:admin.name,email:admin.email,wallet:admin.wallet},token:token});
+
     }
      catch (error) {
         return res.status(500).json({status:false,message:error.message});

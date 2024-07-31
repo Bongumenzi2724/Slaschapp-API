@@ -22,9 +22,11 @@ router.patch('/login/user/reset',user_password_reset)
 router.post('/register/owner',registerBusinessOwner)
 //login business owner
 router.post('/login/owner',loginBusinessOwner)
+
 //owner forgot and reset password route
 router.patch('/login/owner/forgot',owner_forgot_password)
 router.patch('/login/owner/reset',owner_password_reset)
+
 
 //Admin registration
 router.post('/register/admin',registerAdmin);

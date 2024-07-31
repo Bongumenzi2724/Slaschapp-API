@@ -8,6 +8,7 @@ const { suspendBusinessOwner } = require('../controllers/owner');
 
 const { admin_get_all_requests, admin_get_status_requests } = require('../controllers/transaction_controller');
 
+
 router.get('/users',AllUsers)
 router.get('/baits',AllBaitPlants)
 router.get('/users/:id',getUserProfile)

@@ -155,6 +155,7 @@ const activateBusiness=async(req,res)=>{
  }
  }
 
+ 
 //activate user
 const activateUserProfile=async(req,res)=>{
     try {
