@@ -3,7 +3,8 @@ const Auction=require('../models/AuctionSchema')
 const Business=require('../models/BusinessRegistrationSchema')
 const BusinessOwner=require('../models/BusinessOwnerRegistration')
 const Bait = require('../models/BaitSchema');
-const Cart=require('../models/Cart')
+const Cart=require('../models/Cart');
+const CashOut=require('../models/CashOutRequests');
 const {StatusCodes}=require('http-status-codes')
 const { create_category, get_all_categories } = require('./categories_controllers')
 const { getAllUsersProfiles,getUserProfile } = require('./feeds')
@@ -57,7 +58,7 @@ const AllBaitPlants=async(req,res)=>{
     try {
        const bait = await Bait.find({})
        if(bait.length===0){
-        return res.status(StatusCodes.OK).json({message:"No Baits Exist At the Moment"})
+        return res.status(StatusCodes.OK).json({message:"No baits exist in the platform At the moment"})
        }
        return res.status(StatusCodes.OK).json(bait)
     } catch (error) {
@@ -68,7 +69,10 @@ const AllBaitPlants=async(req,res)=>{
 const AllCarts=async(req,res)=>{
     try {
         const carts = await Cart.aggregate([{$project:{baits:0,__v:0,userId:0,createdAt:0,updatedAt:0}}])
-        return res.status(StatusCodes.OK).json(carts)
+        if(carts.length===0){
+            return res.status(200).json({message:"No orders exists in the platform currently"})
+        }
+        return res.status(StatusCodes.OK).json({orders:carts})
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false,message:error.message})
     }
@@ -87,6 +91,20 @@ const getAllPastOrders=async(req,res)=>{
         return res.status(StatusCodes.NOT_FOUND).json({message:"No Purchase History Exist In The System"})
     }
     
+}
+//get all cash out requests
+const getAllCashOutRequests=async(req,res)=>{
+    try {
+        const cash_out=await CashOut.find({});
+
+        if(!cash_out){
+            return res.status(StatusCodes.NOT_FOUND).json({message:"No cash out requests exist currently"});
+        }
+        return res.status(StatusCodes.OK).json({message:"Cash out requests",cash_out:cash_out})
+        
+    } catch (error) {
+        return res.status(StatusCodes.NOT_FOUND).json({message:error.message});
+    }
 }
 //suspend auction
 const suspendAuction=async(req,res)=>{
@@ -176,7 +194,6 @@ const activateBusiness=async(req,res)=>{
  }
  }
 
- 
 //activate user
 const activateUserProfile=async(req,res)=>{
     try {
@@ -212,4 +229,4 @@ const activateOwnerProfile=async(req,res)=>{
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:error.message})
     }
 }
-module.exports={AllUsers,activateOwnerProfile,activateUserProfile,activateAuction,activateBusiness,suspendAuction,suspendUserProfile,suspendBusiness,AllCarts,AllBaitPlants,getAllPastOrders,AllBusiness,AllAuctions,AllBusinessOwners,get_all_categories,create_category,getAllUsersProfiles,update_bait_plant,getUserProfile,admin_get_status_requests,admin_get_all_requests}
+module.exports={AllUsers,getAllCashOutRequests,activateOwnerProfile,activateUserProfile,activateAuction,activateBusiness,suspendAuction,suspendUserProfile,suspendBusiness,AllCarts,AllBaitPlants,getAllPastOrders,AllBusiness,AllAuctions,AllBusinessOwners,get_all_categories,create_category,getAllUsersProfiles,update_bait_plant,getUserProfile,admin_get_status_requests,admin_get_all_requests}

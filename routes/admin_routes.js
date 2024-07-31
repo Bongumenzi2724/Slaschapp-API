@@ -2,7 +2,7 @@ const express=require('express');
 
 const router=express.Router();
 
-const {AllUsers,AllCarts,getAllPastOrders,suspendUserProfile,suspendBusiness,AllBaitPlants,AllBusinessOwners,AllAuctions,AllBusiness,get_all_categories,update_bait_plant,create_category,getUserProfile, suspendAuction,activateOwnerProfile, activateAuction, activateBusiness, activateUserProfile}=require('../controllers/admin_controllers');
+const {AllUsers,AllCarts,getAllCashOutRequests,getAllPastOrders,suspendUserProfile,suspendBusiness,AllBaitPlants,AllBusinessOwners,AllAuctions,AllBusiness,get_all_categories,update_bait_plant,create_category,getUserProfile, suspendAuction,activateOwnerProfile, activateAuction, activateBusiness, activateUserProfile}=require('../controllers/admin_controllers');
 
 const { suspendBusinessOwner } = require('../controllers/owner');
 
@@ -45,6 +45,9 @@ router.patch('/validate/owner/:owner_id',activateOwnerProfile)
 router.patch('/owner/cash-out/request/:request_id',admin_get_status_requests);
 
 //get all cash out requests
-router.get('/owner/cash-out/requests',admin_get_all_requests)
+router.get('/owner/cash-out/requests',admin_get_all_requests);
+
+//get all cash out requests
+router.get('/cash-out/requests',getAllCashOutRequests)
 
 module.exports=router
