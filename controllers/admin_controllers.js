@@ -35,6 +35,9 @@ const AllAuctions=async(req,res)=>{
 const AllBaitPlants=async(req,res)=>{
     try {
        const bait = await Bait.find({})
+       if(bait.length===0){
+        return res.status(StatusCodes.OK).json({message:"No Baits Exist At the Moment"})
+       }
        return res.status(StatusCodes.OK).json(bait)
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false,message:error.message})
@@ -135,29 +138,32 @@ const activateAuction=async(req,res)=>{
 const activateBusiness=async(req,res)=>{
 
     try{
-     const business=await Business.findById({_id:req.params.businessId});
-     console.log(business)
-     if(!business){
-         throw new NotFoundError(`No Business With id ${req.params.businessId}`)
-     }
-     business.status='Active';
-     let newBusiness=business;
-     await Business.findByIdAndUpdate(req.params.id,{$set:newBusiness},{new:true});
-     await newBusiness.save();
-     return res.status(StatusCodes.OK).json({status:true,message:"Your Business Account Has Been Activated"});
- }catch(error){
-     return res.status(StatusCodes.OK).json({status:false,message:error.message});
+        const {newStatus}=req.body;
+        const business=await Business.findById({_id:req.params.businessId});
+
+        //console.log(business)
+        if(!business){
+             throw new NotFoundError(`No Business With id ${req.params.businessId}`)
+        }
+        business.status=newStatus;
+        let newBusiness=business;
+        await Business.findByIdAndUpdate(req.params.id,{$set:newBusiness},{new:true});
+        await newBusiness.save();
+        return res.status(StatusCodes.OK).json({status:true,message:"Your Business Account Has Been Activated"});
+    }catch(error){
+        return res.status(StatusCodes.OK).json({status:false,message:error.message});
  }
  }
 
 //activate user
 const activateUserProfile=async(req,res)=>{
     try {
+        const {newStatus}=req.body;
         const user=await User.findById({_id:req.params.userId});
         if(!user){
             return res.status(StatusCodes.NOT_FOUND).json({message:"The user does not exist"})
         }
-        user.status="Active";
+        user.status=newStatus;
         let newUser=user;
         await User.findByIdAndUpdate(req.params.userId,{$set:newUser},{new:true});
         await newUser.save();
@@ -166,4 +172,22 @@ const activateUserProfile=async(req,res)=>{
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:error.message})
     }
 }
-module.exports={AllUsers,activateUserProfile,activateAuction,activateBusiness,suspendAuction,suspendUserProfile,suspendBusiness,AllCarts,AllBaitPlants,getAllPastOrders,AllBusiness,AllAuctions,AllBusinessOwners,get_all_categories,create_category,getAllUsersProfiles,update_bait_plant,getUserProfile,admin_get_status_requests,admin_get_all_requests}
+
+//activate owner
+const activateOwnerProfile=async(req,res)=>{
+    try {
+        const{newStatus}=req.body;
+        const owner=await BusinessOwner.findById({_id:req.params.owner_id});
+        if(!owner){
+            return res.status(StatusCodes.NOT_FOUND).json({message:"The owner does not exist"})
+        }
+        owner.status=newStatus;
+        let newOwner=owner;
+        await BusinessOwner.findByIdAndUpdate(req.params.owner_id,{$set:newOwner},{new:true});
+        await newOwner.save();
+        return res.status(StatusCodes.OK).json({message:"owner profile activated"})
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:error.message})
+    }
+}
+module.exports={AllUsers,activateOwnerProfile,activateUserProfile,activateAuction,activateBusiness,suspendAuction,suspendUserProfile,suspendBusiness,AllCarts,AllBaitPlants,getAllPastOrders,AllBusiness,AllAuctions,AllBusinessOwners,get_all_categories,create_category,getAllUsersProfiles,update_bait_plant,getUserProfile,admin_get_status_requests,admin_get_all_requests}

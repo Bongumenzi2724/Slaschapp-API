@@ -1,6 +1,7 @@
 const mongoose=require('mongoose') 
 
 const AdminSchema=new mongoose.Schema({
+
     name:{
         type:String,
         lowercase:true,
@@ -20,11 +21,16 @@ const AdminSchema=new mongoose.Schema({
         unique:true,
         lowercase:true
     },
+    lastName:{
+        type:String,
+        required:[false,'Please Provide Your Last Name']
+    },
     wallet:{
         type:Number,
         required:false,
         default:0
     }
+
 });
 
 

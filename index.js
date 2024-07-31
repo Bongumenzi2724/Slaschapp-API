@@ -75,7 +75,7 @@ const YAML=require('yamljs')
 const swaggerDocument=YAML.load('./swagger.yaml')
 
 //Routes
-app.use('/api/slaschapp/admin',adminRouter);
+app.use('/api/slaschapp/admin',authenticateUser,adminRouter);
 
 app.use('/api/slaschapp/business/auction',authenticateUser,businessRouter);
 

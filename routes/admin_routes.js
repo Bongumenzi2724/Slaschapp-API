@@ -2,7 +2,7 @@ const express=require('express');
 
 const router=express.Router();
 
-const {AllUsers,AllCarts,getAllPastOrders,suspendUserProfile,suspendBusiness,AllBaitPlants,AllBusinessOwners,AllAuctions,AllBusiness,get_all_categories,update_bait_plant,create_category,getUserProfile, suspendAuction, activateAuction, activateBusiness, activateUserProfile}=require('../controllers/admin_controllers');
+const {AllUsers,AllCarts,getAllPastOrders,suspendUserProfile,suspendBusiness,AllBaitPlants,AllBusinessOwners,AllAuctions,AllBusiness,get_all_categories,update_bait_plant,create_category,getUserProfile, suspendAuction,activateOwnerProfile, activateAuction, activateBusiness, activateUserProfile}=require('../controllers/admin_controllers');
 
 const { suspendBusinessOwner } = require('../controllers/owner');
 
@@ -32,11 +32,13 @@ router.patch('/suspend/user/:userId',suspendUserProfile)
 //suspend business owner
 router.patch('/suspend/owner/:ownerId',suspendBusinessOwner)
 //activate auction
-router.patch('/activate/auction/:auctionId',activateAuction)
+router.patch('/validate/auction/:auctionId',activateAuction)
 //activate business
-router.patch('/activate/business/:businessId',activateBusiness)
+router.patch('/validate/business/:businessId',activateBusiness)
 //activate user
-router.patch('/activate/user/:userId',activateUserProfile)
+router.patch('/validate/user/:userId',activateUserProfile)
+//activate owner
+router.patch('/validate/owner/:owner_id',activateOwnerProfile)
 
 //admin cash out request routes
 router.patch('/owner/cash-out/request/:request_id',admin_get_status_requests);
