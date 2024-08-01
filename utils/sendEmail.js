@@ -1,5 +1,5 @@
+const { StatusCodes } = require('http-status-codes');
 const nodemailer=require('nodemailer');
-
 const sendEmail=async(email,resetToken)=>{
     let userEmail='';
     try {
@@ -22,7 +22,7 @@ const sendEmail=async(email,resetToken)=>{
         transporter.sendMail(mailOptions,(error,info)=>{
         if(error){
             //console.log(error);
-            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:'Error Sending Email'})
+            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:error.message})
         }
         else{
             //console.log("OTP Sent Successfully");
@@ -31,7 +31,7 @@ const sendEmail=async(email,resetToken)=>{
 
 
     } catch (error) {
-        //console.error(error);
+        console.error(error);
         //return res.status(500).json({message:error.message});
     }
 }
