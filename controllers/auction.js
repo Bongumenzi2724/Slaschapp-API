@@ -17,7 +17,7 @@ const createAuction=async(req,res)=>{
         //check if there is an existing subscription
         const subscription=await Subscription.findOne({createdBy:req.body.createdBy});
 
-        if(subscription && (subscription.subscriptionStatus).toLowerCase()==='inactive'){
+        if(subscription===null && (subscription.subscriptionStatus).toLowerCase()==='inactive'){
 
             return res.status(409).json({message:"Outstanding subscription,please pay your subscription"});
 
