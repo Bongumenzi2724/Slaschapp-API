@@ -10,6 +10,7 @@ const Admin=require('../models/AdminSchema');
 
 //register app user
 const registerUser= async(req,res)=>{
+
     try{  
         //generate the otp to send to the user
         const userOtp=generateOtp();
@@ -52,6 +53,7 @@ const loginUser=async(req,res)=>{
         return res.status(500).json({message:error.message});
     }
 }
+
 //login business owner
 const loginBusinessOwner=async(req,res)=>{
 
@@ -80,6 +82,7 @@ const loginBusinessOwner=async(req,res)=>{
 
     res.status(StatusCodes.OK).json({owner:{id:owner._id,name:owner.firstname,surname:owner.surname,wallet:owner.wallet,email:owner.email},token:{token}})
 }
+
 //register app user
 const UserRegistration=async(req,res)=>{
 
@@ -143,6 +146,7 @@ const UserRegistration=async(req,res)=>{
         }
     }
 }
+
 //register business owner
 const registerBusinessOwner=async(req,res)=>{
 
@@ -199,7 +203,7 @@ const registerBusinessOwner=async(req,res)=>{
         }
     }
 }
-
+//register administration
 const registerAdmin=async(req,res)=>{
     try {
         const adminOtp=generateOtp();
@@ -214,8 +218,7 @@ const registerAdmin=async(req,res)=>{
         return res.status(500).status({status:false,message:error})
     }
 }
-
-
+//login administration
 const loginAdmin=async(req,res)=>{
 
     try {

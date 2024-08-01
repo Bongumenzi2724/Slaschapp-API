@@ -16,8 +16,11 @@ const createAuction=async(req,res)=>{
         req.body.createdBy=req.user.userId;
         //check if there is an existing subscription
         const subscription=await Subscription.findOne({createdBy:req.body.createdBy});
-        if((subscription.subscriptionStatus).toLowerCase()==='inactive'){
+
+        if(subscription && (subscription.subscriptionStatus).toLowerCase()==='inactive'){
+
             return res.status(409).json({message:"Outstanding subscription,please pay your subscription"});
+
         }
         if(req.body.campaignName==false||req.body.campaignBudget==false||req.body.campaignDailyBudget==false||req.body.campaignDescription==false||req.body.campaignStartDate==false||req.body.interests==false||req.body.age==false||req.body.gender==false||req.body.location==false||req.body.birthdays==false||req.body.languages==false){
         
@@ -25,7 +28,9 @@ const createAuction=async(req,res)=>{
         } 
         else{
             const newAuction=await Auction.create({...req.body});
+
             const Business=await BusinessRegistrationSchema.findById({_id:req.params.businessId});
+
             if(!Business){
                 return res.status(404).json({message:"Business Not Found"});
             }
@@ -37,6 +42,7 @@ const createAuction=async(req,res)=>{
         return res.status(StatusCodes.NOT_FOUND).json({message:error.message});
     }
 }
+
 
 //update auction
 const updateAuctions=async(req,res)=>{
