@@ -24,15 +24,17 @@ const createAuction=async(req,res)=>{
             return res.status(StatusCodes.EXPECTATION_FAILED).json({message:"Please Provide All The Fields"})
         } 
         else{
-            const newAuction=await Auction.create({...req.body});
-
             const Business=await BusinessRegistrationSchema.findById({_id:req.params.businessId});
-
             if(!Business){
                 return res.status(404).json({message:"Business Not Found"});
             }
+
+            const newAuction=await Auction.create({...req.body});
+
             const ownerOtp=generateOTP();
+
             await sendEmail(Business.email,ownerOtp);
+            
             return res.status(StatusCodes.CREATED).json({newAuction});
     } 
     } catch (error) {
