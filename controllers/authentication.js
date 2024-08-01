@@ -18,12 +18,13 @@ const registerUser= async(req,res)=>{
         const newUser=await User.create({...req.body});
         const result=await newUser.save();
         const token=newUser.createJWT();
-        return res.status(201).json({User:result,token:token,message:`email sent to ${result.email} with OTP ${userOtp} for verification`});
+        return res.status(201).json({User:result,token:token});
 
     }catch(error){
         return res.status(500).status({status:false,message:error})
     }
 }
+
 //login app user
 const loginUser=async(req,res)=>{
     try {
