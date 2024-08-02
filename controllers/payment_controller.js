@@ -3,12 +3,12 @@ const BusinessOwnerRegistration = require('../models/BusinessOwnerRegistration')
 const Cart = require("../models/Cart");
 const Admin = require("../models/AdminSchema");
 
-
 //payment controller
 const payment_controller=async(req,res)=>{
    // find the cart being processed
    const admin=await Admin.find({});
    const {cart_id}=req.params;
+   const {otp}=req.body
    
    const cart=await Cart.findOne({_id:cart_id});
  
@@ -17,7 +17,7 @@ const payment_controller=async(req,res)=>{
    }
    const userId=(cart.userId).toString();
 
-   if(cart.paymentMethod==="Cash"){
+   if(cart.paymentMethod==="Cash" && cart.cartOTP===otp){
 
     //find the user to update the rewards
     const cart_user=await User.findById({_id:userId});

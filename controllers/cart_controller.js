@@ -19,7 +19,6 @@ const getCart=async(req,res)=>{
 }
 
 const create_cart=async(req,res)=>{
-
    try {
 
     const auctionName=req.body.auctionName;
@@ -31,25 +30,22 @@ const create_cart=async(req,res)=>{
     const paymentMethod=req.body.paymentMethod;
     const totalCartPrice=req.body.totalCartPrice;
     const totalCartQuantity=req.body.totalCartQuantity;
-
+    const cartOTP=generateOtp();
     let expiryDate1=new Date();
     expiryDate1.setTime(expiryDate1.getTime()+(30*24*60*60*100))
 
     if(paymentMethod==="Cash"){
-        //sendOTP
-        const cartOTP=generateOtp();
-
         const cart_owner=await User.findById({_id:userId});
         if(!cart_owner){
             return res.status(404).json({message:"User Does Not Exist"});
         }
         await sendEmail(cart_owner.email,cartOTP);
     }
+
     if(auctionName==false||auctionId==false||status==false||code==false||baits==false||paymentMethod==false||totalCartPrice==false||totalCartQuantity==false){
         return res.status(StatusCodes.EXPECTATION_FAILED).json({message:"Please Provide All The Fields"})
     }
     const newCart=new Cart({
-        //set the userID
         userId:userId,
         auctionName:auctionName,
         auctionId:auctionId,
@@ -59,8 +55,9 @@ const create_cart=async(req,res)=>{
         status:status.toLowerCase(),
         code:code,
         paymentMethod:paymentMethod,
-        expiryDate:expiryDate1
-    })
+        expiryDate:expiryDate1,
+        cartOTP:cartOTP
+    });
     await newCart.save();
     return res.status(201).json({message:"New Cart Created",status:newCart.status,cart:newCart});
 

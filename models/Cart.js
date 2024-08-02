@@ -43,7 +43,11 @@ const CartSchema=new mongoose.Schema({
     paymentMethod:{
         type:String
     },
-    
+    cartOTP:{
+        type:String,
+        expires:'5m',
+        required:true
+    },
     expiryDate:{
         type:Date
     }
