@@ -3,6 +3,8 @@ const {StatusCodes}=require('http-status-codes')
 const generateOtp=require('../utils/generateOtp');
 const sendEmail=require('../utils/sendEmail');
 const User=require('../models/UserRegistrationSchema');
+
+
 const getCart=async(req,res)=>{
     
     try {
@@ -19,6 +21,7 @@ const getCart=async(req,res)=>{
 }
 
 const create_cart=async(req,res)=>{
+
    try {
 
     const auctionName=req.body.auctionName;
@@ -101,8 +104,7 @@ const update_Cart_Status=async(req,res)=>{
     //updating the cart means updating the status of the cart
     try {
         const cart=await Cart.findOne({userId:req.user.userId,_id:req.params.cartId});
-    
-        console.log(cart)
+
         if(!cart||cart.status=="Expired"){
             return res.status(404).json({status:false,message:`The cart requested has the following status : ${cart.status==="Expired" ? "Expired" : "The Cart Does Not Exist"}`})
         }
@@ -112,6 +114,7 @@ const update_Cart_Status=async(req,res)=>{
         //console.log(newCart);
         await Cart.updateOne({userId:req.user.userId,_id:cart._id},{$set:newCart},{new:true,runValidators:true})
         return res.status(200).json({status:true,message:"Cart Status Successfully Updated"})
+        
     } catch (error) {
         return res.status(500).json({status:false,message:error.message})
     }
@@ -120,7 +123,6 @@ const update_Cart_Status=async(req,res)=>{
 
 const getAllOrders=async(req,res)=>{    
     try {
-        console.log(req.user.userId)
         const AllOrders=await Cart.findOne({userId:req.user.userId});
         return res.status(200).json({orders:AllOrders})
     } catch (error) {
@@ -131,18 +133,22 @@ const getAllOrders=async(req,res)=>{
 }
 
 const searchBasedOnCode=async(req,res)=>{
-
     try {
-        const newCart=await Cart.find({code:req.params.code});
+        const userId=req.user.userId;
 
-        console.log(newCart);
+        const newCart=await Cart.find({code:req.params.code});   
         
-        if(newCart.length==0){
+        if(!newCart){
+            return res.status(404).json({message:`Cart with code ${req.params.code} does not exist`})
+        }
+        if(newCart.length===0){
             return res.status(404).json({status:false,messages:`Cart with code:${req.params.code} Does Not Exist`});
         }
         return res.status(200).json({message:"Cart",cart:newCart})
     } catch (error) {
+
         return res.status(500).json({status:false,message:error.message});
+
     }
 }
 

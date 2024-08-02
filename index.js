@@ -78,28 +78,37 @@ const swaggerDocument=YAML.load('./swagger.yaml')
 //Routes
 app.use('/api/slaschapp/admin',authenticateUser,adminRouter);
 
+//auction middleware router
 app.use('/api/slaschapp/business/auction',authenticateUser,businessRouter);
+
 //authentication router
 app.use('/api/slaschapp/auth',authRouter);
 
 //admin login router
 app.use('/api/slaschapp/credentials/admin',adminLoginRouter)
 
+//Business Middleware
 app.use('/api/slaschapp/business',authenticateUser,businessRouter);
 
+//Business Search
 app.use('/api/slaschapp/search',authenticateUser,businessSearchRouter);
 
+//Data Analytics
 app.use('/api/slaschapp/data',dataRouter);
 
+//Bait Plants Middleware
 app.use('/api/slaschapp/business',authenticateUser,baitRouter);
 
+//Categories Plant Middleware
 app.use('/api/slaschapp/category',categoriesRouter);
 
-//authenticate the feeds 
+//feeds route
 app.use('/api/slaschapp/feeds',authenticateUser,feedsRoute);
 
+//Business Owner Middleware
 app.use('/api/slaschapp/business/owner',authenticateUser,ownerRouter);
 
+//Cart Middleware
 app.use('/api/slaschapp/cart',authenticateUser,cartRouter);
 
 //subscription main route
@@ -108,17 +117,25 @@ app.use('/api/slaschapp/subscription',authenticateUser,subscriptionRouter);
 //accounts main route
 app.use('/api/slaschapp/transaction',authenticateUser,accountRouter);
 
+//Master search route
 app.use('/api/slaschapp/master',authenticateUser,searchRouter);
 
+//User Profile main route
 app.use('/api/slaschapp/profile',authenticateUser,userProfile);
 
+//Owner profile main route
 app.use('/api/slaschapp/owner/profile',authenticateUser,ownerProfile);
 
+//verification main route
 app.use('/api/slaschapp/verification',authenticateUser,verificationRouter);
 
+//process payment main route
 app.use('/api/slaschapp/process',authenticateUser,paymentRouter);
 
+//password payment
 app.use('/api/slaschapp/password',passwordsRouter);
+
+
 
 app.get('/',(req,res)=>{
     res.send('<h1>Business API</h1><a href="/api-docs">Documentation</a>');
@@ -133,6 +150,7 @@ app.use(notFoundMiddleWare)
 app.use(errorHandlerMiddleWare)
 
 const port=process.env.PORT||5000
+
 //Starting Database Connection
 
 const start=async()=>{
@@ -144,6 +162,8 @@ const start=async()=>{
         console.log(error)
     }
 }
+
+//start the database 
 
 start()
 
