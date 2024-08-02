@@ -1,6 +1,8 @@
 const Cart = require("../models/Cart");
 const {StatusCodes}=require('http-status-codes')
-
+const generateOtp=require('../utils/generateOtp');
+const sendEmail=require('../utils/sendEmail');
+const User=require('../models/UserRegistrationSchema');
 const getCart=async(req,res)=>{
     
     try {
@@ -32,7 +34,17 @@ const create_cart=async(req,res)=>{
 
     let expiryDate1=new Date();
     expiryDate1.setTime(expiryDate1.getTime()+(30*24*60*60*100))
-  
+
+    if(paymentMethod==="Cash"){
+        //sendOTP
+        const cartOTP=generateOtp();
+
+        const cart_owner=await User.findById({_id:userId});
+        if(!cart_owner){
+            return res.status(404).json({message:"User Does Not Exist"});
+        }
+        await sendEmail(cart_owner.email,cartOTP);
+    }
     if(auctionName==false||auctionId==false||status==false||code==false||baits==false||paymentMethod==false||totalCartPrice==false||totalCartQuantity==false){
         return res.status(StatusCodes.EXPECTATION_FAILED).json({message:"Please Provide All The Fields"})
     }
