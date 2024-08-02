@@ -180,7 +180,7 @@ const registerBusinessOwner=async(req,res)=>{
         result=await newOwner.save();
         const token=newOwner.createJWT();
 
-        return res.status(201).json({BusinessOwner:result,token:token,message:`email sent to ${result.email} with OTP ${ownerOtp} for verification`});
+        return res.status(201).json({BusinessOwner:result,token:token});
 
     }catch(error){
         //console.log(error);

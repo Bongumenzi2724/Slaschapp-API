@@ -48,7 +48,7 @@ const createBusiness=async(req,res)=>{
 
         await sendEmail(owner.email,ownerOtp);
 
-        return res.status(StatusCodes.CREATED).json({business:business,message:`email sent to ${result.email} with OTP ${ownerOtp} for verification`});
+        return res.status(StatusCodes.CREATED).json({business:business});
         
     }
     }catch(error){
