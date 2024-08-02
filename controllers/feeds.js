@@ -25,7 +25,7 @@ const getAllAuctions=async(req,res)=>{
     //i. Filter all auctions based on the aucquisition bid
     //ii.The highest acquisition bid is placed highest on the user feed
 
-    const AllAuctions=await AuctionSchema.aggregate([{$sort:{acquisitionBid:-1}},{$project:{updatedAt:0}}]);
+    const AllAuctions=await AuctionSchema.aggregate([{$sort:{acquisitionBid:-1}},{$match:{status:"Active"}},{$project:{updatedAt:0}}]);
     //const AllAuction=await AuctionSchema.aggregate([{$project:{updatedAt:0,createdAt:0,__v:0}},{$match:{status:"Active"}}]);
     return res.status(StatusCodes.OK).json({auctionFeed:AllAuctions,count:AllAuctions.length});
 };
