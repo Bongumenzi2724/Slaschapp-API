@@ -28,9 +28,9 @@ const createAuction=async(req,res)=>{
             if(!Business){
                 return res.status(404).json({message:"Business Not Found"});
             }
-
+            
             const newAuction=await Auction.create({...req.body});
-
+            
             const ownerOtp=generateOTP();
 
             await sendEmail(Business.email,ownerOtp);

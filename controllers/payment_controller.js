@@ -136,14 +136,19 @@ const payment_controller=async(req,res)=>{
     if(user.rewards<cart.totalCartPrice){
         return res.status(403).json({message:"Insufficient rewards to process payment try another method"});
     }
+    
     user.rewards-=cart.totalCartQuantity;
     let newUser=user;
     user.rewards+=auction.acquisitionBid*0.60;
+
     admin.wallet+=auction.acquisitionBid*0.40;
+
     let newAdmin=admin;
+
     //update admin wallet
     await Admin.findOneAndUpdate({email:admin.email},{$set:newAdmin},{new:true});
     await newAdmin.save();
+
     //update user with rewards
     await User.findByIdAndUpdate({_id:userId},{$set:newUser},{new:true});
     await newUser.save();
