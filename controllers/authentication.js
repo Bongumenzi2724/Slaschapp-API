@@ -60,7 +60,7 @@ const loginBusinessOwner=async(req,res)=>{
     const {email,password}=req.body;
 
     const email1=email.toLowerCase();
-
+    console.log(email1);
     if(!email||!password){
         throw new BadRequestError("Please provide email and password");
     }
@@ -155,8 +155,9 @@ const registerBusinessOwner=async(req,res)=>{
 
             return res.status(StatusCodes.EXPECTATION_FAILED).json({message:"Please Provide All The Fields"})
         } 
-
+        
         const ownerOtp=generateOtp();
+
         await sendEmail(req.body.email,ownerOtp);
 
       /*   const newOwner=new BusinessOwner({
@@ -175,32 +176,20 @@ const registerBusinessOwner=async(req,res)=>{
             gender:req.body.gender,
             otp:ownerOtp
         }); */
+
         req.body.otp=ownerOtp;
+       
         const newOwner=await BusinessOwner.create({...req.body});
+
         result=await newOwner.save();
+
         const token=newOwner.createJWT();
 
         return res.status(201).json({BusinessOwner:result,token:token});
 
     }catch(error){
-        //console.log(error);
-
-        if(error instanceof MongoServerError && error.code===11000){
-            let errorMessage='';
-            if(error.errorResponse.keyValue.email==(req.body.email).toString()){
-               
-                errorMessage=`An error occurred email ${error.errorResponse.keyValue.email} already exist`;
-            }
-            else{
-                errorMessage=`An error occurred password already exist`;
-            }
+            console.log(error);
             return res.status(409).json({message:errorMessage})
-        }
-
-        else{
-            //console.error(error);
-            return res.status(500).status({status:false,message:error})
-        }
     }
 }
 //register administration

@@ -31,15 +31,12 @@ const CartSchema=new mongoose.Schema({
         size:String,
         color:String
     }],
-
     status:{
         type:String
     },
-
     code:{
         type:String
     },
-
     paymentMethod:{
         type:String
     },

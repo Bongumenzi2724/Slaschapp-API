@@ -6,16 +6,18 @@ const {StatusCodes}=require('http-status-codes');
 //create a bait plant
 
 const create_bait_plant=async(req,res)=>{
+    
     try{ 
         req.body.createdBy=req.user.userId;
+
         if(req.body.baitPlantName==false||req.body.baitPlantDescription==false||req.body.checkInStoreAvailability==false||req.body.price==false||req.body.color==false||req.body.status==false||req.body.size==false||req.body.photos==false){
             return res.status(StatusCodes.EXPECTATION_FAILED).json({message:"Please Provide All The Fields"})
-        } 
+        }
+
         let baitPlant=new Bait({
             baitPlantName:req.body.baitPlantName,
             baitPlantDescription:req.body.baitPlantDescription,
             checkInStoreAvailability:req.body.checkInStoreAvailability,
-
             price:req.body.price,
             color:req.body.color,
             status:req.body.status,
@@ -24,7 +26,7 @@ const create_bait_plant=async(req,res)=>{
             auctionID:req.params.auctionID
         });
         baitPlant.save();
-        res.status(StatusCodes.CREATED).json({baitPlant});
+        return res.status(StatusCodes.CREATED).json({baitPlant});
         }
     catch(error){
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).status({status:false,message:error.message});

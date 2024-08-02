@@ -42,7 +42,6 @@ const createAuction=async(req,res)=>{
     }
 }
 
-
 //update auction
 const updateAuctions=async(req,res)=>{
     try {

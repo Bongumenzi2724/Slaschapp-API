@@ -20,6 +20,7 @@ router.patch('/login/user/reset',user_password_reset)
 
 //register business owner
 router.post('/register/owner',registerBusinessOwner)
+
 //login business owner
 router.post('/login/owner',loginBusinessOwner)
 

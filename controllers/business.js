@@ -10,6 +10,7 @@ const generateOtp=require('../utils/generateOtp');
 const sendEmail=require('../utils/sendEmail');
 
 //Create A Single Business
+
 const createBusiness=async(req,res)=>{
     try{ 
         req.body.createdBy=req.user.userId;
@@ -57,6 +58,7 @@ const createBusiness=async(req,res)=>{
 }
 
 //Get All Businesses Specific for A Single Business Owner Whose Status Is Active
+
 const getAllBusinesses =async(req,res) =>{
     let userId=req.user.userId;
     const businesses=await Business.find({$and:[{createdBy:userId},{status:{$in:["Active"]}}]})
