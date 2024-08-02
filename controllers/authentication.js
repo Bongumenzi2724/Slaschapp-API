@@ -58,14 +58,12 @@ const loginUser=async(req,res)=>{
 const loginBusinessOwner=async(req,res)=>{
 
     const {email,password}=req.body;
-
-    const email1=email.toLowerCase();
-    console.log(email1);
+    console.log(email);
     if(!email||!password){
         throw new BadRequestError("Please provide email and password");
     }
-    const owner= await BusinessOwner.findOne({email:email1});
-
+    const owner= await BusinessOwner.findOne({email:email});
+    console.log(owner);
     if(!owner){
         throw new UnauthenticatedError('Invalid Email or Password');
     }
