@@ -48,7 +48,7 @@ const getAllAuctions=async(req,res)=>{
         //auction location
         const auctionLocation=AllAuctions[j].location.toLowerCase();
         //comapre the equality of the two strings
-        const match=user_location===auctionLocation;
+        const match=user_location === auctionLocation || AllAuctions[j].location==="All";
 
         if(match){
             //check the gender

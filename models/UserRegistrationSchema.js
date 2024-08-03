@@ -2,7 +2,6 @@ const mongoose=require('mongoose');
 const jwt = require('jsonwebtoken');
 
 const UserSchema = new mongoose.Schema({
-
     firstname:{
         type:String,
         required:[true,'Please Provide Your First Name']
@@ -88,8 +87,7 @@ const UserSchema = new mongoose.Schema({
     status:{
         type:String,
         default:"Active"
-    }
-    
+    } 
 },{timestamps:true});
 
 UserSchema.pre('save',async function(){

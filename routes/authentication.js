@@ -6,8 +6,6 @@ const {loginUser,registerUser,registerAdmin,loginAdmin,registerBusinessOwner,Use
 const { owner_password_reset, owner_forgot_password} = require('../controllers/owner_password_controllers');
 const { user_forgot_password, user_password_reset } = require('../controllers/user_password_controller');
 
-
-
 //register app user
 router.post('/register/user',registerUser);
 //login app user

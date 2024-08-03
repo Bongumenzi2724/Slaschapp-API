@@ -142,47 +142,16 @@ const UserRegistration=async(req,res)=>{
         }
     }
 }
-
 //register business owner
 const registerBusinessOwner=async(req,res)=>{
-
     try{ 
-        if(req.body.firstname==false||req.body.secondname==false||req.body.surname==false||req.body.profilePicture==false||req.body.AcceptTermsAndConditions==false||req.body.phoneNumber==false||req.body.email==false||req.body.password==false||req.body.locationOrAddress==false||req.body.birthday==false||req.body.IdNumber==false||req.body.IdDocumentLink==false||req.body.gender==false||req.body.wallet==false||req.body.status==false){
-
-            return res.status(StatusCodes.EXPECTATION_FAILED).json({message:"Please Provide All The Fields"})
-        } 
-        
         const ownerOtp=generateOtp();
-
         await sendEmail(req.body.email,ownerOtp);
-
-      /*   const newOwner=new BusinessOwner({
-            firstname:req.body.firstname,
-            secondname:req.body.secondname,
-            surname:req.body.surname,
-            profilePicture:req.body.profilePicture,
-            phoneNumber:req.body.phoneNumber,
-            email:req.body.email,
-            password:req.body.password,
-            AcceptTermsAndConditions:req.body.AcceptTermsAndConditions,
-            locationOrAddress:req.body.locationOrAddress,
-            birthday:req.body.birthday,
-            IdNumber:req.body.IdNumber,
-            IdDocumentLink:req.body.IdDocumentLink,
-            gender:req.body.gender,
-            otp:ownerOtp
-        }); */
-
         req.body.otp=ownerOtp;
-       
         const newOwner=await BusinessOwner.create({...req.body});
-
         result=await newOwner.save();
-
         const token=newOwner.createJWT();
-
         return res.status(201).json({BusinessOwner:result,token:token});
-
     }catch(error){
             console.log(error);
             return res.status(409).json({message:errorMessage})
