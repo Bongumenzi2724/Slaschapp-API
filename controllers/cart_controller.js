@@ -28,7 +28,7 @@ const create_cart=async(req,res)=>{
     const auctionId=req.body.auctionId;
     const status=req.body.status;
     const code=req.body.code;
-    const userId=req.user.userId;
+    const userId=(req.user.userId).toString();
     const baits=req.body.baits;
     const paymentMethod=req.body.paymentMethod;
     const totalCartPrice=req.body.totalCartPrice;
@@ -42,7 +42,7 @@ const create_cart=async(req,res)=>{
         const cart_owner=await User.findById({_id:userId});
         console.log(cart_owner.email);
 
-        //console.log(cart_owner);
+        console.log(cart_owner);
 
         if(!cart_owner){
             return res.status(404).json({message:"User Does Not Exist"});
