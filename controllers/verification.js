@@ -3,24 +3,24 @@ const Auction=require('../models/AuctionSchema');
 const sendEmail = require('../utils/sendEmail');
 const generateOTP = require('../utils/generateOtp');
 const auctionVerification=async(req,res)=>{
+
     try {
         const{auctionID,userId}=req.body;
 
         const auction=await Auction.findOne({_id:auctionID});
+
         if(!auction){
 
             throw new NotFoundError(`No auction with id ${auctionID}`);
 
         }
-        console.log(auction);
+        
         const userID=(req.user.userId).toString();
         
         const userID2=userId.toString();
 
         const userToCheckOut=await User.findById({_id:userID});
-
-        console.log(" ");
-        console.log(userToCheckOut);
+        console.log(userID===userID2);
 
         if(userID===userID2){
             const otp=generateOTP();
@@ -31,8 +31,12 @@ const auctionVerification=async(req,res)=>{
             //if the time expires deny checkout, set the status to false and return the appropriate message
 
             //
+            console.log("Successful Checkout");
+
             return res.status(200).json({message:"Authorized to checkout",status:true});
         }else{
+            console.log("Unsuccessful Checkout");
+
             return res.status(404).json({message:"Not Authorized To checkout",status:false});
         }
     } catch (error) {
