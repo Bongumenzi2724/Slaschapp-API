@@ -28,7 +28,7 @@ const AuctionSchema = new mongoose.Schema({
     },
     location:{
         type:String,
-        required:[true,"Please Provide Location"]
+        required:[false,"Please Provide Location"]
     },
     languages:{
         type:String,

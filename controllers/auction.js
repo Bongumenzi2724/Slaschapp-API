@@ -70,48 +70,13 @@ const updateAuctions=async(req,res)=>{
 const getAllAuctions=async(req,res)=>{
     try {
         const businessId=req.params.businessId;
-        const userId=req.user.userId;
-        const logged_in_user=await User.findById({_id:userId}); 
+         
         const auctionData=await Auction.find({
             $and:[
                 {businessId:businessId},
                 {status:{$in:["Active"]}}
             ]
         });
-        const marketed_auctions=[];
-
-        const location_array=["All"];
-
-        for(let i=0;i<auctionData.length-1;i++){
-
-            if(logged_in_user.gender===auctionData[i].gender){
-
-                const user_location=logged_in_user.locationOrAddress.match(/([^,])/g);
-
-                const auction_location=auctionData[i].interests.match(/([^,])/g);;
-
-                const match=user_location.some(item=>auction_location.includes(item));
-                if(match){
-                    //check the auction interests
-                    const auctionInterests=auctionData[i].interests.match(/([^,]+)/g);
-                    //check the user interests
-                    const userInterests=logged_in_user.interests.match(/([^,]+)/g);
-                    const hasMatch=auctionInterests.some(item=>userInterests.includes(item));
-                    if(hasMatch){
-                        marketed_auctions.push(auctionData[i]);
-                        //return the auctions
-                        return res.status(200).json({marketed_auctions,count:marketed_auctions.length});
-                    }
-                    else{
-                        return res.status(404).json({marketed_auctions,count:marketed_auctions.length})
-                    }
-                }
-                else{
-                    return res.status(404).json({marketed_auctions,count:marketed_auctions.length})
-                }
-                
-            }
-        }
        return res.status(StatusCodes.OK).json({auctionData,count:auctionData.length});
     } catch (error) {
         return res.status(StatusCodes.NOT_FOUND).json({message:error.message});

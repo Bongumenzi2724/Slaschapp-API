@@ -27,7 +27,44 @@ const getAllAuctions=async(req,res)=>{
 
     const AllAuctions=await AuctionSchema.aggregate([{$sort:{acquisitionBid:-1}},{$match:{status:"Active"}},{$project:{updatedAt:0}}]);
     //const AllAuction=await AuctionSchema.aggregate([{$project:{updatedAt:0,createdAt:0,__v:0}},{$match:{status:"Active"}}]);
-    return res.status(StatusCodes.OK).json({auctionFeed:AllAuctions,count:AllAuctions.length});
+    const logged_in_user=User.findById({_id:req.user.userId});
+
+    if(!logged_in_user){
+        return res.status(404).json({message:"The user does not exist"});
+    }
+    const marketing_auctions=[];
+
+    for(let j=0;j<AllAuctions.length-1;j++){
+
+        //user location
+        const user_location=logged_in_user.locationOrAddress.split(",").slice(-2).join(',').toLowerCase();
+        //auction location
+        const auctionLocation=AllAuctions[j].location.toLowerCase();
+        //comapre the equality of the two strings
+        const match=user_location===auctionLocation;
+
+        if(match){
+
+            //check the gender
+            if(logged_in_user.gender.toLowerCase()===AllAuctions[j].gender.toLowerCase() || AllAuctions[j].gender==="All"){
+
+                //check the interests
+                //check the auction interests
+
+                const auctionInterests=AllAuctions[j].interests.match(/([^,]+)/g);
+                //check the user interests
+                const userInterests=logged_in_user.interests.match(/([^,]+)/g);
+
+                const hasMatch=auctionInterests.some(item=>userInterests.includes(item));
+
+                if(hasMatch){
+                    //push the auction into the array
+                    marketing_auctions.push(AllAuctions[j]);
+                }
+            }
+        }
+    }
+    return res.status(StatusCodes.OK).json({auctionFeed:marketing_auctions,count:AllAuctions.length});
 };
 
 //only active owners feed
