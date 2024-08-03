@@ -52,7 +52,7 @@ const AuctionSchema = new mongoose.Schema({
     },
     category:{
         type:String,
-        required:[true,"Please Provide Gender"]
+        required:[true,"Please Provide Category"]
     },
     status:{
         type:String,

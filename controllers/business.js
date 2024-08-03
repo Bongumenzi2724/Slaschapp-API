@@ -14,12 +14,10 @@ const sendEmail=require('../utils/sendEmail');
 const createBusiness=async(req,res)=>{
     try{ 
         req.body.createdBy=req.user.userId;
-         
         if(req.body.BusinessName==false||req.body.PhoneNumber==false||req.body.BusinessEmail==false||req.body.AcceptTermsAndConditions==false||req.body.BusinessCategory==false||req.body.BusinessLocation==false||req.body.BusinessHours==false||req.body.BusinessLogo==false||req.body.BusinessType==false||req.body.BusinessBio==false||req.body.verificationDoc==false||req.body.status==false||req.body.socials==false){
             return res.status(StatusCodes.EXPECTATION_FAILED).json({message:"Please Provide All The Fields"})
         } 
         else{
-
         const newBusiness=new Business({
             BusinessName:req.body.BusinessName,
             PhoneNumber:req.body.PhoneNumber,
@@ -36,19 +34,13 @@ const createBusiness=async(req,res)=>{
             socials:req.body.socials,
             createdBy:req.user.userId
         });
-
         const business = await newBusiness.save(); 
-
         const owner=await BusinessOwner.findById({_id:newBusiness.createdBy});
-
         if(!owner){
             return res.status(404).json({message:"Business Owner Not Found"});
         }
-
         const ownerOtp=generateOtp();
-
         await sendEmail(owner.email,ownerOtp);
-
         return res.status(StatusCodes.CREATED).json({business:business});
         
     }
