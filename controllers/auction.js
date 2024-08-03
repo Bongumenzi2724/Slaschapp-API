@@ -82,6 +82,7 @@ const getAllAuctions=async(req,res)=>{
         return res.status(StatusCodes.NOT_FOUND).json({message:error.message});
     }
 }
+
 //Get single auction
 const getSingleAuction=async(req,res)=>{
     try {
@@ -97,6 +98,7 @@ const getSingleAuction=async(req,res)=>{
         return res.status(StatusCodes.NOT_FOUND).json({message:error.message});
     }
 }
+
 //Get auction
 const deleteSingleAuction=async(req,res)=>{
 

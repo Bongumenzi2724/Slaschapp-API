@@ -12,12 +12,15 @@ const auctionVerification=async(req,res)=>{
             throw new NotFoundError(`No auction with id ${auctionID}`);
 
         }
-
+        console.log(auction);
         const userID=(req.user.userId).toString();
         
         const userID2=userId.toString();
 
         const userToCheckOut=await User.findById({_id:userID});
+
+        console.log(" ");
+        console.log(userToCheckOut);
 
         if(userID===userID2){
             const otp=generateOTP();

@@ -134,10 +134,9 @@ const getAllOrders=async(req,res)=>{
 
 const searchBasedOnCode=async(req,res)=>{
     try {
-        const userId=req.user.userId;
-
-        const newCart=await Cart.find({code:req.params.code});   
         
+        const newCart=await Cart.find({code:req.params.code});   
+        console.log(newCart);
         if(!newCart){
             return res.status(404).json({message:`Cart with code ${req.params.code} does not exist`})
         }
