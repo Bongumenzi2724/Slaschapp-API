@@ -1,5 +1,5 @@
 const nodemailer=require('nodemailer');
-const {StatusCodes}=require('http-status-codes');
+//const {StatusCodes}=require('http-status-codes');
 const automatedEmail=async(email,message)=>{
     //call the generate otp method
     let userEmail='';

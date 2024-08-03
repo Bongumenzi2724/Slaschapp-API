@@ -1,4 +1,4 @@
-const { StatusCodes } = require('http-status-codes');
+//const { StatusCodes } = require('http-status-codes');
 const nodemailer=require('nodemailer');
 const sendEmail=async(email,resetToken)=>{
     let userEmail='';
@@ -12,6 +12,7 @@ const sendEmail=async(email,resetToken)=>{
             pass:'uoby xoot pebo fwrx'
         }
         });
+
         const mailOptions={
         from:'nuenginnovations@gmail.com',
         to:email,
@@ -20,12 +21,13 @@ const sendEmail=async(email,resetToken)=>{
         };
 
         transporter.sendMail(mailOptions,(error,info)=>{
+
         if(error){
-            //console.log(error);
-            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:error.message})
+            console.log(error);
+            //return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:error.message})
         }
         else{
-            //console.log("OTP Sent Successfully");
+            console.log("OTP Sent Successfully");
         }
         })
 
@@ -35,5 +37,4 @@ const sendEmail=async(email,resetToken)=>{
         //return res.status(500).json({message:error.message});
     }
 }
-
 module.exports=sendEmail;
