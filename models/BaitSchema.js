@@ -25,7 +25,7 @@ price:{
 },
 color:{
     type:String,
-    required:[false,'Please Provide The Color For Your Bait Plant If Present']
+    required:false
 },
 status:{
     type:String,
