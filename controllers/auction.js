@@ -15,6 +15,10 @@ const createAuction=async(req,res)=>{
     try {
         req.body.businessId=req.params.businessId;
         req.body.createdBy=req.user.userId;
+        
+        if(req.body.location===""){
+            req.body.location="All";
+        }
         //check if there is an existing subscription
         const subscription=await Subscription.findOne({createdBy:req.body.createdBy});
         if(subscription!==null && (subscription.subscriptionStatus).toLowerCase()==='inactive'){
