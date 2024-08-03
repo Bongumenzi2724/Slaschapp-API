@@ -15,16 +15,15 @@ const auctionVerification=async(req,res)=>{
             throw new NotFoundError(`No auction with id ${auctionID}`);
 
         }
-        
+
         const auction_owner_id=(auction.createdBy).toString();
         
-        console.log(auction_owner_id);
-
-        console.log(auction_owner_id===userId);
-
         if(auction_owner_id===userId){
-            const otp=generateOTP();
-            await sendEmail(userToCheckOut.email,otp);
+
+            //const otp=generateOTP();
+
+            //await sendEmail(userToCheckOut.email,otp);
+
             //wait for the user to respond in time
             //make time interval to insert the otp
             //if the time expires deny checkout, set the status to false and return the appropriate message
