@@ -18,6 +18,9 @@ const auctionVerification=async(req,res)=>{
 
         const auction_owner_id=(auction.createdBy).toString();
         
+        console.log("True Or False");
+        console.log(auction_owner_id===userId);
+
         if(auction_owner_id===userId){
 
             //const otp=generateOTP();
