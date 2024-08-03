@@ -53,7 +53,7 @@ const getAllAuctions=async(req,res)=>{
         if(match){
             //check the gender
 
-            if(user.gender.toLowerCase()===AllAuctions[j].gender.toLowerCase() || AllAuctions[j].gender==="All"){
+            if(user.gender.toLowerCase()===AllAuctions[j].gender.toLowerCase()){
 
                 //check the interests
                 //check the auction interests

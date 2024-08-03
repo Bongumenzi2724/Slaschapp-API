@@ -15,15 +15,17 @@ const createAuction=async(req,res)=>{
     try {
         req.body.businessId=req.params.businessId;
         req.body.createdBy=req.user.userId;
-        
+
         if(req.body.location===""){
             req.body.location="All";
         }
+
         //check if there is an existing subscription
         const subscription=await Subscription.findOne({createdBy:req.body.createdBy});
         if(subscription!==null && (subscription.subscriptionStatus).toLowerCase()==='inactive'){
             return res.status(409).json({message:"Outstanding subscription,please pay your subscription"});
         }
+        
         if(req.body.campaignName==false||req.body.campaignBudget==false||req.body.campaignDailyBudget==false||req.body.campaignDescription==false||req.body.campaignStartDate==false||req.body.interests==false||req.body.age==false||req.body.gender==false||req.body.location==false||req.body.birthdays==false||req.body.languages==false){
         
             return res.status(StatusCodes.EXPECTATION_FAILED).json({message:"Please Provide All The Fields"})

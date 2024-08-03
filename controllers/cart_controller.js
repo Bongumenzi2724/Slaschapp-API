@@ -38,11 +38,17 @@ const create_cart=async(req,res)=>{
     expiryDate1.setTime(expiryDate1.getTime()+(30*24*60*60*100))
 
     if(paymentMethod==="Cash"){
+
         const cart_owner=await User.findById({_id:userId});
+        console.log(cart_owner.email);
+
+        //console.log(cart_owner);
+
         if(!cart_owner){
             return res.status(404).json({message:"User Does Not Exist"});
         }
         await sendEmail(cart_owner.email,cartOTP);
+
     }
 
     if(auctionName==false||auctionId==false||status==false||code==false||baits==false||paymentMethod==false||totalCartPrice==false||totalCartQuantity==false){
