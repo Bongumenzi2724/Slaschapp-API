@@ -33,7 +33,7 @@ const create_cart=async(req,res)=>{
     const paymentMethod=req.body.paymentMethod;
     const totalCartPrice=req.body.totalCartPrice;
     const totalCartQuantity=req.body.totalCartQuantity;
-    const cartOTP=generateOtp();
+    const cartOTP="";
     let expiryDate1=new Date();
     expiryDate1.setTime(expiryDate1.getTime()+(30*24*60*60*100))
 
