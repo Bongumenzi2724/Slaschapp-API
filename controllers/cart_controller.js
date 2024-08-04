@@ -151,12 +151,15 @@ const update_cart=async(req,res)=>{
             return res.status(StatusCodes.NOT_FOUND).json({message:"The Cart Does Not Exist"})
         }
         const userId=(cart.userId).toString();
+
         const user=await User.findById({_id:userId});
+
         if(!user){
             return res.status(404).json({message:"User Not Found"});
         }
         
         if(cart.paymentMethod=="Cash"){
+            
             const cartOTP=generateOtp();
             cart.cartOTP=cartOTP;
             let newCart=cart;
