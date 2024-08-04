@@ -44,6 +44,7 @@ const create_cart=async(req,res)=>{
     console.log("End Of Cash Payment");
     console.log(paymentMethod);
     console.log(paymentMethod==="Cash");
+    console.log(req.body.paymentMethod=="Cash");
 
     if(req.body.paymentMethod=="Cash"){
 
@@ -168,9 +169,23 @@ const searchBasedOnCode=async(req,res)=>{
 const update_cart=async(req,res)=>{
     try {
         console.log(req.params.cartId);
-        const user=await Cart.find({_id:req.params.cartId});
-        if(!user){
+        const cart=await Cart.find({_id:req.params.cartId});
+
+        if(!cart){
             return res.status(StatusCodes.NOT_FOUND).json({message:"The Cart Does Not Exist"})
+        }
+        const userId=(cart.userId).toString();
+        const user=await User.findById({_id:userId});
+        console.log("User")
+        console.log(user);
+        if(!user){
+            return res.status(404).json({message:"User Not Found"});
+        }
+        console.log("Cash Payment Method")
+        
+        if(cart.paymentMethod=="Cash"){
+            const cartOTP=generateOtp();
+            await sendEmail(user.email,cartOTP);
         }
         let updated_cart=await Cart.findByIdAndUpdate(req.params.cartId,req.body,{new:true});
         await updated_cart.save(); 
