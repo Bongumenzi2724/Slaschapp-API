@@ -186,11 +186,13 @@ const update_cart_remove_item=async(req,res)=>{
 
     const cart_id=req.params.cartId;
     const cart=await Cart.findById({_id:cart_id});
+    console.log(cart);
     if(!cart){
         return res.status(StatusCodes.NOT_FOUND).json({message:"The Cart Does Not Exist"})
     }
     await Cart.findByIdAndUpdate({_id:req.params.cartId},{$set:req.body},{new:true})
     await cart.save();
+    console.log(cart);
     return res.status(200).json({message:"Cart update Successfully"});
 }
 
