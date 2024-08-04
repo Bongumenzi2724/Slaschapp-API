@@ -68,7 +68,8 @@ const payment_controller=async(req,res)=>{
     // Add cart total to owner wallet
     const ownerID=(owner._id).toString();
     await BusinessOwnerRegistration.findByIdAndUpdate({_id:ownerID},{$set:newOwner},{new:true});
-    owner.save();
+    await owner.save();
+
     /* owner.wallet+=cart.totalCartPrice;
     let newOwner=owner;
     await BusinessOwnerRegistration.findByIdAndUpdate({_id:businessID},{$set:newOwner},{new:true});
@@ -107,7 +108,6 @@ const payment_controller=async(req,res)=>{
     if(owner.wallet<auction.acquisitionBid){
         return res.status(403).json({message:`Transaction cannot be processed: Business owner ${owner.firstname} has insufficient funds`});
     }
-
     //Subtract total from user wallet
     if(user.rewards<cart.totalCartPrice){
         return res.status(403).json({message:"Insufficient rewards to process payment try another method"});
@@ -192,6 +192,7 @@ const payment_controller=async(req,res)=>{
     await newUser.save();
     //Add cart total to business owner wallet
     owner.wallet+=cart.totalCartPrice;
+    owner.wallet-=auction.acquisitionBid;
     let newOwner=owner;
     await BusinessOwnerRegistration.findByIdAndUpdate({_id:businessID},{$set:newOwner},{new:true});
     await newOwner.save();
