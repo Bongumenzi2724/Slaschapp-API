@@ -20,9 +20,9 @@ const payment_controller=async(req,res)=>{
     return res.status(404).json({message:`The Cart with ${cart_id} does not exist`})
    }
    const userId=(cart.userId).toString();
-   console.log("Cash Payment Entry");
+   
    if(cart.paymentMethod=="Cash" && cart.cartOTP==otp){
-    console.log("Cash Payment With OTP");
+   
     //find the user to update the rewards
     const cart_user=await User.findById({_id:userId});
 
@@ -38,17 +38,22 @@ const payment_controller=async(req,res)=>{
     if(!auction){
         return res.status(404).json({message:"Auction does not exist"});
     }
+    const businessID=(auction.createdBy).toString();
+    const owner=await BusinessOwnerRegistration.findById({_id:businessID});
+    if(!owner){
+        return res.status(404).json({message:"Business Owner No Longer Exist"});
+    }
+    if(owner.wallet<auction.acquisitionBid){
+        return res.status(422).json({message:`Transaction cannot be processed: Business owner ${owner.firstname} has insufficient funds`});
+    }
+    owner.wallet-=auction.acquisitionBid;
+    let newOwner=owner;
     //Add Acquisition Bid to user rewards
     cart.status="Completed";
     let newCart=cart;
     cart_user.rewards+=auction.acquisitionBid*0.60;
     adminDocument.wallet+=auction.acquisitionBid*0.40;
-    console.log("User's Rewards");
-    console.log(cart_user.rewards)
-    console.log("Admin's Wallet")
-    
     let newAdmin=adminDocument;
-    console.log(newAdmin.wallet);
     let newUserCart=cart_user;
     //update the admin
     await Admin.findByIdAndUpdate({_id:(adminDocument._id).toString()},{$set:newAdmin},{new:true});
@@ -60,14 +65,7 @@ const payment_controller=async(req,res)=>{
     await Cart.findByIdAndUpdate({_id:cart_id},{$set:newCart},{new:true});
     await newCart.save();
     //find the business owner to update the wallet
-    const businessID=(auction.createdBy).toString();
-    const owner=await BusinessOwnerRegistration.findById({_id:businessID});
-    if(!owner){
-        return res.status(404).json({message:"Business Owner No Longer Exist"});
-    }
     // Add cart total to owner wallet
-    owner.wallet+=auction.acquisitionBid;
-    let newOwner=owner;
     const ownerID=(owner._id).toString();
     await BusinessOwnerRegistration.findByIdAndUpdate({_id:ownerID},{$set:newOwner},{new:true});
     owner.save();
@@ -86,6 +84,30 @@ const payment_controller=async(req,res)=>{
     if(!user){
         return res.status(404).json({message:`user with id ${userId} does not exist`});
     }
+
+    //find the auction id
+    const auctionID=(cart.auctionId).toString();
+
+    //find the auction
+    const auction=await AuctionSchema.findById({_id:auctionID});
+
+    if(!auction){
+        return res.status(404).json({message:"Auction does not exist"});
+    }
+    //find the business owner id
+    const businessID=(auction.createdBy).toString();
+    //find the business owner
+    const owner=await BusinessOwnerRegistration.findById({_id:businessID});
+    if(!owner){
+        return res.status(404).json({message:"Business Owner No Longer Exist"});
+    }
+
+    //test the owner's wallet and the acquisition bid's equality
+
+    if(owner.wallet<auction.acquisitionBid){
+        return res.status(403).json({message:`Transaction cannot be processed: Business owner ${owner.firstname} has insufficient funds`});
+    }
+
     //Subtract total from user wallet
     if(user.rewards<cart.totalCartPrice){
         return res.status(403).json({message:"Insufficient rewards to process payment try another method"});
@@ -93,12 +115,13 @@ const payment_controller=async(req,res)=>{
     user.wallet-=cart.totalCartPrice;
     let newUserWallet=user;
     await User.findByIdAndUpdate({_id:userId},{$set:newUserWallet},{new:true});
+    //save the new user
     await newUser.save();
 
-    // 1.Add acquisition bid to user rewards
+    // Add acquisition bid to user rewards
     // find auction 
-    const auction=cart.auctionId;
     user.rewards+=auction.acquisitionBid*0.60;
+    //add a portion of the acquisition bid to the admin's wallet
     adminDocument.wallet+=auction.acquisitionBid*0.40;
     let newAdmin=adminDocument;
     //update admin wallet
@@ -114,22 +137,14 @@ const payment_controller=async(req,res)=>{
     let newCart=cart;
     await Cart.findByIdAndUpdate({_id:cart_id},{$set:newCart},{new:true});
     await newCart.save();
-    //3. Add Cart total to owner wallet
-    //find the business owner
-    const businessID=(auction.createdBy).toString();
-    const owner=await BusinessOwnerRegistration.findById({_id:businessID});
-    if(!owner){
-        return res.status(404).json({message:"business owner does not exist"});
-    }
+    //Add Cart total to owner wallet
     owner.wallet+=cart.totalCartPrice;
+    //subtract the acquisition bid from the owner's wallet
     owner.wallet-=auction.acquisitionBid;
-
+    //update the new owner
     let newOwner=owner;
-
     await BusinessOwnerRegistration.findByIdAndUpdate({_id:businessID},{$set:newOwner},{new:true});
-
     newOwner.save();
-
     return res.status(200).json({message:"wallet payment processed successfully"});
    }
 
@@ -140,46 +155,42 @@ const payment_controller=async(req,res)=>{
     if(!user){
         return res.status(404).json({message:`user with id ${userId} does not exist`});
     }
-
-    //Subtract cart total from user rewards
-    if(user.rewards<cart.totalCartPrice){
-        return res.status(403).json({message:"Insufficient rewards to process payment try another method"});
-    }
-    
-    user.rewards-=cart.totalCartQuantity;
-    let newUser=user;
-    user.rewards+=auction.acquisitionBid*0.60;
-
-    adminDocument.wallet+=auction.acquisitionBid*0.40;
-
-    let newAdmin=adminDocument;
-
-    //update admin wallet
-    await Admin.findByIdAndUpdate({email:(adminDocument._id).toString()},{$set:newAdmin},{new:true});
-    await newAdmin.save();
-
-    //update user with rewards
-    await User.findByIdAndUpdate({_id:userId},{$set:newUser},{new:true});
-    await newUser.save();
-
-    //Add cart total to business owner wallet
-
-    //1.find the business owner;
+    //1.find the auction id;
     const auctionID=(cart.auctionId).toString();
-    //find the auction 
 
+    //find the auction 
     const auction=await AuctionSchema.findById({_id:auctionID});
     if(!auction){
         return res.status(404).json({message:"Auction does not exist therefore the business too"})
     }
-
+    //find the business id
     const businessID=(auction.createdBy).toString();
-
+    //find the business owner
     const owner=await BusinessOwnerRegistration.findById({_id:businessID});
-
     if(!owner){
         return res.status(404).json({message:"Business Owner Does Not Exist"});
     }
+
+    //test the owner's wallet and the acquisition bid's equality
+    if(owner.wallet<auction.acquisitionBid){
+        return res.status(403).json({message:`Transaction cannot be processed: Business owner ${owner.firstname} has insufficient funds`});
+    }
+    //Subtract cart total from user rewards
+    if(user.rewards<cart.totalCartPrice){
+        return res.status(403).json({message:"Insufficient rewards to process payment try another method"});
+    }
+    user.rewards-=cart.totalCartQuantity;
+    let newUser=user;
+    user.rewards+=auction.acquisitionBid*0.60;
+    adminDocument.wallet+=auction.acquisitionBid*0.40;
+    let newAdmin=adminDocument;
+    //update admin wallet
+    await Admin.findByIdAndUpdate({email:(adminDocument._id).toString()},{$set:newAdmin},{new:true});
+    await newAdmin.save();
+    //update user with rewards
+    await User.findByIdAndUpdate({_id:userId},{$set:newUser},{new:true});
+    await newUser.save();
+    //Add cart total to business owner wallet
     owner.wallet+=cart.totalCartPrice;
     let newOwner=owner;
     await BusinessOwnerRegistration.findByIdAndUpdate({_id:businessID},{$set:newOwner},{new:true});
