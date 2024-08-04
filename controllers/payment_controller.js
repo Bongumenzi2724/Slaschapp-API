@@ -12,6 +12,8 @@ const payment_controller=async(req,res)=>{
    const {otp}=req.body
    
    const cart=await Cart.findOne({_id:cart_id});
+   console.log("Cart OTP");
+   console.log(otp);
    console.log("Cash Payment Cart")
    console.log(cart)
    
