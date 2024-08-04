@@ -160,15 +160,17 @@ const update_cart_checkout=async(req,res)=>{
             return res.status(404).json({message:"User Not Found"});
         }
         
-        if(cart.paymentMethod=="Cash"){
-
+        if(req.body.paymentMethod=="Cash"){
             const cartOTP=generateOtp();
             cart.cartOTP=cartOTP;
+            cart.paymentMethod=req.body.paymentMethod;
             let newCart=cart;
             console.log("OTP");
             console.log(newCart.cartOTP);
             console.log("email");
             console.log(user.email);
+            console.log("Payment Method");
+            console.log(newCart.paymentMethod);
             await sendEmail(user.email,cartOTP);
             await Cart.findByIdAndUpdate({_id:req.params.cartId},{$set:newCart},{new:true})
             await newCart.save();
