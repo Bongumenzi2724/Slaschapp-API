@@ -7,6 +7,7 @@ const AuctionSchema=require('../models/AuctionSchema');
 
 const payment_controller=async(req,res)=>{
    // find the cart being processed
+   const adminEmail=""
    const admin=await Admin.find({});
    const {cart_id}=req.params;
    const {otp}=req.body
