@@ -21,7 +21,7 @@ const payment_controller=async(req,res)=>{
     return res.status(404).json({message:`The Cart with ${cart_id} does not exist`})
    }
    const userId=(cart.userId).toString();
-
+   console.log("Cash Payment Entry");
    if(cart.paymentMethod=="Cash" && cart.cartOTP==otp){
     console.log("Cash Payment With OTP");
     //find the user to update the rewards
