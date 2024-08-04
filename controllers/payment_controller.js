@@ -2,7 +2,7 @@ const User = require("../models/UserRegistrationSchema");
 const BusinessOwnerRegistration = require('../models/BusinessOwnerRegistration');
 const Cart = require("../models/Cart");
 const Admin = require("../models/AdminSchema");
-
+const AuctionSchema=require('../models/AuctionSchema');
 //payment controller
 
 const payment_controller=async(req,res)=>{
