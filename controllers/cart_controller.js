@@ -3,6 +3,7 @@ const {StatusCodes}=require('http-status-codes')
 const generateOtp=require('../utils/generateOtp');
 const sendEmail=require('../utils/sendEmail');
 const User=require('../models/UserRegistrationSchema');
+const { CardAction } = require("twilio/lib/rest/content/v1/content");
 
 
 const getCart=async(req,res)=>{
@@ -157,15 +158,18 @@ const update_cart=async(req,res)=>{
         if(!user){
             return res.status(404).json({message:"User Not Found"});
         }
-        
+        console.log(CardAction)
         if(cart.paymentMethod=="Cash"){
-            
+
             const cartOTP=generateOtp();
             cart.cartOTP=cartOTP;
             let newCart=cart;
+            console.log(newCart);
+
             await sendEmail(user.email,cartOTP);
             await Cart.findByIdAndUpdate({_id:req.params.cartId},{$set:newCart},{new:true})
             await newCart.save();
+            
         }
         let updated_cart=await Cart.findByIdAndUpdate(req.params.cartId,req.body,{new:true});
         await updated_cart.save(); 
