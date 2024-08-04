@@ -154,7 +154,7 @@ const update_cart=async(req,res)=>{
         const userId=(cart.userId).toString();
 
         const user=await User.findById({_id:userId});
-
+        console.log(user)
         if(!user){
             return res.status(404).json({message:"User Not Found"});
         }
@@ -164,12 +164,11 @@ const update_cart=async(req,res)=>{
             const cartOTP=generateOtp();
             cart.cartOTP=cartOTP;
             let newCart=cart;
-            console.log(newCart);
-
+            console.log(newCart.cartOTP);
             await sendEmail(user.email,cartOTP);
             await Cart.findByIdAndUpdate({_id:req.params.cartId},{$set:newCart},{new:true})
             await newCart.save();
-            
+
         }
         let updated_cart=await Cart.findByIdAndUpdate(req.params.cartId,req.body,{new:true});
         await updated_cart.save(); 
