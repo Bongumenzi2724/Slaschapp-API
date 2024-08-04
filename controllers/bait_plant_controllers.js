@@ -10,7 +10,6 @@ const create_bait_plant=async(req,res)=>{
         if(req.body.baitPlantName==false||req.body.baitPlantDescription==false||req.body.checkInStoreAvailability==false||req.body.price==false||req.body.color==false||req.body.status==false||req.body.size==false||req.body.photos==false){
             return res.status(StatusCodes.EXPECTATION_FAILED).json({message:"Please Provide All The Fields"})
         }
-        console.log(req.body);
         const bait=new Bait({
             baitPlantName:req.body.baitPlantName,
             baitPlantDescription:req.body.baitPlantDescription,
@@ -23,7 +22,6 @@ const create_bait_plant=async(req,res)=>{
             auctionID:req.params.auctionID
         });
         const baitPlant=await bait.save();
-        console.log(baitPlant);
         return res.status(StatusCodes.CREATED).json({baitPlant});
     }
     catch(error){
