@@ -9,11 +9,12 @@ const payment_controller=async(req,res)=>{
    // find the cart being processed
    const adminEmail=""
    const admin=await Admin.find({});
+   let adminDocument=admin[0];
    const {cart_id}=req.params;
    const {otp}=req.body
    const cart=await Cart.findOne({_id:cart_id});
    console.log("Admin Data");
-   console.log(admin);
+   console.log(adminDocument);
    
    if(!cart){
     return res.status(404).json({message:`The Cart with ${cart_id} does not exist`})
@@ -41,16 +42,16 @@ const payment_controller=async(req,res)=>{
     cart.status="Completed";
     let newCart=cart;
     cart_user.rewards+=auction.acquisitionBid*0.60;
-    admin.wallet+=auction.acquisitionBid*0.40;
+    adminDocument.wallet+=auction.acquisitionBid*0.40;
     console.log("User's Rewards");
     console.log(cart_user.rewards)
     console.log("Admin's Wallet")
     
-    let newAdmin=admin;
+    let newAdmin=adminDocument;
     console.log(newAdmin.wallet);
     let newUserCart=cart_user;
     //update the admin
-    await Admin.findOneAndUpdate({email:admin.email},{$set:newAdmin},{new:true});
+    await Admin.findOneAndUpdate({email:adminDocument.email},{$set:newAdmin},{new:true});
     await newAdmin.save();
     //update the cart
     await User.findByIdAndUpdate({_id:userId},{$set:newUserCart},{new:true});
