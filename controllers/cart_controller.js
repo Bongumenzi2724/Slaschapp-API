@@ -38,6 +38,9 @@ const create_cart=async(req,res)=>{
     expiryDate1.setTime(expiryDate1.getTime()+(30*24*60*60*100))
 
     console.log("Cash Payment");
+    console.log("Cash Payment");
+    console.log(cartOTP);
+    console.log(userId);
     if(paymentMethod==="Cash"){
         const cart_owner=await User.findById({_id:userId});
         console.log(cart_owner.email);
