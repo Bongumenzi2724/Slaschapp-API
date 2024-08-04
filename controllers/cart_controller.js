@@ -42,7 +42,8 @@ const create_cart=async(req,res)=>{
     console.log(cartOTP);
     console.log(userId);
     console.log("End Of Cash Payment");
-
+    console.log(paymentMethod);
+    
     if(req.body.paymentMethod=="Cash"){
 
         const cart_owner=await User.findById({_id:userId});
