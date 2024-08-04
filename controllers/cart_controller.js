@@ -145,7 +145,7 @@ const searchBasedOnCode=async(req,res)=>{
     }
 }
 
-const update_cart=async(req,res)=>{
+const update_cart_checkout=async(req,res)=>{
     try {
         const cart=await Cart.findById({_id:req.params.cartId});
         if(!cart){
@@ -154,6 +154,7 @@ const update_cart=async(req,res)=>{
         const userId=(cart.userId).toString();
 
         const user=await User.findById({_id:userId});
+
         console.log(user)
         if(!user){
             return res.status(404).json({message:"User Not Found"});
@@ -181,4 +182,16 @@ const update_cart=async(req,res)=>{
     }
 }
 
-module.exports={getCart,update_cart,user_orders,get_business_cart,create_cart, getAllOrders,searchBasedOnCode}
+const update_cart_remove_item=async(req,res)=>{
+
+    const cart_id=req.params.cartId;
+    const cart=await Cart.findById({_id:cart_id});
+    if(!cart){
+        return res.status(StatusCodes.NOT_FOUND).json({message:"The Cart Does Not Exist"})
+    }
+    await Cart.findByIdAndUpdate({_id:req.params.cartId},{$set:req.body},{new:true})
+    await cart.save();
+    return res.status(200).json({message:"Cart update Successfully"});
+}
+
+module.exports={getCart,update_cart_checkout,update_cart_remove_item,user_orders,get_business_cart,create_cart, getAllOrders,searchBasedOnCode}
