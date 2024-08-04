@@ -22,8 +22,8 @@ const payment_controller=async(req,res)=>{
    }
    const userId=(cart.userId).toString();
 
-   if(cart.paymentMethod==="Cash" && cart.cartOTP===otp){
-
+   if(cart.paymentMethod=="Cash" && cart.cartOTP==otp){
+    console.log("Cash Payment With OTP");
     //find the user to update the rewards
     const cart_user=await User.findById({_id:userId});
 
