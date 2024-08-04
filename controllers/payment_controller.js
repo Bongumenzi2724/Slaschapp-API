@@ -13,7 +13,7 @@ const payment_controller=async(req,res)=>{
    const {cart_id}=req.params;
    const {otp}=req.body
    const cart=await Cart.findOne({_id:cart_id});
-   console.log("Admin Data");
+   console.log("Admin Document Data");
    console.log(adminDocument);
    
    if(!cart){
@@ -51,7 +51,7 @@ const payment_controller=async(req,res)=>{
     console.log(newAdmin.wallet);
     let newUserCart=cart_user;
     //update the admin
-    await Admin.findOneAndUpdate({email:adminDocument.email},{$set:newAdmin},{new:true});
+    await Admin.findByIdAndUpdate({_id:(adminDocument._id).toString()},{$set:newAdmin},{new:true});
     await newAdmin.save();
     //update the cart
     await User.findByIdAndUpdate({_id:userId},{$set:newUserCart},{new:true});
