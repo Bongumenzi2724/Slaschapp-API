@@ -168,6 +168,8 @@ const searchBasedOnCode=async(req,res)=>{
 
 const update_cart=async(req,res)=>{
     try {
+        console.log("Cart ID");
+        console.log(" ");
         console.log(req.params.cartId);
         const cart=await Cart.find({_id:req.params.cartId});
 
@@ -175,6 +177,8 @@ const update_cart=async(req,res)=>{
             return res.status(StatusCodes.NOT_FOUND).json({message:"The Cart Does Not Exist"})
         }
         const userId=(cart.userId).toString();
+        console.log("User Id")
+        console.log(`user id : ${userId}`);
         const user=await User.findById({_id:userId});
         console.log("User")
         console.log(user);
@@ -182,7 +186,7 @@ const update_cart=async(req,res)=>{
             return res.status(404).json({message:"User Not Found"});
         }
         console.log("Cash Payment Method")
-        
+
         if(cart.paymentMethod=="Cash"){
             const cartOTP=generateOtp();
             await sendEmail(user.email,cartOTP);
