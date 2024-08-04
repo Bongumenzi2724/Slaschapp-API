@@ -99,10 +99,10 @@ const payment_controller=async(req,res)=>{
     // find auction 
     const auction=cart.auctionId;
     user.rewards+=auction.acquisitionBid*0.60;
-    admin.wallet+=auction.acquisitionBid*0.40;
-    let newAdmin=admin;
+    adminDocument.wallet+=auction.acquisitionBid*0.40;
+    let newAdmin=adminDocument;
     //update admin wallet
-    await Admin.findOneAndUpdate({email:admin.email},{$set:newAdmin},{new:true});
+    await Admin.findByIdAndUpdate({_id:(adminDocument._id).toString()},{$set:newAdmin},{new:true});
     await newAdmin.save();
     //update user
     let newUserReward=user;
@@ -150,12 +150,12 @@ const payment_controller=async(req,res)=>{
     let newUser=user;
     user.rewards+=auction.acquisitionBid*0.60;
 
-    admin.wallet+=auction.acquisitionBid*0.40;
+    adminDocument.wallet+=auction.acquisitionBid*0.40;
 
-    let newAdmin=admin;
+    let newAdmin=adminDocument;
 
     //update admin wallet
-    await Admin.findOneAndUpdate({email:admin.email},{$set:newAdmin},{new:true});
+    await Admin.findByIdAndUpdate({email:(adminDocument._id).toString()},{$set:newAdmin},{new:true});
     await newAdmin.save();
 
     //update user with rewards
