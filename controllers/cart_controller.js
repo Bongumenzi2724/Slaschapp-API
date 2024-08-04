@@ -158,7 +158,11 @@ const update_cart=async(req,res)=>{
         
         if(cart.paymentMethod=="Cash"){
             const cartOTP=generateOtp();
+            cart.cartOTP=cartOTP;
+            let newCart=cart;
             await sendEmail(user.email,cartOTP);
+            await Cart.findByIdAndUpdate({_id:req.params.cartId},{$set:newCart},{new:true})
+            await newCart.save();
         }
         let updated_cart=await Cart.findByIdAndUpdate(req.params.cartId,req.body,{new:true});
         await updated_cart.save(); 

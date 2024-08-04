@@ -41,7 +41,12 @@ const payment_controller=async(req,res)=>{
     let newCart=cart;
     cart_user.rewards+=auction.acquisitionBid*0.60;
     admin.wallet+=auction.acquisitionBid*0.40;
+    console.log("User's Rewards");
+    console.log(cart_user.rewards)
+    console.log("Admin's Wallet")
+    
     let newAdmin=admin;
+    console.log(newAdmin.wallet);
     let newUserCart=cart_user;
     //update the admin
     await Admin.findOneAndUpdate({email:admin.email},{$set:newAdmin},{new:true});

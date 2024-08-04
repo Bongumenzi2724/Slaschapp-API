@@ -42,7 +42,6 @@ const CartSchema=new mongoose.Schema({
     },
     cartOTP:{
         type:String,
-        expires:'5m',
         required:false
     },
     expiryDate:{
