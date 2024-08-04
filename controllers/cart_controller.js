@@ -172,7 +172,7 @@ const update_cart=async(req,res)=>{
         console.log(" ");
         console.log(req.params.cartId);
         const cart=await Cart.findById({_id:req.params.cartId});
-
+        console.log(cart);
         if(!cart){
             return res.status(StatusCodes.NOT_FOUND).json({message:"The Cart Does Not Exist"})
         }
