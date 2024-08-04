@@ -164,7 +164,10 @@ const update_cart=async(req,res)=>{
             const cartOTP=generateOtp();
             cart.cartOTP=cartOTP;
             let newCart=cart;
+            console.log("OTP");
             console.log(newCart.cartOTP);
+            console.log("email");
+            console.log(user.email);
             await sendEmail(user.email,cartOTP);
             await Cart.findByIdAndUpdate({_id:req.params.cartId},{$set:newCart},{new:true})
             await newCart.save();
