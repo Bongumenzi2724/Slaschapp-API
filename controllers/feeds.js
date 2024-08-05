@@ -74,7 +74,6 @@ const getAllAuctions=async(req,res)=>{
 
     //user location
     const user_location=lastTwoWords(user.locationOrAddress);
-    console.log(AllAuctions);
     console.log(`user location:${user_location}`);
     const userGender=(user.gender).toLowerCase()
     console.log(`user gender :${userGender}`);
@@ -94,6 +93,7 @@ const getAllAuctions=async(req,res)=>{
         }
     }   
     //sort in terms of the acquisitionBid
+    console.log("Filtered Array");
     console.log(marketing_auctions);
 
     return res.status(StatusCodes.OK).json({auctionFeed:marketing_auctions,count:marketing_auctions.length});
