@@ -84,11 +84,7 @@ const getAllAuctions=async(req,res)=>{
     
    for(let j=0;j<AllAuctions.length-1;j++){
         //compare user location and auction location
-        if(AllAuctions[j].location==="All"){
-            //location comparison if statement
-            console.log(`user location:${user_location}, auction location:${AllAuctions[j].location}`);
-            marketing_auctions.push(AllAuctions[j]);
-        }
+        console.log(AllAuctions[j].location)
     }   
     //sort in terms of the acquisitionBid
     console.log("Filtered Array");
