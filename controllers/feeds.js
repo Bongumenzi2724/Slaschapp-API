@@ -74,21 +74,36 @@ const getAllAuctions=async(req,res)=>{
     const userInterests=user.interests;
    for(let j=0;j<AllAuctions.length-1;j++){
         //determining when do i slice the location string
-        if(!(AllAuctions[j].location=="All")){
+
+       /*  if(!(AllAuctions[j].location=="All")){
 
             auctionLocation=(AllAuctions[j].location.split(",").slice(-2).join(',')).toLowerCase();
 
-        } 
+        }  */
         //comapre the equality of the two strings
         //auction location filter
+        let match=false
 
-        const match=user_location == (AllAuctions[j].location).toLowerCase() || AllAuctions[j].location=="All";
-        console.log(`user location ${user_location} auction location ${AllAuctions[j].location} match: ${match}`)
+        if(AllAuctions[j].location=="All"){
+            match=true;
+        }
+        else{
+            match=user_location || AllAuctions[j].location;
+        }
+        console.log(`user location:${user_location} auction location :${AllAuctions[j].location} match: ${match}`)
         if(match){
             //check the gender
-            genderMatch=userGender==(AllAuctions[j].gender).toLowerCase() || AllAuctions[j].gender=="all";
+            let genderMatch=false;
+            if(AllAuctions[j].gender=="All"){
+                genderMatch=true;
+            }else{
+                genderMatch= userGender==(AllAuctions[j].gender).toLowerCase();
+            }
 
-            console.log(`use gender ${userGender}, auction gender ${AllAuctions[j].gender} gender match: ${genderMatch}`);
+            //genderMatch=userGender==(AllAuctions[j].gender).toLowerCase() || AllAuctions[j].gender=="all";
+
+            console.log(`use gender :${userGender}, auction gender :${AllAuctions[j].gender} gender match: ${genderMatch}`);
+
             if(genderMatch){
                 //check the interests
                 console.log(genderMatch);
@@ -99,7 +114,7 @@ const getAllAuctions=async(req,res)=>{
                 //const userInterests=user.interests.match(/([^,]+)/g);
                 //const usersInterests=(user.interests).split(",");
                 const hasMatch=hasCommonWord(userInterests,AllAuctions[j].interests);
-
+                
                 //console.log(hasMatch);
                 if(hasMatch || AllAuctions[j].interests=="All"){
                     //console.log(AllAuctions[j]);
