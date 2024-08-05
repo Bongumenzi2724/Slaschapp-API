@@ -35,7 +35,6 @@ function locationCompare(str1,str2){
     const cleanedStr2=str2.replace(/\s+/g,'').split(",").sort();
     return cleanedStr1.join()===cleanedStr2.join();
 }
-
 //get single user
 
 const getUserProfile=async(req,res)=>{
@@ -74,20 +73,77 @@ const getAllAuctions=async(req,res)=>{
 
     //user location
     const user_location=lastTwoWords(user.locationOrAddress);
+
     console.log(`user location:${user_location}`);
+
     const userGender=(user.gender).toLowerCase()
     console.log(`user gender :${userGender}`);
     const userInterests=user.interests;
     var locationMatch=flase;
     var genderMatch=false;
     var interestsMatch=false
-    
    for(let j=0;j<AllAuctions.length-1;j++){
-        //compare user location and auction location
-        console.log(AllAuctions[j].location)
+        //determining when do i slice the location string
+
+       /*  if(!(AllAuctions[j].location=="All")){
+
+            auctionLocation=(AllAuctions[j].location.split(",").slice(-2).join(',')).toLowerCase();
+
+        }  */
+        //comapre the equality of the two strings
+        //auction location filter
+        var match=false
+        if(AllAuctions[j].location=="All"|| locationCompare(user_location,(AllAuctions[j].location).toLowerCase())){
+            
+            match=true;
+        }
+        else{
+            match=locationCompare(user_location,(AllAuctions[j].location).toLowerCase());
+            if(match==false) continue
+        }
+        console.log(`user location:${user_location}, auction location :${(AllAuctions[j].location).toLowerCase()}, match: ${match}`);
+
+        if(match){
+            //check the gender
+            var genderMatch=false;
+
+            if(AllAuctions[j].gender=="all"){
+
+                genderMatch=true;
+            }
+            else{
+                //genderMatch= userGender==(AllAuctions[j].gender).toLowerCase();
+                genderMatch=locationCompare(userGender,(AllAuctions[j].gender).toLowerCase());
+
+            }
+
+            //genderMatch=userGender==(AllAuctions[j].gender).toLowerCase() || AllAuctions[j].gender=="all";
+
+            console.log(`use gender :${userGender}, auction gender :${AllAuctions[j].gender} gender match: ${genderMatch}`);
+
+            if(genderMatch){
+                //check the interests
+                console.log(genderMatch);
+                //check the auction interests
+                //const auctionInterests=AllAuctions[j].interests.match(/([^,]+)/g);
+                //const auctionsInterests=(AllAuctions[j].interests).split(",");
+                //check the user interests
+                //const userInterests=user.interests.match(/([^,]+)/g);
+                //const usersInterests=(user.interests).split(",");
+                const hasMatch=hasCommonWord(userInterests,AllAuctions[j].interests);
+
+                //console.log(hasMatch);
+                if(hasMatch || AllAuctions[j].interests=="All"){
+                    //console.log(AllAuctions[j]);
+                    console.log(`Interests: ${hasMatch}`);
+                    //push the auction into the array
+                    marketing_auctions.push(AllAuctions[j]);
+                    //console.log(marketing_auctions);
+                }
+            }
+        }
     }   
     //sort in terms of the acquisitionBid
-    console.log("Filtered Array");
     console.log(marketing_auctions);
 
     return res.status(StatusCodes.OK).json({auctionFeed:marketing_auctions,count:marketing_auctions.length});
