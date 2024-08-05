@@ -48,12 +48,15 @@ const getAllAuctions=async(req,res)=>{
    for(let j=0;j<AllAuctions.length-1;j++){
         //location filter
         let auctionLocation=" ";
+
         //determining when do i slice the location string
+
         if(!(AllAuctions[j].location==="All")){
             auctionLocation=AllAuctions[j].location.split(",").slice(-2).join(',').toLowerCase();
         }
         //comapre the equality of the two strings
         //auction location filter
+
         const match=user_location === auctionLocation || AllAuctions[j].location==="All";
 
         if(match){
@@ -69,7 +72,7 @@ const getAllAuctions=async(req,res)=>{
                 const userInterests=user.interests.match(/([^,]+)/g);
                 const hasMatch=auctionInterests.some(item=>userInterests.includes(item));
 
-                if(hasMatch){
+                if(hasMatch || AllAuctions[j].interests==="All"){
                     //push the auction into the array
                     marketing_auctions.push(AllAuctions[j]);
                 }
