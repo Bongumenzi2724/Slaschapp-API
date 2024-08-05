@@ -5,6 +5,23 @@ const BusinessOwnerRegistration = require('../models/BusinessOwnerRegistration')
 const Business=require('../models/BusinessRegistrationSchema')
 const User=require('../models/UserRegistrationSchema')
 const {StatusCodes}=require('http-status-codes')
+
+
+//common words strings
+
+function hasCommonWord(str1,str2){
+    const words1=str1.split(",");
+    const words2=str2.split(",");
+    const set2=new Set(words2.map(word=>word.trim().toLowerCase()));
+
+    for(const word of words1){
+        if(set2.has(word.trim().toLowerCase())){
+            return true;
+        }
+        return false;
+    }
+}
+
 //get single user
 
 const getUserProfile=async(req,res)=>{
@@ -44,10 +61,11 @@ const getAllAuctions=async(req,res)=>{
     //user location
     const user_location=(user.locationOrAddress.split(",").slice(-2).join(',')).toLowerCase();
     const userGender=(user.gender).toLowerCase()
-
+    const userInterests=user.interests;
    for(let j=0;j<AllAuctions.length-1;j++){
         //determining when do i slice the location string
         if(!(AllAuctions[j].location==="All")){
+
             auctionLocation=(AllAuctions[j].location.split(",").slice(-2).join(',')).toLowerCase();
         } 
         //comapre the equality of the two strings
@@ -62,16 +80,16 @@ const getAllAuctions=async(req,res)=>{
             if(genderMatch){
                 //check the interests
                 //check the auction interests
-                const auctionInterests=AllAuctions[j].interests.match(/([^,]+)/g);
-                const auctionsInterests=(AllAuctions[j].interests).split(",");
+                //const auctionInterests=AllAuctions[j].interests.match(/([^,]+)/g);
+                //const auctionsInterests=(AllAuctions[j].interests).split(",");
                 //check the user interests
-                const userInterests=user.interests.match(/([^,]+)/g);
-                const usersInterests=(user.interests).split(",");
-                const hasMatch=auctionInterests.some(item=>userInterests.includes(item));
+                //const userInterests=user.interests.match(/([^,]+)/g);
+                //const usersInterests=(user.interests).split(",");
+                const hasMatch=hasCommonWord(userInterests,AllAuctions[j].interests);
                 console.log(hasMatch);
                 if(hasMatch || AllAuctions[j].interests=="All"){
+                    //console.log(AllAuctions[j]);
 
-                    console.log(AllAuctions[j]);
                     //push the auction into the array
                     marketing_auctions.push(AllAuctions[j]);
                     //console.log(marketing_auctions);
@@ -81,6 +99,7 @@ const getAllAuctions=async(req,res)=>{
     }   
     //sort in terms of the acquisitionBid
     console.log(marketing_auctions);
+    
     return res.status(StatusCodes.OK).json({auctionFeed:marketing_auctions,count:marketing_auctions.length});
 };
 
