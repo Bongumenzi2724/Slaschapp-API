@@ -68,6 +68,8 @@ const getAllAuctions=async(req,res)=>{
     //user location
     const user_location=lastTwoWords(user.locationOrAddress);
 
+    console.log(`user location:${user_location}`);
+
     const userGender=(user.gender).toLowerCase()
     const userInterests=user.interests;
    for(let j=0;j<AllAuctions.length-1;j++){
@@ -81,12 +83,12 @@ const getAllAuctions=async(req,res)=>{
         //auction location filter
 
         const match=user_location == (AllAuctions[j].location).toLowerCase() || AllAuctions[j].location=="All";
-        console.log(`location:${match}`)
+        console.log(`user location ${user_location} auction location ${AllAuctions[j].location} match: ${match}`)
         if(match){
             //check the gender
             genderMatch=userGender==(AllAuctions[j].gender).toLowerCase() || AllAuctions[j].gender=="all";
 
-            console.log(`gender match: ${genderMatch}`);
+            console.log(`use gender ${userGender}, auction gender ${AllAuctions[j].gender} gender match: ${genderMatch}`);
             if(genderMatch){
                 //check the interests
                 console.log(genderMatch);
@@ -97,7 +99,8 @@ const getAllAuctions=async(req,res)=>{
                 //const userInterests=user.interests.match(/([^,]+)/g);
                 //const usersInterests=(user.interests).split(",");
                 const hasMatch=hasCommonWord(userInterests,AllAuctions[j].interests);
-                console.log(hasMatch);
+
+                //console.log(hasMatch);
                 if(hasMatch || AllAuctions[j].interests=="All"){
                     //console.log(AllAuctions[j]);
                     console.log(`Interests: ${hasMatch}`);
