@@ -41,13 +41,21 @@ const getAllAuctions=async(req,res)=>{
 
     let marketing_auctions=[];
 
+    //user location
+    const user_location=user.locationOrAddress.split(",").slice(-2).join(',').toLowerCase();
+
+
    for(let j=0;j<AllAuctions.length-1;j++){
-        //user location
-        const user_location=user.locationOrAddress.split(",").slice(-2).join(',').toLowerCase();
-        //auction location
-        const auctionLocation=AllAuctions[j].location.split(",").slice(-2).join(',').toLowerCase();
+        //location filter
+        let auctionLocation=" ";
+        //determining when do i slice the location string
+        if(!(AllAuctions[j].location==="All")){
+            auctionLocation=AllAuctions[j].location.split(",").slice(-2).join(',').toLowerCase();
+        }
         //comapre the equality of the two strings
+        //auction location filter
         const match=user_location === auctionLocation || AllAuctions[j].location==="All";
+
         if(match){
             //check the gender
             genderMatch=user.gender.toLowerCase()===AllAuctions[j].gender.toLowerCase() || AllAuctions[j].gender=="All";
