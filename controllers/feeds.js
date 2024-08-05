@@ -77,7 +77,9 @@ const getAllAuctions=async(req,res)=>{
     console.log(`user location:${user_location}`);
 
     const userGender=(user.gender).toLowerCase()
+
     const userInterests=user.interests;
+
    for(let j=0;j<AllAuctions.length-1;j++){
         //determining when do i slice the location string
 
@@ -104,7 +106,7 @@ const getAllAuctions=async(req,res)=>{
             //check the gender
             var genderMatch=false;
 
-            if(AllAuctions[j].gender=="all"){
+            if(AllAuctions[j].gender=="all"||locationCompare(userGender,(AllAuctions[j].gender).toLowerCase())){
 
                 genderMatch=true;
             }else{
