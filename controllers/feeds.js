@@ -29,6 +29,12 @@ function lastTwoWords(str){
     const lastTwo=words.slice(-2);
     return lastTwo.map(word=>word.toLowerCase()).join(",");
 }
+//string compare 
+function locationCompare(str1,str2){
+    const cleanedStr1=str1.replace(/\s+/g,'').split(",").sort();
+    const cleanedStr2=str2.replace(/\s+/g,'').split(",").sort();
+    return cleanedStr1.join()===cleanedStr2.join();
+}
 //get single user
 
 const getUserProfile=async(req,res)=>{
@@ -83,26 +89,28 @@ const getAllAuctions=async(req,res)=>{
         //comapre the equality of the two strings
         //auction location filter
         
-        let match=false
+        var match=false
 
         if(AllAuctions[j].location=="All"){
 
             match=true;
         }
         else{
-            match=user_location == (AllAuctions[j].location).toLowerCase();
+            match=locationCompare(user_location,(AllAuctions[j].location).toLowerCase());
         }
         console.log(`user location:${user_location}, auction location :${(AllAuctions[j].location).toLowerCase()}, match: ${match}`);
 
         if(match){
             //check the gender
-            let genderMatch=false;
+            var genderMatch=false;
 
             if(AllAuctions[j].gender=="all"){
 
                 genderMatch=true;
             }else{
-                genderMatch= userGender==(AllAuctions[j].gender).toLowerCase();
+                //genderMatch= userGender==(AllAuctions[j].gender).toLowerCase();
+                genderMatch=locationCompare(userGender,(AllAuctions[j].gender).toLowerCase());
+
             }
 
             //genderMatch=userGender==(AllAuctions[j].gender).toLowerCase() || AllAuctions[j].gender=="all";
