@@ -85,13 +85,15 @@ const getAllAuctions=async(req,res)=>{
     var interestsMatch=false
 
    for(let j=0;j<AllAuctions.length-1;j++){
+
         //compare user location and auction location
         if(AllAuctions[j].location=="All" || locationCompare(AllAuctions[j].location,user_location)){
             //location comparison if statement
-            console.log(`user location:${user_location}, auction location:${AllAuctions[j].location}, match: ${locationCompare(AllAuctions[j].location,user_location)}`);
+            console.log(`user location:${user_location}, auction location:${AllAuctions[j].location}, match: ${AllAuctions[j].location=="All" || locationCompare(AllAuctions[j].location,user_location)}`);
             marketing_auctions.push(AllAuctions[j]);
         }
         else{
+            console.log(`user location:${user_location}, auction location:${AllAuctions[j].location}, match: ${locationCompare(AllAuctions[j].location,user_location)}`);
             continue;
         }
     }   
