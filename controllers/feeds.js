@@ -69,51 +69,28 @@ const getAllAuctions=async(req,res)=>{
     if(!user){
         return res.status(404).json({message:"User does not exist"});
     }
-
     let marketing_auctions=[];
-
     //user location
     const user_location=lastTwoWords(user.locationOrAddress);
-    console.log(`user location:${user_location}`);
     const userGender=(user.gender).toLowerCase()
-    console.log(`user gender: ${userGender}`)
     const userInterests=user.interests;
-    
-    //sort in terms of the acquisitionBid
-    console.log(`auction length:${AllAuctions.length-1}`);
-
-    console.log("Auction Loop Starts");
-
     for(let i=0;i<AllAuctions.length-1;i++){
-
-        console.log(`iteration:${i}`);
-
         let locationMatch=false;
         let genderMatch=false;
 
         if(AllAuctions[i].location!=="All"){
-
-            locationMatch=locationCompare(user_location,(AllAuctions[i].location).toLowerCase())
-
-            console.log(`auction location:${(AllAuctions[i].location).toLowerCase()},user location:${user_location}, location match:${locationMatch}`);
+            locationMatch=locationCompare(user_location,(AllAuctions[i].location).toLowerCase());
         }
 
         if(AllAuctions[i].location=="All" ||locationMatch){
             
             if(AllAuctions[i].gender!="all"){
-                
                 let gender=(AllAuctions[i].gender).toLowerCase();
-                
                 genderMatch=gender.localeCompare(userGender);
-                console.log(`auction gender:${AllAuctions[i].gender},user gender:${userGender} ,gender match:${genderMatch}`);
             }
 
             if(AllAuctions[i].gender=='all'|| genderMatch){
-
-                console.log(`common interests:${hasCommonWord(AllAuctions[i].interests,userInterests)}`);
-
                 if(hasCommonWord(AllAuctions[i].interests,userInterests)){
-                    //console.log(AllAuctions[i]);
                     marketing_auctions.push(AllAuctions[i]);
                 }else{
                     continue;
@@ -125,7 +102,6 @@ const getAllAuctions=async(req,res)=>{
         else{
             continue;
         }
-
        /*  if(AllAuctions[i].location=="All" || locationMatch){
 
             if(AllAuctions[i].gender!=="all"){
@@ -146,9 +122,6 @@ const getAllAuctions=async(req,res)=>{
         } */
         
     }
-
-    //console.log(marketing_auctions);
-
     return res.status(StatusCodes.OK).json({auctionFeed:marketing_auctions,count:marketing_auctions.length});
 };
 
