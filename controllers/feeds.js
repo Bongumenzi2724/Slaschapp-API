@@ -78,18 +78,55 @@ const getAllAuctions=async(req,res)=>{
     const userGender=(user.gender).toLowerCase()
     console.log(`user gender: ${userGender}`)
     const userInterests=user.interests;
-    var locationMatch=false;
-    var genderMatch=false;
-    var interestsMatch=false
+    
     //sort in terms of the acquisitionBid
+    console.log(`auction length:${AllAuctions.length-1}`);
+
+    console.log("Auction Loop Starts");
+
     for(let i=0;i<AllAuctions.length-1;i++){
 
+        console.log(`iteration:${i}`);
+
+        let locationMatch=false;
+        let genderMatch=false;
+
         if(AllAuctions[i].location!=="All"){
-            locationMatch=locationCompare(user_location,AllAuctions[i].location)
-            console.log(`auction location:${AllAuctions[i].location} location match:${locationMatch}`);
+
+            locationMatch=locationCompare(user_location,(AllAuctions[i].location).toLowerCase())
+
+            console.log(`auction location:${(AllAuctions[i].location).toLowerCase()},user location:${user_location}, location match:${locationMatch}`);
         }
 
-        if(AllAuctions[i].location=="All" || locationMatch){
+        if(AllAuctions[i].location=="All" ||locationMatch){
+            
+            if(AllAuctions[i].gender!="all"){
+                
+                let gender=(AllAuctions[i].gender).toLowerCase();
+                
+                genderMatch=gender.localeCompare(userGender);
+                console.log(`auction gender:${AllAuctions[i].gender},user gender:${userGender} ,gender match:${genderMatch}`);
+            }
+
+            if(AllAuctions[i].gender=='all'|| genderMatch){
+
+                console.log(`common interests:${hasCommonWord(AllAuctions[i].interests,userInterests)}`);
+
+                if(hasCommonWord(AllAuctions[i].interests,userInterests)){
+                    //console.log(AllAuctions[i]);
+                    marketing_auctions.push(AllAuctions[i]);
+                }else{
+                    continue;
+                }
+            }else{
+                continue
+            }
+        }
+        else{
+            continue;
+        }
+
+       /*  if(AllAuctions[i].location=="All" || locationMatch){
 
             if(AllAuctions[i].gender!=="all"){
                 genderMatch=(AllAuctions[i].gender).toLowerCase()==userGender;
@@ -106,11 +143,12 @@ const getAllAuctions=async(req,res)=>{
                     marketing_auctions.push(AllAuctions[i]);
                 } 
             }   
-        }
-        locationMatch=false;
-        genderMatch=false;
+        } */
+        
     }
-    console.log(marketing_auctions);
+
+    //console.log(marketing_auctions);
+
     return res.status(StatusCodes.OK).json({auctionFeed:marketing_auctions,count:marketing_auctions.length});
 };
 
