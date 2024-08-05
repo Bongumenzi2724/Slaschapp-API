@@ -76,7 +76,6 @@ const getAllAuctions=async(req,res)=>{
     const user_location=lastTwoWords(user.locationOrAddress);
 
     console.log(`user location:${user_location}`);
-
     const userGender=(user.gender).toLowerCase()
     console.log(`user gender :${userGender}`);
     const userInterests=user.interests;
@@ -87,7 +86,9 @@ const getAllAuctions=async(req,res)=>{
    for(let j=0;j<AllAuctions.length-1;j++){
 
         //compare user location and auction location
-        if(AllAuctions[j].location=="All" || locationCompare(AllAuctions[j].location,user_location)){
+        locationMatch=locationCompare(AllAuctions[j].location,user_location);
+        console.log(locationMatch);
+        if(AllAuctions[j].location=="All"){
             //location comparison if statement
             console.log(`user location:${user_location}, auction location:${AllAuctions[j].location}, match: ${AllAuctions[j].location=="All" || locationCompare(AllAuctions[j].location,user_location)}`);
             marketing_auctions.push(AllAuctions[j]);
