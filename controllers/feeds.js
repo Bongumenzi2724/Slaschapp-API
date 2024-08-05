@@ -106,10 +106,15 @@ const getAllAuctions=async(req,res)=>{
             //check the gender
             var genderMatch=false;
 
-            if(AllAuctions[j].gender=="all"||locationCompare(userGender,(AllAuctions[j].gender).toLowerCase())){
+            if(AllAuctions[j].gender=="all"){
 
                 genderMatch=true;
-            }else{
+            }
+            else if(AllAuctions[j].gender!='all'){
+                
+                genderMatch=locationCompare(userGender,(AllAuctions[j].gender).toLowerCase());
+            }
+            else{
                 //genderMatch= userGender==(AllAuctions[j].gender).toLowerCase();
                 genderMatch=locationCompare(userGender,(AllAuctions[j].gender).toLowerCase());
 
