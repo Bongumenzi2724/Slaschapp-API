@@ -47,36 +47,47 @@ const getAllAuctions=async(req,res)=>{
 
    for(let j=0;j<AllAuctions.length-1;j++){
         //determining when do i slice the location string
-        /* if(!(AllAuctions[j].location==="All")){
-            auctionLocation=AllAuctions[j].location.split(",").slice(-2).join(',').toLowerCase();
-        } */
+        if(!(AllAuctions[j].location==="All")){
+            auctionLocation=(AllAuctions[j].location.split(",").slice(-2).join(',')).toLowerCase();
+        } 
         //comapre the equality of the two strings
         //auction location filter
 
         const match=user_location == (AllAuctions[j].location).toLowerCase() || AllAuctions[j].location==="All";
-
         if(match){
             //check the gender
             genderMatch=userGender==(AllAuctions[j].gender).toLowerCase() || AllAuctions[j].gender=="All";
             
+            console.log(genderMatch);
             if(genderMatch){
 
                 //check the interests
                 //check the auction interests
                 const auctionInterests=AllAuctions[j].interests.match(/([^,]+)/g);
 
+                const auctionsInterests=(AllAuctions[j].interests).split(",");
+
                 //check the user interests
                 const userInterests=user.interests.match(/([^,]+)/g);
 
+                const usersInterests=(user.interests).split(",");
+
                 const hasMatch=auctionInterests.some(item=>userInterests.includes(item));
+
+                console.log(hasMatch);
+                
                 if(hasMatch || AllAuctions[j].interests=="All"){
+
+                    console.log(hasMatch||AllAuctions[j].interests==="All");
                     //push the auction into the array
                     marketing_auctions.push(AllAuctions[j]);
+                    //console.log(marketing_auctions);
                 }
             }
         }
     }   
     //sort in terms of the acquisitionBid
+    console.log(marketing_auctions);
     return res.status(StatusCodes.OK).json({auctionFeed:marketing_auctions,count:marketing_auctions.length});
 };
 
