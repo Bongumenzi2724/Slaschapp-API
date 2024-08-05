@@ -119,14 +119,14 @@ const OwnerWalletUpdate=async(req,res)=>{
             return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:"An Error Occurred While Updating Your Wallet"})
     }
 }
-
+//completed carts under a specific auction
 const completed_cart_under_auction=async(req,res)=>{
 
     try {
         const {auctionId}=req.params;
         //search cart under this auction and which are completed
         const carts=await Cart.find({status:'Completed',auctionId:auctionId});
-        
+
         if(!carts){
             return res.status(500).json({message:"No Carts Exist For This Condition"});
         }
