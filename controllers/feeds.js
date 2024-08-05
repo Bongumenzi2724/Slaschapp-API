@@ -42,37 +42,34 @@ const getAllAuctions=async(req,res)=>{
     let marketing_auctions=[];
 
     //user location
-    const user_location=user.locationOrAddress.split(",").slice(-2).join(',').toLowerCase();
-
+    const user_location=(user.locationOrAddress.split(",").slice(-2).join(',')).toLowerCase();
+    const userGender=(user.gender).toLowerCase()
 
    for(let j=0;j<AllAuctions.length-1;j++){
-        //location filter
-        let auctionLocation=" ";
-
         //determining when do i slice the location string
-
-        if(!(AllAuctions[j].location==="All")){
+        /* if(!(AllAuctions[j].location==="All")){
             auctionLocation=AllAuctions[j].location.split(",").slice(-2).join(',').toLowerCase();
-        }
+        } */
         //comapre the equality of the two strings
         //auction location filter
 
-        const match=user_location === auctionLocation || AllAuctions[j].location==="All";
+        const match=user_location == (AllAuctions[j].location).toLowerCase() || AllAuctions[j].location==="All";
 
         if(match){
             //check the gender
-            genderMatch=user.gender.toLowerCase()===AllAuctions[j].gender.toLowerCase() || AllAuctions[j].gender=="All";
+            genderMatch=userGender==(AllAuctions[j].gender).toLowerCase() || AllAuctions[j].gender=="All";
             
             if(genderMatch){
 
                 //check the interests
                 //check the auction interests
                 const auctionInterests=AllAuctions[j].interests.match(/([^,]+)/g);
+
                 //check the user interests
                 const userInterests=user.interests.match(/([^,]+)/g);
-                const hasMatch=auctionInterests.some(item=>userInterests.includes(item));
 
-                if(hasMatch || AllAuctions[j].interests==="All"){
+                const hasMatch=auctionInterests.some(item=>userInterests.includes(item));
+                if(hasMatch || AllAuctions[j].interests=="All"){
                     //push the auction into the array
                     marketing_auctions.push(AllAuctions[j]);
                 }
