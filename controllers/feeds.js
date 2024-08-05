@@ -92,14 +92,14 @@ const getAllAuctions=async(req,res)=>{
         }  */
         //comapre the equality of the two strings
         //auction location filter
+
         var match=false
         if(AllAuctions[j].location=="All"|| locationCompare(user_location,(AllAuctions[j].location).toLowerCase())){
-            
+
             match=true;
         }
         else{
             match=locationCompare(user_location,(AllAuctions[j].location).toLowerCase());
-            if(match==false) continue
         }
         console.log(`user location:${user_location}, auction location :${(AllAuctions[j].location).toLowerCase()}, match: ${match}`);
 
@@ -131,7 +131,6 @@ const getAllAuctions=async(req,res)=>{
                 //const userInterests=user.interests.match(/([^,]+)/g);
                 //const usersInterests=(user.interests).split(",");
                 const hasMatch=hasCommonWord(userInterests,AllAuctions[j].interests);
-
                 //console.log(hasMatch);
                 if(hasMatch || AllAuctions[j].interests=="All"){
                     //console.log(AllAuctions[j]);
