@@ -22,6 +22,13 @@ function hasCommonWord(str1,str2){
     }
 }
 
+//last two words
+
+function lastTwoWords(str){
+    const words=str.split(",");
+    const lastTwo=words.slice(-2);
+    return lastTwo.map(word=>word.toLowerCase()).join(",");
+}
 //get single user
 
 const getUserProfile=async(req,res)=>{
@@ -59,19 +66,21 @@ const getAllAuctions=async(req,res)=>{
     let marketing_auctions=[];
 
     //user location
-    const user_location=(user.locationOrAddress.split(",").slice(-2).join(',')).toLowerCase();
+    const user_location=lastTwoWords(user.locationOrAddress);
+
     const userGender=(user.gender).toLowerCase()
     const userInterests=user.interests;
    for(let j=0;j<AllAuctions.length-1;j++){
         //determining when do i slice the location string
-        if(!(AllAuctions[j].location==="All")){
+        if(!(AllAuctions[j].location=="All")){
 
             auctionLocation=(AllAuctions[j].location.split(",").slice(-2).join(',')).toLowerCase();
+
         } 
         //comapre the equality of the two strings
         //auction location filter
 
-        const match=user_location == (AllAuctions[j].location).toLowerCase() || AllAuctions[j].location==="All";
+        const match=user_location == (AllAuctions[j].location).toLowerCase() || AllAuctions[j].location=="All";
         if(match){
             //check the gender
             genderMatch=userGender==(AllAuctions[j].gender).toLowerCase() || AllAuctions[j].gender=="all";
@@ -79,6 +88,7 @@ const getAllAuctions=async(req,res)=>{
             console.log(genderMatch);
             if(genderMatch){
                 //check the interests
+                console.log(genderMatch);
                 //check the auction interests
                 //const auctionInterests=AllAuctions[j].interests.match(/([^,]+)/g);
                 //const auctionsInterests=(AllAuctions[j].interests).split(",");
@@ -89,7 +99,7 @@ const getAllAuctions=async(req,res)=>{
                 console.log(hasMatch);
                 if(hasMatch || AllAuctions[j].interests=="All"){
                     //console.log(AllAuctions[j]);
-
+                    console.log(hasMatch);
                     //push the auction into the array
                     marketing_auctions.push(AllAuctions[j]);
                     //console.log(marketing_auctions);
@@ -99,7 +109,7 @@ const getAllAuctions=async(req,res)=>{
     }   
     //sort in terms of the acquisitionBid
     console.log(marketing_auctions);
-    
+
     return res.status(StatusCodes.OK).json({auctionFeed:marketing_auctions,count:marketing_auctions.length});
 };
 
