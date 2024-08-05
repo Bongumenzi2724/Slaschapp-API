@@ -29,6 +29,7 @@ function lastTwoWords(str){
     const lastTwo=words.slice(-2);
     return lastTwo.map(word=>word.toLowerCase()).join(",");
 }
+
 //string compare 
 function locationCompare(str1,str2){
     const cleanedStr1=str1.replace(/\s+/g,'').split(",").sort();
@@ -73,18 +74,34 @@ const getAllAuctions=async(req,res)=>{
 
     //user location
     const user_location=lastTwoWords(user.locationOrAddress);
-
     console.log(`user location:${user_location}`);
-
     const userGender=(user.gender).toLowerCase()
-    console.log(`user gender :${userGender}`);
+    console.log(`user gender: ${userGender}`)
     const userInterests=user.interests;
-    var locationMatch=flase;
+    var locationMatch=false;
     var genderMatch=false;
     var interestsMatch=false
     //sort in terms of the acquisitionBid
-    console.log(AllAuctions);
-    return res.status(StatusCodes.OK).json({auctionFeed:AllAuctions,count:marketing_auctions.length});
+    for(let i=0;i<AllAuctions.length-1;i++){
+
+        if(AllAuctions[i].location!=="All"){
+            locationMatch=locationCompare(user_location,AllAuctions[i].location)
+        }
+        if(AllAuctions[i].location=="All"|| locationMatch){
+            
+            if(AllAuctions[i].gender!=='all'){
+
+                genderMatch=userGender.toLowerCase()==(AllAuctions[i].gender).toLowerCase()
+            }
+            if(AllAuctions[i].gender=='all'|| genderMatch){
+                if(hasCommonWord(AllAuctions[i].interests,userInterests)){
+                    marketing_auctions.push(AllAuctions[i]);
+                }
+            }
+        }
+    }
+    //console.log(marketing_auctions);
+    return res.status(StatusCodes.OK).json({auctionFeed:marketing_auctions,count:marketing_auctions.length});
 };
 
 //only active owners feed
