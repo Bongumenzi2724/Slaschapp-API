@@ -82,6 +82,7 @@ const getAllAuctions=async(req,res)=>{
         }  */
         //comapre the equality of the two strings
         //auction location filter
+        
         let match=false
 
         if(AllAuctions[j].location=="All"){
@@ -89,16 +90,16 @@ const getAllAuctions=async(req,res)=>{
             match=true;
         }
         else{
-            match=user_location == AllAuctions[j].location;
+            match=user_location == (AllAuctions[j].location).toLowerCase();
         }
-        console.log(`user location:${user_location} auction location :${AllAuctions[j].location} match: ${match}`);
+        console.log(`user location:${user_location}, auction location :${(AllAuctions[j].location).toLowerCase()}, match: ${match}`);
 
         if(match){
             //check the gender
             let genderMatch=false;
 
             if(AllAuctions[j].gender=="all"){
-                
+
                 genderMatch=true;
             }else{
                 genderMatch= userGender==(AllAuctions[j].gender).toLowerCase();
