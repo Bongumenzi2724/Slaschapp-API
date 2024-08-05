@@ -82,9 +82,8 @@ const getAllAuctions=async(req,res)=>{
     var locationMatch=flase;
     var genderMatch=false;
     var interestsMatch=false
-
+    console.log(AllAuctions);
    for(let j=0;j<AllAuctions.length-1;j++){
-
         //compare user location and auction location
         locationMatch=locationCompare(AllAuctions[j].location,user_location);
         console.log(locationMatch);
