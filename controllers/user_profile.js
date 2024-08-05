@@ -5,13 +5,44 @@ const generateOTP = require('../utils/generateOtp');
 const { StatusCodes } = require("http-status-codes");
 const sendEmail = require("../utils/sendEmail");
 
-const getAllPastOrders=async(req,res)=>{
+const getAllPastCompletedOrders=async(req,res)=>{
+
     try {    
-        const orders=await Cart.find({userId:req.user.userId});
+        const userId=(req.user.userId).toString();
+        const status="Completed";
+        const orders=await Cart.find({userId:userId,status:status});
         if(!orders){
             return res.status(StatusCodes.NOT_FOUND).json({message:"This user has no purchase history"})
         }
-        return res.status(StatusCodes.OK).json({message:"All Past Orders Retrieved",orders:orders})
+        if(orders.length===0){
+            return res.status(StatusCodes.OK).json({message:"The user has 0 completed orders"})
+        }
+        else{
+            return res.status(StatusCodes.OK).json({message:"All Past Orders Retrieved",orders:orders})
+        }
+       
+        
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:"an error occurred while viewing purchase history"})
+    }  
+}
+
+const getAllPastOrders=async(req,res)=>{
+
+    try {    
+        const userId=(req.user.userId).toString();
+        const orders=await Cart.find({userId:userId});
+        console.log(orders)
+        if(!orders){
+            return res.status(StatusCodes.NOT_FOUND).json({message:"This user has no purchase history"})
+        }
+        if(orders.length===0){
+            return res.status(StatusCodes.OK).json({message:"The user has 0 orders"})
+        }
+        else{
+            return res.status(StatusCodes.OK).json({message:"All Past Orders Retrieved",orders:orders})
+        }
+       
         
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:"an error occurred while viewing purchase history"})
@@ -141,5 +172,5 @@ const user_completed_cart=async(req,res)=>{
     }
 }
 
-module.exports={getAllPastOrders,user_completed_cart,updateUserProfile,activateUserProfile,get_user_profile,deleteUserProfile,suspendUserProfile,userWalletUpdate}
+module.exports={getAllPastCompletedOrders,getAllPastOrders,user_completed_cart,updateUserProfile,activateUserProfile,get_user_profile,deleteUserProfile,suspendUserProfile,userWalletUpdate}
 

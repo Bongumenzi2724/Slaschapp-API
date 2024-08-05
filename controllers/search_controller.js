@@ -5,21 +5,6 @@ const Business=require('../models/BusinessRegistrationSchema');
 const Categories = require("../models/Categories");
 const Auction=require('../models/AuctionSchema')
 
-const search_controller=async(req,res)=>{
-    const query=req.query.query;
-    if(query===""){
-        return res.status(404).json({status:false,message:"Please Enter A Search Query"});
-    }
-    const page=parseInt(req.query.page)||1;
-    const limit=10;
-    const sort=req.query.sort||'firstname';
-    const results=await SearchResults(query,page,limit,sort);
-    if(results.length===0){
-        return res.status(404).json({status:false,message:"No Search Result(s) Found"})
-    }
-    return res.status(200).json({status:true,message:"Search Results",results:results});
-}
-
 async function SearchResults(query,page,limit,sort){
     const results=[];
     const pipeline=[
@@ -89,6 +74,21 @@ async function SearchResults(query,page,limit,sort){
     results.push(...auctions.map(auction => ({ type: 'auction', data: auction })));
     return results
 
+}
+
+const search_controller=async(req,res)=>{
+    const query=req.query.query;
+    if(query===""){
+        return res.status(404).json({status:false,message:"Please Enter A Search Query"});
+    }
+    const page=parseInt(req.query.page)||1;
+    const limit=10;
+    const sort=req.query.sort||'firstname';
+    const results=await SearchResults(query,page,limit,sort);
+    if(results.length===0){
+        return res.status(404).json({status:false,message:"No Search Result(s) Found"})
+    }
+    return res.status(200).json({status:true,message:"Search Results",results:results});
 }
 
 module.exports={search_controller}

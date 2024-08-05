@@ -95,10 +95,8 @@ const getSingleBusinessOwner=async(req,res)=>{
 const OwnerWalletUpdate=async(req,res)=>{
     try{
         //use this user id to search for the user to has his/her wallet
-        const ownerId=req.user.userId;
-
-        const owner =await BusinessOwnerRegistration.findOne({_id:ownerId});
-
+        const ownerId=(req.user.userId).toString();
+        const owner =await BusinessOwnerRegistration.findById({_id:ownerId});
         if(!owner){
             return res.status(StatusCodes.NOT_FOUND).json({message:"Owner does not exist"})
         }
@@ -106,7 +104,7 @@ const OwnerWalletUpdate=async(req,res)=>{
 
         let newOwner=owner;
 
-        await BusinessOwnerRegistration.findByIdAndUpdate(ownerId,{$set:newOwner},{new:true});
+        await BusinessOwnerRegistration.findByIdAndUpdate({_id:ownerId},{$set:newOwner},{new:true});
 
         await newOwner.save(); 
         
@@ -116,17 +114,19 @@ const OwnerWalletUpdate=async(req,res)=>{
         return res.status(StatusCodes.OK).json({message:`Wallet Updated successfully,new wallet is ${newOwner.wallet}`});
 
         //return res.status(StatusCodes.OK).json({message:"Owner Wallet"});
-        }
-        catch(error){
+    }
+    catch(error){
             return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:"An Error Occurred While Updating Your Wallet"})
-        }
+    }
 }
 
 const completed_cart_under_auction=async(req,res)=>{
+
     try {
         const {auctionId}=req.params;
         //search cart under this auction and which are completed
-        const carts=await Cart.aggregate([{$match:{status:'completed',auctionId:auctionId}}]);
+        const carts=await Cart.find({status:'Completed',auctionId:auctionId});
+        
         if(!carts){
             return res.status(500).json({message:"No Carts Exist For This Condition"});
         }
@@ -136,4 +136,6 @@ const completed_cart_under_auction=async(req,res)=>{
         return res.status(500).json({message:error.message});
     }
 }
+//
+
 module.exports={updateBusinessOwnerDetails,completed_cart_under_auction,OwnerWalletUpdate,ownerStatus,suspendBusinessOwner,deleteBusinessOwner,getAllBusinessOwners,getSingleBusinessOwner}
