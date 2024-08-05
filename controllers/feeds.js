@@ -81,11 +81,12 @@ const getAllAuctions=async(req,res)=>{
         //auction location filter
 
         const match=user_location == (AllAuctions[j].location).toLowerCase() || AllAuctions[j].location=="All";
+        console.log(`location:${match}`)
         if(match){
             //check the gender
             genderMatch=userGender==(AllAuctions[j].gender).toLowerCase() || AllAuctions[j].gender=="all";
 
-            console.log(genderMatch);
+            console.log(`gender match: ${genderMatch}`);
             if(genderMatch){
                 //check the interests
                 console.log(genderMatch);
@@ -99,7 +100,7 @@ const getAllAuctions=async(req,res)=>{
                 console.log(hasMatch);
                 if(hasMatch || AllAuctions[j].interests=="All"){
                     //console.log(AllAuctions[j]);
-                    console.log(hasMatch);
+                    console.log(`Interests: ${hasMatch}`);
                     //push the auction into the array
                     marketing_auctions.push(AllAuctions[j]);
                     //console.log(marketing_auctions);
