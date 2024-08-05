@@ -92,10 +92,6 @@ const getAllAuctions=async(req,res)=>{
             console.log(`user location:${user_location}, auction location:${AllAuctions[j].location}, match: ${AllAuctions[j].location=="All" || locationCompare(AllAuctions[j].location,user_location)}`);
             marketing_auctions.push(AllAuctions[j]);
         }
-        else{
-            console.log(`user location:${user_location}, auction location:${AllAuctions[j].location}, match: ${locationCompare(AllAuctions[j].location,user_location)}`);
-            continue;
-        }
     }   
     //sort in terms of the acquisitionBid
     console.log(marketing_auctions);
