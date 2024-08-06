@@ -65,7 +65,7 @@ const getAllAuctions=async(req,res)=>{
     //const AllAuction=await AuctionSchema.aggregate([{$project:{updatedAt:0,createdAt:0,__v:0}},{$match:{status:"Active"}}]);
     //find the user
     const user=await User.findById({_id:req.user.userId});
-
+    
     if(!user){
         return res.status(404).json({message:"User does not exist"});
     }
@@ -74,9 +74,9 @@ const getAllAuctions=async(req,res)=>{
     const user_location=lastTwoWords(user.locationOrAddress);
     const userGender=(user.gender).toLowerCase()
     const userInterests=user.interests;
-
-    for(let i=0;i<AllAuctions.length-1;i++){
-
+    
+    for(let i=0;i<=AllAuctions.length-1;i++){
+        console.log(AllAuctions[i]);
         let locationMatch=false;
         let genderMatch=false;
         console.log(`${i}`)
