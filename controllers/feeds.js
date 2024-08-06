@@ -116,7 +116,6 @@ const getAllAuctions=async(req,res)=>{
                 console.log(`interests1:${hasCommonWord(AllAuctions[i].interests,userInterests)}`)
                 
                 if(hasCommonWord(AllAuctions[i].interests,userInterests)){
-
                     console.log(`interests:${hasCommonWord(AllAuctions[i].interests,userInterests)}`)
                     marketing_auctions.push(AllAuctions[i]);
                 }else{
