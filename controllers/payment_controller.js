@@ -116,7 +116,7 @@ const payment_controller=async(req,res)=>{
     let newUserWallet=user;
     await User.findByIdAndUpdate({_id:userId},{$set:newUserWallet},{new:true});
     //save the new user
-    await newUser.save();
+    await newUserWallet.save();
 
     // Add acquisition bid to user rewards
     // find auction 
