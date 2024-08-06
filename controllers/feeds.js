@@ -74,23 +74,49 @@ const getAllAuctions=async(req,res)=>{
     const user_location=lastTwoWords(user.locationOrAddress);
     const userGender=(user.gender).toLowerCase()
     const userInterests=user.interests;
+
     for(let i=0;i<AllAuctions.length-1;i++){
+
         let locationMatch=false;
         let genderMatch=false;
-
+        console.log(`${i}`)
         if(AllAuctions[i].location!=="All"){
-            locationMatch=locationCompare(user_location,(AllAuctions[i].location).toLowerCase());
-        }
+            //split the auction location to semi-colon instead of a comma
+            let newLocation=(AllAuctions[i].location).split(";");
+            //console.log(newLocation);
 
-        if(AllAuctions[i].location=="All" ||locationMatch){
-            
-            if(AllAuctions[i].gender!="all"){
+            //loop through an array that of any length of newLocation and find a single that matches the user location
+            for(let j=0;j<=newLocation.length-1;j++){
+
+                console.log(`user location:${user_location},auction location:${newLocation[j]},name:${AllAuctions[i].campaignName}`)
+
+                if(locationCompare(user_location,(newLocation[j]).toLowerCase())){
+                    locationMatch=true;
+                }
+            }
+            //console.log(`user location:${user_location},auction location:${newLocation},name:${AllAuctions[i].campaignName}`)
+
+            //locationMatch=locationCompare(user_location,(AllAuctions[i].location).toLowerCase());
+            console.log(`location match : ${locationMatch}`);
+        }
+        if(AllAuctions[i].location=="All" || locationMatch){
+
+            if(AllAuctions[i].gender!=="all"){
+
+                //console.log(`auction gender:${AllAuctions[i].gender},user gender:${userGender}`)
                 let gender=(AllAuctions[i].gender).toLowerCase();
                 genderMatch=gender.localeCompare(userGender);
-            }
+                //console.log(`gender match:${genderMatch}`)
 
-            if(AllAuctions[i].gender=='all'|| genderMatch){
+            }
+            if(AllAuctions[i].gender==='all'|| genderMatch){
+
+                //console.log(`auction gender:${AllAuctions[i].gender},user gender:${userGender},gender match:${genderMatch}`)
+                //console.log(`interests1:${hasCommonWord(AllAuctions[i].interests,userInterests)}`)
+                
                 if(hasCommonWord(AllAuctions[i].interests,userInterests)){
+
+                    //console.log(`interests:${hasCommonWord(AllAuctions[i].interests,userInterests)}`)
                     marketing_auctions.push(AllAuctions[i]);
                 }else{
                     continue;

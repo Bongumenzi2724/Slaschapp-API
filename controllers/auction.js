@@ -6,6 +6,7 @@ const {NotFoundError}=require('../errors');
 const {StatusCodes}=require('http-status-codes');
 const { default: mongoose } = require('mongoose');
 const BusinessRegistrationSchema = require('../models/BusinessRegistrationSchema');
+const Owner=require('../models/BusinessOwnerRegistration');
 const Subscription=require('../models/SubscriptionSchema');
 const sendEmail = require('../utils/sendEmail');
 const generateOTP = require('../utils/generateOtp');
@@ -18,6 +19,16 @@ const createAuction=async(req,res)=>{
 
         if(req.body.location===""){
             req.body.location="All";
+        }
+        //find the owner
+        const owner=await Owner.findById({_id:req.body.createdBy});
+        if(!owner){
+            return res.status(404).json({message:"Owner does not exist"});
+        }
+
+        if(owner.wallet<req.body.acquisitionBid){
+
+            return res.status(404).json({message:"Owner does not have enough funds"});
         }
         //check if there is an existing subscription
         const subscription=await Subscription.findOne({createdBy:req.body.createdBy});
