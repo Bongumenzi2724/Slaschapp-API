@@ -22,6 +22,7 @@ function hasCommonWord(str1,str2){
 }
 
 //last two words
+
 function lastTwoWords(str){
     const words=str.split(",");
     const lastTwo=words.slice(-2);
@@ -75,6 +76,9 @@ const getAllAuctions=async(req,res)=>{
     //user location
     const user_location=lastTwoWords(user.locationOrAddress);
     const userGender=(user.gender).toLowerCase()
+
+    console.log(`user gender:${userGender}`);
+
     const userInterests=user.interests;
     for(let i=0;i<=AllAuctions.length-1;i++){
         
@@ -105,12 +109,19 @@ const getAllAuctions=async(req,res)=>{
                 console.log(`auction gender:${AllAuctions[i].gender},user gender:${userGender}`)
                 let gender=(AllAuctions[i].gender).toLowerCase();
 
-                genderMatch=genderCompare(gender,userGender);
+                if(AllAuctions[i].gender==="all"){
+                    genderMatch=true;
+                }else{
+                    genderMatch=genderCompare(gender,userGender);
+                }
                 console.log(`gender match:${genderMatch}`)
             }
             
             if(AllAuctions[i].gender==='all'|| genderMatch){
-
+                
+                if(AllAuctions[i].gender=="all"){
+                    genderMatch=true
+                }
                 console.log(`auction gender:${AllAuctions[i].gender},user gender:${userGender},gender match:${genderMatch}`)
                 console.log(`interests1:${hasCommonWord(AllAuctions[i].interests,userInterests)}`)
                 
