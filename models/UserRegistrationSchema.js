@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const UserSchema = new mongoose.Schema({
     firstname:{
         type:String,
+        trim:true,
         required:[true,'Please Provide Your First Name']
     },
     secondname:{
@@ -40,18 +41,22 @@ const UserSchema = new mongoose.Schema({
     },
     locationOrAddress:{
         type:String,
+        trim:true,
         required:[true,'Please Provide Your location or address']
     },
     birthday:{
         type:String,
+        trim:true,
         required:[false,'Please Provide Your Birthday in the format (YYYY/MM/DD)']
     },
     educationStatus:{
         type:String,
+        trim:true,
         required:[true,'Please Provide Your Education Status']
     },
     gender:{
         type:String,
+        trim:true,
         required:[true,'Please Provide Your Gender']
     },
     wallet:{
@@ -64,6 +69,7 @@ const UserSchema = new mongoose.Schema({
     },
     interests:{
         type:String,
+        trim:true,
         required:[true,'Please Provide Your Interests']
     },
     resetToken:{

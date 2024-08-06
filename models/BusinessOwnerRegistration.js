@@ -5,14 +5,17 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
 
     firstname:{
         type:String,
+        trim:true,
         required:[true,'Please Provide Your First Name']
     },
     secondname:{
         type:String,
+        trim:true,
         required:[false,'Please Provide Your Second Name']
     },
     surname:{
         type:String,
+        trim:true,
         required:[true,'Please Provide Your Surname']
     },
     profilePicture:{
@@ -41,10 +44,12 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
     },
     locationOrAddress:{
         type:String,
+        trim:true,
         required:[true,'Please Provide Your location or address']
     },
     birthday:{
         type:String,
+        trim:true,
         required:[false,'Please Provide Your Birthday in the format (YYYY/MM/DD)']
     },
     IdNumber:{
@@ -55,7 +60,8 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
         type:String
     },
     gender:{
-        type:String
+        type:String,
+        trim:true
     },
     //owner wallet
     wallet:{
@@ -85,6 +91,7 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
     },
     status:{
         type:String,
+        trim:true,
         default:"Active"
     }
 })
