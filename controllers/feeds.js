@@ -81,6 +81,7 @@ const getAllAuctions=async(req,res)=>{
         let genderMatch=false;
         console.log(`${i}`)
         if(AllAuctions[i].location!=="All"){
+
             //split the auction location to semi-colon instead of a comma
             let newLocation=(AllAuctions[i].location).split(";");
             //console.log(newLocation);
@@ -94,7 +95,7 @@ const getAllAuctions=async(req,res)=>{
                     locationMatch=true;
                 }
             }
-            //console.log(`user location:${user_location},auction location:${newLocation},name:${AllAuctions[i].campaignName}`)
+            console.log(`user location:${user_location},auction location:${newLocation},name:${AllAuctions[i].campaignName}`)
 
             //locationMatch=locationCompare(user_location,(AllAuctions[i].location).toLowerCase());
             console.log(`location match : ${locationMatch}`);
@@ -103,20 +104,20 @@ const getAllAuctions=async(req,res)=>{
 
             if(AllAuctions[i].gender!=="all"){
 
-                //console.log(`auction gender:${AllAuctions[i].gender},user gender:${userGender}`)
+                console.log(`auction gender:${AllAuctions[i].gender},user gender:${userGender}`)
                 let gender=(AllAuctions[i].gender).toLowerCase();
                 genderMatch=gender.localeCompare(userGender);
-                //console.log(`gender match:${genderMatch}`)
+                console.log(`gender match:${genderMatch}`)
 
             }
             if(AllAuctions[i].gender==='all'|| genderMatch){
 
-                //console.log(`auction gender:${AllAuctions[i].gender},user gender:${userGender},gender match:${genderMatch}`)
-                //console.log(`interests1:${hasCommonWord(AllAuctions[i].interests,userInterests)}`)
+                console.log(`auction gender:${AllAuctions[i].gender},user gender:${userGender},gender match:${genderMatch}`)
+                console.log(`interests1:${hasCommonWord(AllAuctions[i].interests,userInterests)}`)
                 
                 if(hasCommonWord(AllAuctions[i].interests,userInterests)){
 
-                    //console.log(`interests:${hasCommonWord(AllAuctions[i].interests,userInterests)}`)
+                    console.log(`interests:${hasCommonWord(AllAuctions[i].interests,userInterests)}`)
                     marketing_auctions.push(AllAuctions[i]);
                 }else{
                     continue;
