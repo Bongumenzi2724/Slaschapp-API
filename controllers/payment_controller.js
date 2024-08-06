@@ -13,8 +13,7 @@ const payment_controller=async(req,res)=>{
    const {cart_id}=req.params;
    const {otp}=req.body
    const cart=await Cart.findOne({_id:cart_id});
-   console.log("Admin Document Data");
-   console.log(adminDocument);
+  
    
    if(!cart){
     return res.status(404).json({message:`The Cart with ${cart_id} does not exist`})
