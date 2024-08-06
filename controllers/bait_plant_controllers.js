@@ -93,6 +93,11 @@ const single_bait_plant=async(req,res)=>{
     try {
         //Find Bait by id and return the whole thing
        const bait = await Bait.findById(req.params.baitID);
+
+       if(!bait){
+        return res.status(404).json({message:`no bait with id:${req.params.baitID}`})
+       }
+
        return res.status(StatusCodes.OK).json({status:true,message:bait});
     } catch (error) {
         return res.status(500).json({status:false,message:error.message})

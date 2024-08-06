@@ -4,14 +4,19 @@ const Business=require('../models/BusinessRegistrationSchema');
 const Auction=require('../models/AuctionSchema');
 const Bait = require('../models/BaitSchema');
 const Cart = require("../models/Cart");
+
 const {BadRequestError,NotFoundError}=require('../errors')
+
 const { default: mongoose } = require('mongoose');
+
 const generateOtp=require('../utils/generateOtp');
+
 const sendEmail=require('../utils/sendEmail');
 
 //Create A Single Business
 
 const createBusiness=async(req,res)=>{
+
     try{ 
         req.body.createdBy=req.user.userId;
         if(req.body.BusinessName==false||req.body.PhoneNumber==false||req.body.BusinessEmail==false||req.body.AcceptTermsAndConditions==false||req.body.BusinessCategory==false||req.body.BusinessLocation==false||req.body.BusinessHours==false||req.body.BusinessLogo==false||req.body.BusinessType==false||req.body.BusinessBio==false||req.body.verificationDoc==false||req.body.status==false||req.body.socials==false){

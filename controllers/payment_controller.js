@@ -149,9 +149,12 @@ const payment_controller=async(req,res)=>{
    }
 
    else if(cart.paymentMethod==="Slasch Rewards"){
-
+    console.log("Rewards");
+    
     const user=await User.findById({_id:userId});
-
+    console.log("user information")
+    console.log(user);
+    
     if(!user){
         return res.status(404).json({message:`user with id ${userId} does not exist`});
     }
@@ -160,6 +163,8 @@ const payment_controller=async(req,res)=>{
 
     //find the auction 
     const auction=await AuctionSchema.findById({_id:auctionID});
+    console.log("Auction");
+    console.log(auction);
     if(!auction){
         return res.status(404).json({message:"Auction does not exist therefore the business too"})
     }
@@ -167,6 +172,8 @@ const payment_controller=async(req,res)=>{
     const businessID=(auction.createdBy).toString();
     //find the business owner
     const owner=await BusinessOwnerRegistration.findById({_id:businessID});
+    console.log("Owner");
+    console.log(owner);
     if(!owner){
         return res.status(404).json({message:"Business Owner Does Not Exist"});
     }
@@ -185,15 +192,20 @@ const payment_controller=async(req,res)=>{
     adminDocument.wallet+=auction.acquisitionBid*0.40;
     let newAdmin=adminDocument;
     //update admin wallet
+    console.log("Admin");
+    console.log(newAdmin);
     await Admin.findByIdAndUpdate({email:(adminDocument._id).toString()},{$set:newAdmin},{new:true});
     await newAdmin.save();
     //update user with rewards
     await User.findByIdAndUpdate({_id:userId},{$set:newUser},{new:true});
     await newUser.save();
+    console.log("New User");
+    console.log(newUser);
     //Add cart total to business owner wallet
     owner.wallet+=cart.totalCartPrice;
     owner.wallet-=auction.acquisitionBid;
     let newOwner=owner;
+
     await BusinessOwnerRegistration.findByIdAndUpdate({_id:businessID},{$set:newOwner},{new:true});
     await newOwner.save();
     //Update Cart
