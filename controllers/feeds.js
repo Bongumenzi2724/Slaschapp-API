@@ -10,15 +10,18 @@ const {StatusCodes}=require('http-status-codes')
 //common words strings
 
 function hasCommonWord(str1,str2){
+
     const words1=str1.split(",");
     const words2=str2.split(",");
-    const set2=new Set(words2.map(word=>word.trim().toLowerCase()));
-    for(const word of words1){
-        if(set2.has(word.trim().toLowerCase())){
-            return true;
+
+    for(const word1 of words1){
+        for(const word2 of words2){
+            if(word1.toLowerCase()===word2.toLowerCase()){
+                return true;
+            }
         }
-        return false;
     }
+    return false;
 }
 
 //last two words
@@ -86,7 +89,10 @@ const getAllAuctions=async(req,res)=>{
         let genderMatch=false;
 
         if(AllAuctions[i].location!=="All"){
-
+            if(AllAuctions[i].location==="All"){
+                locationMatch=true;
+            }
+            else{
             //split the auction location to semi-colon instead of a comma
             let newLocation=(AllAuctions[i].location).split(";");
             //loop through an array that of any length of newLocation and find a single that matches the user location
@@ -99,7 +105,7 @@ const getAllAuctions=async(req,res)=>{
                 }
             }
             console.log(`user location:${user_location},auction location:${newLocation},name:${AllAuctions[i].campaignName}`)
-
+        }
             //locationMatch=locationCompare(user_location,(AllAuctions[i].location).toLowerCase());
             console.log(`location match : ${locationMatch}`);
         }
@@ -118,7 +124,7 @@ const getAllAuctions=async(req,res)=>{
             }
             
             if(AllAuctions[i].gender==='all'|| genderMatch){
-                
+
                 if(AllAuctions[i].gender=="all"){
                     genderMatch=true
                 }
