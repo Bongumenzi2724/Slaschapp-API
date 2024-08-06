@@ -195,7 +195,7 @@ const payment_controller=async(req,res)=>{
     //update admin wallet
     console.log("Admin Wallet");
     console.log(newAdmin.wallet);
-    await Admin.findByIdAndUpdate({email:(adminDocument._id).toString()},{$set:newAdmin},{new:true});
+    await Admin.findByIdAndUpdate({_id:(adminDocument._id).toString()},{$set:newAdmin},{new:true});
     await newAdmin.save();
     console.log("New Admin");
     console.log(newAdmin);
