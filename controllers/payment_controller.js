@@ -47,27 +47,33 @@ const payment_controller=async(req,res)=>{
     }
     owner.wallet-=auction.acquisitionBid;
     let newOwner=owner;
-    //Add Acquisition Bid to user rewards
-    cart.status="Completed";
-    let newCart=cart;
-    cart_user.rewards+=auction.acquisitionBid*0.60;
-    adminDocument.wallet+=auction.acquisitionBid*0.40;
-    let newAdmin=adminDocument;
-    let newUserCart=cart_user;
-    //update the admin
-    await Admin.findByIdAndUpdate({_id:(adminDocument._id).toString()},{$set:newAdmin},{new:true});
-    await newAdmin.save();
-    //update the cart
-    await User.findByIdAndUpdate({_id:userId},{$set:newUserCart},{new:true});
-    await newUserCart.save();
-    //update the cart status
-    await Cart.findByIdAndUpdate({_id:cart_id},{$set:newCart},{new:true});
-    await newCart.save();
-    //find the business owner to update the wallet
-    // Add cart total to owner wallet
+
     const ownerID=(owner._id).toString();
     await BusinessOwnerRegistration.findByIdAndUpdate({_id:ownerID},{$set:newOwner},{new:true});
     await owner.save();
+    //Add Acquisition Bid to user rewards
+    cart.status="Completed";
+    let newCart=cart;
+    //update the cart status
+    await Cart.findByIdAndUpdate({_id:cart_id},{$set:newCart},{new:true});
+    await newCart.save();
+    cart_user.rewards+=auction.acquisitionBid*0.60;
+    adminDocument.wallet+=auction.acquisitionBid*0.40;
+    //update the cart
+    let newUserCart=cart_user;
+    await User.findByIdAndUpdate({_id:userId},{$set:newUserCart},{new:true});
+    await newUserCart.save();
+    let newAdmin=adminDocument;
+    //update the admin
+    await Admin.findByIdAndUpdate({_id:(adminDocument._id).toString()},{$set:newAdmin},{new:true});
+    await newAdmin.save();
+ 
+    
+    
+    
+    //find the business owner to update the wallet
+    // Add cart total to owner wallet
+    
 
     /* owner.wallet+=cart.totalCartPrice;
     let newOwner=owner;
@@ -149,10 +155,8 @@ const payment_controller=async(req,res)=>{
 
    else if(cart.paymentMethod==="Slasch Rewards"){
    
-    
     const user=await User.findById({_id:userId});
    
-
     if(!user){
         return res.status(404).json({message:`user with id ${userId} does not exist`});
     }
@@ -183,7 +187,8 @@ const payment_controller=async(req,res)=>{
     }
     user.rewards-=cart.totalCartQuantity;
     let newUser=user;
-    user.rewards+=auction.acquisitionBid*0.60;
+
+    //user.rewards+=auction.acquisitionBid*0.60;
     adminDocument.wallet+=auction.acquisitionBid*0.40;
     let newAdmin=adminDocument;
     //update admin wallet
