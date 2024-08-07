@@ -67,9 +67,6 @@ const payment_controller=async(req,res)=>{
     //update the admin
     await Admin.findByIdAndUpdate({_id:(adminDocument._id).toString()},{$set:newAdmin},{new:true});
     await newAdmin.save();
- 
-    
-    
     
     //find the business owner to update the wallet
     // Add cart total to owner wallet
@@ -113,8 +110,9 @@ const payment_controller=async(req,res)=>{
     if(owner.wallet<auction.acquisitionBid){
         return res.status(403).json({message:`Transaction cannot be processed: Business owner ${owner.firstname} has insufficient funds`});
     }
+
     //Subtract total from user wallet
-    if(user.rewards<cart.totalCartPrice){
+    if(user.wallet<cart.totalCartPrice){
         return res.status(403).json({message:"Insufficient rewards to process payment try another method"});
     }
     user.wallet-=cart.totalCartPrice;
@@ -178,18 +176,21 @@ const payment_controller=async(req,res)=>{
     }
 
     //test the owner's wallet and the acquisition bid's equality
+
     if(owner.wallet<auction.acquisitionBid){
         return res.status(403).json({message:`Transaction cannot be processed: Business owner ${owner.firstname} has insufficient funds`});
     }
     //Subtract cart total from user rewards
+
     if(user.rewards<cart.totalCartPrice){
         return res.status(403).json({message:"Insufficient rewards to process payment try another method"});
     }
-    user.rewards-=cart.totalCartQuantity;
+    user.rewards-=cart.totalCartPrice;
     let newUser=user;
 
     //user.rewards+=auction.acquisitionBid*0.60;
-    adminDocument.wallet+=auction.acquisitionBid*0.40;
+    adminDocument.wallet+=auction.acquisitionBid;
+
     let newAdmin=adminDocument;
     //update admin wallet
   
@@ -202,8 +203,10 @@ const payment_controller=async(req,res)=>{
     await newUser.save();
     
     //Add cart total to business owner wallet
+
     owner.wallet+=cart.totalCartPrice;
     owner.wallet-=auction.acquisitionBid;
+
     let newOwner=owner;
 
     await BusinessOwnerRegistration.findByIdAndUpdate({_id:businessID},{$set:newOwner},{new:true});
