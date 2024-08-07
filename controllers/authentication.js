@@ -76,7 +76,7 @@ const loginBusinessOwner=async(req,res)=>{
 
     const token = owner.createJWT();
 
-    res.status(StatusCodes.OK).json({owner:{id:owner._id,name:owner.firstname,surname:owner.surname,wallet:owner.wallet,email:owner.email},token:{token}})
+    res.status(StatusCodes.OK).json({owner:{id:owner._id,name:owner.firstname,surname:owner.surname,wallet:owner.wallet,email:owner.email,acquisitionBidsPaid:owner.totalAcquisitionBidPaid},token:{token}})
 }
 
 //register app user

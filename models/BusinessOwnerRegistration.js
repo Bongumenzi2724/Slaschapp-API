@@ -93,6 +93,11 @@ const BusinessOwnerRegistrationSchema = new mongoose.Schema({
         type:String,
         trim:true,
         default:"Active"
+    },
+    totalAcquisitionBidPaid:{
+        type:Number,
+        required:false,
+        default:0
     }
 })
 

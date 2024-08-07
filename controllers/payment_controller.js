@@ -19,7 +19,8 @@ const payment_controller=async(req,res)=>{
     return res.status(404).json({message:`The Cart with ${cart_id} does not exist`})
    }
    const userId=(cart.userId).toString();
-   
+   //return the total amount of acquisition bid each time a transaction is completed an return at login,register, and when we read the profile all this is under business owner
+
    if(cart.paymentMethod=="Cash" && cart.cartOTP==otp){
    
     //find the user to update the rewards
@@ -45,6 +46,8 @@ const payment_controller=async(req,res)=>{
     if(owner.wallet<auction.acquisitionBid){
         return res.status(422).json({message:`Transaction cannot be processed: Business owner ${owner.firstname} has insufficient funds`});
     }
+    //update the owner wallet and total acquisition bid paid
+    owner.totalAcquisitionBidPaid+=auction.acquisitionBid;
     owner.wallet-=auction.acquisitionBid;
     let newOwner=owner;
 
@@ -77,6 +80,7 @@ const payment_controller=async(req,res)=>{
     await BusinessOwnerRegistration.findByIdAndUpdate({_id:businessID},{$set:newOwner},{new:true});
     await newOwner.save(); */
     
+
     return res.status(200).json({message:"Payment Processed Successfully"});
    }
 
@@ -144,6 +148,8 @@ const payment_controller=async(req,res)=>{
     owner.wallet+=cart.totalCartPrice;
     //subtract the acquisition bid from the owner's wallet
     owner.wallet-=auction.acquisitionBid;
+    //total acquation bids paid
+    owner.totalAcquisitionBidPaid+=auction.acquisitionBid;
     //update the new owner
     let newOwner=owner;
     await BusinessOwnerRegistration.findByIdAndUpdate({_id:businessID},{$set:newOwner},{new:true});
@@ -206,7 +212,8 @@ const payment_controller=async(req,res)=>{
 
     owner.wallet+=cart.totalCartPrice;
     owner.wallet-=auction.acquisitionBid;
-
+    //total acquisition bid 
+    owner.totalAcquisitionBidPaid+=auction.acquisitionBid;
     let newOwner=owner;
 
     await BusinessOwnerRegistration.findByIdAndUpdate({_id:businessID},{$set:newOwner},{new:true});

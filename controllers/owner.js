@@ -80,6 +80,7 @@ const getAllBusinessOwners=async(req,res)=>{
     res.status(StatusCodes.OK).json({businessOwners,count:businessOwners.length});
 }
 //get single business owner
+
 const getSingleBusinessOwner=async(req,res)=>{
 
     const{params:{id:ownerId}}=req
@@ -89,7 +90,7 @@ const getSingleBusinessOwner=async(req,res)=>{
         throw new NotFoundError(`No Business Owner with id ${ownerId}`)
     }
     
-    res.status(StatusCodes.OK).json({businessOwner})
+    return res.status(StatusCodes.OK).json({businessOwner})
 }
 //update owner wallet
 const OwnerWalletUpdate=async(req,res)=>{
