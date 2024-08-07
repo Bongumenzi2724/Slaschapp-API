@@ -31,7 +31,10 @@ const getAllPastOrders=async(req,res)=>{
 
     try {    
         const userId=(req.user.userId).toString();
-        const orders=await Cart.find({userId:userId});
+        
+        //const orders=await Cart.find({userId:userId});
+        const orders=await Cart.aggregate([{$match:{userId:userId,status:!('Completed')}}]);
+
         console.log(orders)
         if(!orders){
             return res.status(StatusCodes.NOT_FOUND).json({message:"This user has no purchase history"})
@@ -154,7 +157,7 @@ const userWalletUpdate=async(req,res)=>{
 }
 
 const user_completed_cart=async(req,res)=>{
-    //solveed
+    //solved
     try {
         //get all user completed cart 
         //const orders=await Cart.find({userId:req.user.userId});

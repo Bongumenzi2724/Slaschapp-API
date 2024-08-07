@@ -1,4 +1,5 @@
 const { StatusCodes } = require('http-status-codes');
+const { MongoServerError } = require('mongodb');
 
 const errorHandlerMiddleware = (err, req, res, next) => {
   let customError = {
@@ -24,6 +25,13 @@ if (err.name === 'ValidationError') {
     customError.statusCode = 404
   }
   
+  if(err instanceof MongoServerError && err.code===11000){
+
+    customError.msg = `Duplicate value entered for ${Object.keys(
+      err.keyValue
+    )} field, please choose another value`
+    customError.statusCode = 400
+  }
   return res.status(customError.statusCode).json({ msg: customError.msg })
 }
 

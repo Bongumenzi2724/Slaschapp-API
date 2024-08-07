@@ -52,7 +52,7 @@ const payment_controller=async(req,res)=>{
 
     //needs attentions
     owner.wallet-=auction.acquisitionBid;
-    
+
     //owner.wallet-=auction.acquisitionBid;
 
     let newOwner=owner;
@@ -80,13 +80,6 @@ const payment_controller=async(req,res)=>{
     //find the business owner to update the wallet
     // Add cart total to owner wallet
     
-
-    /* owner.wallet+=cart.totalCartPrice;
-    let newOwner=owner;
-    await BusinessOwnerRegistration.findByIdAndUpdate({_id:businessID},{$set:newOwner},{new:true});
-    await newOwner.save(); */
-    
-
     return res.status(200).json({message:"Payment Processed Successfully"});
    }
 
