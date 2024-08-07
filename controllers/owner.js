@@ -126,7 +126,7 @@ const completed_cart_under_auction=async(req,res)=>{
     try {
         const {auctionId}=req.params;
         //search cart under this auction and which are completed
-        const carts=await Cart.find({status:'Completed',auctionId:auctionId});
+        const carts=await Cart.aggregate([{$match:{status:'Completed',auctionId:auctionId}}]);
 
         if(!carts){
             return res.status(500).json({message:"No Carts Exist For This Condition"});
