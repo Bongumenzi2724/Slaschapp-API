@@ -46,9 +46,15 @@ const payment_controller=async(req,res)=>{
     if(owner.wallet<auction.acquisitionBid){
         return res.status(422).json({message:`Transaction cannot be processed: Business owner ${owner.firstname} has insufficient funds`});
     }
+
     //update the owner wallet and total acquisition bid paid
     owner.totalAcquisitionBidPaid+=auction.acquisitionBid;
+
+    //needs attentions
     owner.wallet-=auction.acquisitionBid;
+    
+    //owner.wallet-=auction.acquisitionBid;
+
     let newOwner=owner;
 
     const ownerID=(owner._id).toString();
@@ -146,7 +152,8 @@ const payment_controller=async(req,res)=>{
     await newCart.save();
     //Add Cart total to owner wallet
     owner.wallet+=cart.totalCartPrice;
-    //subtract the acquisition bid from the owner's wallet
+
+    //subtract the acquisition bid from the owner's wallet,needs attention
     owner.wallet-=auction.acquisitionBid;
     //total acquation bids paid
     owner.totalAcquisitionBidPaid+=auction.acquisitionBid;
@@ -212,7 +219,7 @@ const payment_controller=async(req,res)=>{
 
     owner.wallet+=cart.totalCartPrice;
     owner.wallet-=auction.acquisitionBid;
-    //total acquisition bid 
+    //total acquisition bids paid 
     owner.totalAcquisitionBidPaid+=auction.acquisitionBid;
     let newOwner=owner;
 

@@ -197,5 +197,5 @@ const update_cart_remove_item=async(req,res)=>{
     console.log(cart);
     return res.status(200).json({message:"Cart update Successfully"});
 }
-
+//
 module.exports={getCart,update_cart_checkout,update_cart_remove_item,user_orders,get_business_cart,create_cart, getAllOrders,searchBasedOnCode}

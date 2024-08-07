@@ -154,13 +154,14 @@ const userWalletUpdate=async(req,res)=>{
 }
 
 const user_completed_cart=async(req,res)=>{
+    //solveed
     try {
         //get all user completed cart 
         //const orders=await Cart.find({userId:req.user.userId});
 
         let userId=(req.user.userId).toString();
 
-        const completed_orders=await Cart.aggregate([{$match:{status:'completed',userId:userId}}]);
+        const completed_orders=await Cart.aggregate([{$match:{status:'Completed',userId:userId}}]);
         
         if(!completed_orders){
 
