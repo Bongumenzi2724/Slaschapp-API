@@ -4,7 +4,7 @@ const mongoose=require('mongoose');
 const generateOTP = require('../utils/generateOtp');
 const { StatusCodes } = require("http-status-codes");
 const sendEmail = require("../utils/sendEmail");
-
+//done
 const getAllPastCompletedOrders=async(req,res)=>{
 
     try {    

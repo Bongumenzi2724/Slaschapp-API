@@ -10,18 +10,20 @@ const Admin=require('../models/AdminSchema');
 
 //register app user
 const registerUser= async(req,res)=>{
-
     try{  
         //generate the otp to send to the user
         const userOtp=generateOtp();
-        await sendEmail(req.body.email,userOtp);
         req.body.otp=userOtp;
         const newUser=await User.create({...req.body});
+        await sendEmail(newUser.email,userOtp);
         const result=await newUser.save();
         const token=newUser.createJWT();
         return res.status(201).json({User:result,token:token});
 
     }catch(error){
+        if(error instanceof MongoServerError && error.code===11000){
+            return res.status(500).json({message:`Duplicate field entered with: ${error.errorResponse.keyValue.email} please choose another email`});
+        }
         return res.status(500).status({status:false,message:error})
     }
 }
@@ -153,8 +155,11 @@ const registerBusinessOwner=async(req,res)=>{
         const token=newOwner.createJWT();
         return res.status(201).json({BusinessOwner:result,token:token});
     }catch(error){
-            console.log(error);
-            return res.status(409).json({message:errorMessage})
+           
+        if(error instanceof MongoServerError && error.code===11000){
+            return res.status(500).json({message:`Duplicate field entered with: ${error.errorResponse.keyValue.email} please choose another email`});
+        }
+        return res.status(409).json({message:error.message})
     }
 }
 //register administration

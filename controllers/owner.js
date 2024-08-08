@@ -127,7 +127,7 @@ const completed_cart_under_auction=async(req,res)=>{
         const {auctionId}=req.params;
         //search cart under this auction and which are completed
         const carts=await Cart.aggregate([{$match:{status:'Completed',auctionId:auctionId}}]);
-        
+
         if(!carts){
             return res.status(500).json({message:"No Carts Exist For This Condition"});
         }
@@ -138,5 +138,6 @@ const completed_cart_under_auction=async(req,res)=>{
     }
 }
 //
+
 
 module.exports={updateBusinessOwnerDetails,completed_cart_under_auction,OwnerWalletUpdate,ownerStatus,suspendBusinessOwner,deleteBusinessOwner,getAllBusinessOwners,getSingleBusinessOwner}
