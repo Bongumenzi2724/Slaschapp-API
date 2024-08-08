@@ -32,9 +32,9 @@ const getAllPastOrders=async(req,res)=>{
     try {    
         const userId=(req.user.userId).toString();
 
-        const orders=await Cart.find({userId:userId});
+        const orders=await Cart.find({userId:userId,status:{$ne:"Completed"}});
 
-        //const orders=await Cart.aggregate([{$match:{userId:userId}}]);
+        //const orders=await Cart.aggregate([{$match:{userId:userId,status:{$ne:"Completed"}}}]);
 
         console.log(orders);
 
