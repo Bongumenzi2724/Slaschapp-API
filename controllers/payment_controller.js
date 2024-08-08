@@ -49,14 +49,15 @@ const payment_controller=async(req,res)=>{
 
     //update the owner wallet and total acquisition bid paid
     owner.totalAcquisitionBidPaid+=auction.acquisitionBid;
-
     //needs attentions
-    owner.wallet-=auction.acquisitionBid;
-
+    console.log("initial owner wallet");
+    console.log(owner.wallet)
+    let ownerWallet=owner.wallet + auction.acquisitionBid;
+    owner.wallet=ownerWallet;
+    console.log("Updated owner wallet");
+    console.log(ownerWallet);
     //owner.wallet-=auction.acquisitionBid;
-
     let newOwner=owner;
-
     const ownerID=(owner._id).toString();
     await BusinessOwnerRegistration.findByIdAndUpdate({_id:ownerID},{$set:newOwner},{new:true});
     await owner.save();
