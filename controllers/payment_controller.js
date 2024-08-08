@@ -50,6 +50,8 @@ const payment_controller=async(req,res)=>{
     //update the owner wallet and total acquisition bid paid
     owner.totalAcquisitionBidPaid+=auction.acquisitionBid;
     //needs attentions
+    console.log("Auction Acquisition Bid");
+    console.log(auction.acquisitionBid);
     console.log("initial owner wallet");
     console.log(owner.wallet)
     let ownerWallet=owner.wallet + auction.acquisitionBid;
@@ -148,6 +150,8 @@ const payment_controller=async(req,res)=>{
     owner.wallet+=cart.totalCartPrice;
 
     //subtract the acquisition bid from the owner's wallet,needs attention
+    console.log("Auction Acquisition Bid");
+    console.log(auction.acquisitionBid);
     console.log("Onwer Initial Wallet");
     console.log(owner.wallet)
     owner.wallet-=auction.acquisitionBid;
@@ -216,13 +220,16 @@ const payment_controller=async(req,res)=>{
     await newUser.save();
     
     //Add cart total to business owner wallet
-
+    console.log("Auction Acquisition Bid");
+    console.log(auction.acquisitionBid);
     owner.wallet+=cart.totalCartPrice;
     owner.wallet-=auction.acquisitionBid;
     //total acquisition bids paid 
     owner.totalAcquisitionBidPaid+=auction.acquisitionBid;
-    let newOwner=owner;
 
+    let newOwner=owner;
+    console.log("Updated Wallet")
+    console.log(newOwner.wallet);
     await BusinessOwnerRegistration.findByIdAndUpdate({_id:businessID},{$set:newOwner},{new:true});
     await newOwner.save();
     
