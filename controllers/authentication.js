@@ -148,9 +148,9 @@ const UserRegistration=async(req,res)=>{
 const registerBusinessOwner=async(req,res)=>{
     try{ 
         const ownerOtp=generateOtp();
-        await sendEmail(req.body.email,ownerOtp);
         req.body.otp=ownerOtp;
         const newOwner=await BusinessOwner.create({...req.body});
+        await sendEmail(newOwner.email,ownerOtp);
         result=await newOwner.save();
         const token=newOwner.createJWT();
         return res.status(201).json({BusinessOwner:result,token:token});
