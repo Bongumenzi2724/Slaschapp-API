@@ -34,10 +34,10 @@ const getAllPastOrders=async(req,res)=>{
 
         //const orders=await Cart.find({userId:userId});
 
-        const orders=await Cart.aggregate([{$match:{userId:userId,status:{$ne:"Completed"}}}]);
+        const orders=await Cart.aggregate([{$match:{userId:userId}}]);
 
         console.log(orders);
-        
+
         if(!orders){
             return res.status(StatusCodes.NOT_FOUND).json({message:"This user has no purchase history"})
         }
