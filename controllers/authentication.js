@@ -21,7 +21,7 @@ const registerUser= async(req,res)=>{
         return res.status(201).json({User:result,token:token});
 
     }catch(error){
-        console.log(error);
+        
         if(error instanceof MongoServerError && error.code===11000){
             return res.status(500).json({message:`Duplicate field entered with: ${error.errorResponse.keyValue.email} please choose another email`});
         }
