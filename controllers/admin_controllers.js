@@ -17,6 +17,7 @@ const AllUsers=async(req,res)=>{
     try {
         const AllUsers=await User.aggregate([{$project:{password:0,resetToken:0,resetTokenExpiration:0,__v:0,wallet:0,AcceptTermsAndConditions:0,updatedAt:0}}]);
         if(AllUsers.length===0){
+
             return res.status(200).json({message:"No users is registered"});
         }
         res.status(StatusCodes.OK).json({AllUsers:AllUsers,count:AllUsers.length});
@@ -25,9 +26,10 @@ const AllUsers=async(req,res)=>{
     }
 }
 //get all business owners
+
 const AllBusinessOwners=async(req,res)=>{
     try {
-        const BusinessOwnersData=await BusinessOwner.aggregate([{$project:{password:0,__v:0,resetToken:0,resetTokenExpiration:0,IdNumber:0,AcceptTermsAndConditions:0,updatedAt:0}}]);
+        const BusinessOwnersData=await BusinessOwner.aggregate([{$project:{password:0,__v:0,resetToken:0,resetTokenExpiration:0,AcceptTermsAndConditions:0,updatedAt:0}}]);
         if(BusinessOwnersData.length===0){
             return res.status(200).json({message:"No business owner is registered"})
         }
