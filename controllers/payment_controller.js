@@ -7,7 +7,6 @@ const AuctionSchema=require('../models/AuctionSchema');
 
 const payment_controller=async(req,res)=>{
    // find the cart being processed
-   const adminEmail=""
    const admin=await Admin.find({});
    let adminDocument=admin[0];
    const {cart_id}=req.params;
@@ -43,6 +42,7 @@ const payment_controller=async(req,res)=>{
     if(!owner){
         return res.status(404).json({message:"Business Owner No Longer Exist"});
     }
+
     if(owner.wallet<auction.acquisitionBid){
         return res.status(422).json({message:`Transaction cannot be processed: Business owner ${owner.firstname} has insufficient funds`});
     }
@@ -54,12 +54,13 @@ const payment_controller=async(req,res)=>{
     console.log(auction.acquisitionBid);
     console.log("initial owner wallet");
     console.log(owner.wallet)
-    let ownerWallet=owner.wallet + auction.acquisitionBid;
+    let ownerWallet=owner.wallet - auction.acquisitionBid;
     owner.wallet=ownerWallet;
     console.log("Updated owner wallet");
     console.log(ownerWallet);
-    //owner.wallet-=auction.acquisitionBid;
+    owner.wallet-=auction.acquisitionBid;
     let newOwner=owner;
+
     const ownerID=(owner._id).toString();
     await BusinessOwnerRegistration.findByIdAndUpdate({_id:ownerID},{$set:newOwner},{new:true});
     await newOwner.save();
@@ -154,6 +155,7 @@ const payment_controller=async(req,res)=>{
     console.log(auction.acquisitionBid);
     console.log("Onwer Initial Wallet");
     console.log(owner.wallet)
+
     owner.wallet-=auction.acquisitionBid;
 
     //total acquation bids paid

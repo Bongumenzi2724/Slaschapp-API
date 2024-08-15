@@ -13,6 +13,7 @@ const user_forgot_password=async(req,res)=>{
          resetTokenExpiration=Date.now()+3600000;
          //Send the reset token to user via email
         await sendEmail(email,resetToken);
+        console.log(resetToken);
         const update={$set:{resetToken:resetToken,resetTokenExpiration:resetTokenExpiration}};
         const query={email:email};
         const options={new:true,runValidators:true};
@@ -31,7 +32,6 @@ const user_forgot_password=async(req,res)=>{
 
 //Reset Password Functionality
 const user_password_reset=async(req,res)=>{
-
     try {
         const {password,resetToken}=req.body;
         const user=await User.findOne({resetToken:resetToken});
@@ -41,7 +41,7 @@ const user_password_reset=async(req,res)=>{
         const resetToken2="";
 
         const resetTokenExpiration="";
-
+       
         const update={$set:{password:password,resetToken:resetToken2,resetTokenExpiration:resetTokenExpiration}};
 
         const options={new:true,runValidators:true};

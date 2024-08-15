@@ -89,6 +89,7 @@ const getAllAuctions=async(req,res)=>{
         let genderMatch=false;
 
         if(AllAuctions[i].location!=="All"){
+            
             if(AllAuctions[i].location==="All"){
                 locationMatch=true;
             }
@@ -98,13 +99,13 @@ const getAllAuctions=async(req,res)=>{
             //loop through an array that of any length of newLocation and find a single that matches the user location
             for(let j=0;j<=newLocation.length-1;j++){
 
-                console.log(`user location:${user_location},auction location:${newLocation[j]},name:${AllAuctions[i].campaignName}`)
+                console.log(`user location:${user_location},auction location:${newLocation[j]},location name:${AllAuctions[i].campaignName}`)
 
                 if(locationCompare(user_location,(newLocation[j]).toLowerCase())){
                     locationMatch=true;
                 }
             }
-            console.log(`user location:${user_location},auction location:${newLocation},name:${AllAuctions[i].campaignName}`)
+            console.log(`user location:${user_location},auction location:${newLocation},location name:${AllAuctions[i].campaignName}`)
         }
             //locationMatch=locationCompare(user_location,(AllAuctions[i].location).toLowerCase());
             console.log(`location match : ${locationMatch}`);
