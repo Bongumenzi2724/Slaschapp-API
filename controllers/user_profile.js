@@ -36,7 +36,7 @@ const getAllPastOrders=async(req,res)=>{
         //const orders=await Cart.find({userId:userId,$or:[{status:"Canceled"},{status:"Pending"},{status:"Expired"}]});
         //console.log(orders)
         
-        const orders=await Cart.find({userId:userId,status:status});
+        const orders=await Cart.find({userId:userId});
 
         //const orders=await Cart.aggregate([{$match:{userId:userId,status:{$ne:"Completed"}}}]);
 
