@@ -110,7 +110,7 @@ const getSingleAuction=async(req,res)=>{
     }
 }
 
-//Get auction
+//delete single auction
 const deleteSingleAuction=async(req,res)=>{
 
     try{
@@ -125,7 +125,12 @@ const deleteSingleAuction=async(req,res)=>{
     await newAuction.save();
     //find baits related to the auction
     const auctionID=(auction._id).toString();
+    //find the businesses associated with the auction and delete all of them
+
+    //const business=await BusinessRegistrationSchema.find({createdBy:})
+
     const baits=await Bait.aggregate([{$match:{auctionID:new mongoose.Types.ObjectId(auctionID)}}]);
+
     if(baits.length!==0){
 
         //delete all the baits

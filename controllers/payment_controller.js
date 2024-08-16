@@ -12,8 +12,6 @@ const payment_controller=async(req,res)=>{
    const {cart_id}=req.params;
    const {otp}=req.body
    const cart=await Cart.findOne({_id:cart_id});
-  
-   
    if(!cart){
     return res.status(404).json({message:`The Cart with ${cart_id} does not exist`})
    }
@@ -56,9 +54,9 @@ const payment_controller=async(req,res)=>{
     console.log(owner.wallet)
     let ownerWallet=owner.wallet - auction.acquisitionBid;
     owner.wallet=ownerWallet;
-    console.log("Updated owner wallet");
+    console.log("Updated owner wallet value");
     console.log(ownerWallet);
-    owner.wallet-=auction.acquisitionBid;
+    //owner.wallet-=auction.acquisitionBid;
     let newOwner=owner;
 
     const ownerID=(owner._id).toString();
@@ -70,22 +68,31 @@ const payment_controller=async(req,res)=>{
     //update the cart status
     await Cart.findByIdAndUpdate({_id:cart_id},{$set:newCart},{new:true});
     await newCart.save();
+    console.log("User rewards before adding acquisition");
+    console.log(cart_user.rewards);
     cart_user.rewards+=auction.acquisitionBid*0.60;
+    console.log("Admin Wallet Before Adding Acquisition Bid")
+    console.log(adminDocument.wallet);
     adminDocument.wallet+=auction.acquisitionBid*0.40;
     //update the cart
     let newUserCart=cart_user;
+    console.log("Updated Rewards")
+    console.log(newUserCart.rewards);
+    
     await User.findByIdAndUpdate({_id:userId},{$set:newUserCart},{new:true});
     await newUserCart.save();
     let newAdmin=adminDocument;
     //update the admin
     await Admin.findByIdAndUpdate({_id:(adminDocument._id).toString()},{$set:newAdmin},{new:true});
     await newAdmin.save();
-    
+    console.log("Admin Wallet After Adding Acquisition Bid");
+    console.log(newAdmin.wallet);
     //find the business owner to update the wallet
     // Add cart total to owner wallet
     
     return res.status(200).json({message:"Payment Processed Successfully"});
    }
+
 
    else if(cart.paymentMethod==="Slasch Wallet")
    {
@@ -170,6 +177,7 @@ const payment_controller=async(req,res)=>{
     return res.status(200).json({message:"wallet payment processed successfully"});
    }
 
+   
    else if(cart.paymentMethod==="Slasch Rewards"){
    
     const user=await User.findById({_id:userId});
@@ -182,6 +190,7 @@ const payment_controller=async(req,res)=>{
 
     //find the auction 
     const auction=await AuctionSchema.findById({_id:auctionID});
+
     if(!auction){
         return res.status(404).json({message:"Auction does not exist therefore the business too"})
     }
@@ -195,7 +204,12 @@ const payment_controller=async(req,res)=>{
     }
 
     //test the owner's wallet and the acquisition bid's equality
-
+    console.log("owner name");
+    console.log(owner.firstname);
+    console.log("owner total acquisition bid paid");
+    console.log(owner.totalAcquisitionBidPaid);
+    console.log("total cart price");
+    console.log(cart.totalCartPrice);
     if(owner.wallet<auction.acquisitionBid){
         return res.status(403).json({message:`Transaction cannot be processed: Business owner ${owner.firstname} has insufficient funds`});
     }
@@ -204,15 +218,21 @@ const payment_controller=async(req,res)=>{
     if(user.rewards<cart.totalCartPrice){
         return res.status(403).json({message:"Insufficient rewards to process payment try another method"});
     }
+    console.log("Old User rewards");
+    console.log(user.rewards);
     user.rewards-=cart.totalCartPrice;
     let newUser=user;
-
+    console.log("User Rewards");
+    console.log(user.rewards);
+    console.log("Admin Wallet");
+    console.log(adminDocument.wallet);
     //user.rewards+=auction.acquisitionBid*0.60;
     adminDocument.wallet+=auction.acquisitionBid;
 
     let newAdmin=adminDocument;
     //update admin wallet
-  
+    console.log("Updated Admin Wallet");
+    console.log(newAdmin.wallet);
     await Admin.findByIdAndUpdate({_id:(adminDocument._id).toString()},{$set:newAdmin},{new:true});
     await newAdmin.save();
     console.log("New Admin email after update");
@@ -224,13 +244,22 @@ const payment_controller=async(req,res)=>{
     //Add cart total to business owner wallet
     console.log("Auction Acquisition Bid");
     console.log(auction.acquisitionBid);
+    console.log("Initial Wallet Value")
+    console.log(owner.wallet)
+
     owner.wallet+=cart.totalCartPrice;
+    console.log("New Wallet Value After Adding total cart price")
+    console.log(owner.wallet);
     owner.wallet-=auction.acquisitionBid;
-    //total acquisition bids paid 
+    //total acquisition bids paid
+    console.log("Total Acquisition Bid Paid B4 Update"); 
+    console.log(owner.totalAcquisitionBidPaid);
     owner.totalAcquisitionBidPaid+=auction.acquisitionBid;
 
+    console.log("Total Acquisition Bid Paid After Update");
+    console.log(owner.totalAcquisitionBidPaid)
     let newOwner=owner;
-    console.log("Updated Wallet")
+    console.log("Updated Wallet After Adding the total cart price and subtracting the acquisition bid")
     console.log(newOwner.wallet);
     await BusinessOwnerRegistration.findByIdAndUpdate({_id:businessID},{$set:newOwner},{new:true});
     await newOwner.save();
