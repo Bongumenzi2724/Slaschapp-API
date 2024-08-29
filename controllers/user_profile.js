@@ -152,14 +152,38 @@ const userWalletUpdate=async(req,res)=>{
         let newUser=user;
         await User.findByIdAndUpdate(req.user.userId,{$set:newUser},{new:true});
         await newUser.save();
+
         const otp=generateOTP();
         await sendEmail(user.email,otp);
+
         return res.status(StatusCodes.OK).json({message:`Wallet Updated successfully,new wallet is ${newUser.wallet}`});
+
     }catch(error){
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:"An Error Occurred While Updating Your Wallet"})
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:error.message})
     }
     
 
+}
+
+const userRewardsUpdate=async(req,res)=>{
+    try {
+        const user=await User.findOne({_id:req.user.userId});
+        if(!user){
+            return res.status(StatusCodes.NOT_FOUND).json({message:"User does not exist"});
+        }
+        user.rewards=user.rewards + req.body.rewards;
+
+        let newUser=user;
+
+        await User.findByIdAndUpdate(req.user.userId,{$set:newUser},{new:true});
+
+        await newUser.save();
+
+        return res.status(StatusCodes.OK).json({message:`Rewards updated successfully, new rewards are ${newUser.rewards}`});
+
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:error.message});
+    }
 }
 
 const user_completed_cart=async(req,res)=>{
@@ -182,5 +206,5 @@ const user_completed_cart=async(req,res)=>{
     }
 }
 
-module.exports={getAllPastCompletedOrders,getAllPastOrders,user_completed_cart,updateUserProfile,activateUserProfile,get_user_profile,deleteUserProfile,suspendUserProfile,userWalletUpdate}
+module.exports={getAllPastCompletedOrders,userRewardsUpdate,getAllPastOrders,user_completed_cart,updateUserProfile,activateUserProfile,get_user_profile,deleteUserProfile,suspendUserProfile,userWalletUpdate}
 
