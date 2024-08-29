@@ -10,6 +10,7 @@ const helmet=require('helmet')
 
 const cors=require('cors')
 
+const cron=require('node-cron')
 const bodyParser=require('body-parser');
 
 //const xss=require('xss-clean')
@@ -166,5 +167,11 @@ const start=async()=>{
 
 //start the database 
 
-start()
+start();
+
+cron.schedule('0 */3 * * *', () => {
+    
+    console.log('Server is available for requests and responses');
+});
+  
 

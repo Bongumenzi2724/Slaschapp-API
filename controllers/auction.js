@@ -115,6 +115,7 @@ const deleteSingleAuction=async(req,res)=>{
 
     try{
     const auction= await Auction.findOne({_id:req.params.auctionId});
+
     if(!auction){
         throw new NotFoundError(`No Auction with id ${req.params.auctionId}`)
     }
@@ -238,6 +239,8 @@ const auctionSearchResults=async(req,res)=>{
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:"An error occurred while fetching your businesses",error:error.message})
     }
 } */
+
+
 
 const auctionBusiness=async(req,res)=>{
     return res.status(StatusCodes.OK).json({message:"auction"})
